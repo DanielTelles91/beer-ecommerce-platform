@@ -2,6 +2,11 @@ package com.ecommerce.routeexpress.models;
 
 import jakarta.validation.constraints.*;
 
+/**
+*
+* @author Daniel A. Telles
+*/
+
 public class ClienteDto {
 		
 	@NotEmpty(message = "The First Name is required")

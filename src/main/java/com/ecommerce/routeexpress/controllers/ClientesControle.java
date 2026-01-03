@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ecommerce.routeexpress.models.Cliente;
 import com.ecommerce.routeexpress.models.ClienteDto;
@@ -18,9 +19,16 @@ import com.ecommerce.routeexpress.services.ClientesRepositorio;
 
 import jakarta.validation.Valid;
 
+
+/**
+*
+* @author Daniel A. Telles
+*/
+ 
 @Controller
 @RequestMapping("/clientes")
 public class ClientesControle {
+
 	
 	@Autowired
 	private ClientesRepositorio repo;
@@ -43,14 +51,13 @@ public class ClientesControle {
 	@PostMapping("/create")
 	public String createCliente(
 		@Valid @ModelAttribute ClienteDto clienteDto,
-		BindingResult result
+		BindingResult result, RedirectAttributes redirectAttributes
 		) {
 		
 		if (result.hasErrors()) { // Caso algum campo não esteja preenchido, fica na página Createcliente
 			return "clientes/CreateCliente";
 			 
-		}
-		
+		}	
 		
 		Cliente cliente = new Cliente();
 		cliente.setCpf(clienteDto.getCpf());
@@ -62,10 +69,11 @@ public class ClientesControle {
 		cliente.setSexo(clienteDto.getSexo());
 		cliente.setTelefone(clienteDto.getTelefone());
 		
-		repo.save(cliente); // Salva no banco de dados
+		repo.save(cliente);  //Salva no BD
 		
-		
-			return "redirect:/clientes";		
+		redirectAttributes.addFlashAttribute("testValue", cliente.getCpf()); 
+        return "redirect:/enderecos/create";  // Após persistir o cliente, faz um redirect usando Flash Attributes para transportar o contexto (CPF) de forma
+			                                  // segura e temporária evitando exposição de identificadores na URL.
 	}
 	
 

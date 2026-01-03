@@ -1,10 +1,20 @@
 package com.ecommerce.routeexpress.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+/**
+*
+* @author Daniel A. Telles
+*/
 
 @Entity
 @Table (name = "clientes") 
@@ -21,7 +31,15 @@ public class Cliente {
 	private String cpf;
 	private String senha;
 	private String sexo;
-	private String data_nascimento;
+	private String data_nascimento; 
+	
+	
+	@OneToMany(mappedBy = "cliente",
+		       cascade = CascadeType.ALL,
+		       orphanRemoval = true
+		      )
+    private List<Endereco> enderecos = new ArrayList<>();
+	
 	
 	public int getId() {
 		return id;
