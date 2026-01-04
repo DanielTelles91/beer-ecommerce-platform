@@ -8,40 +8,30 @@
   </head>
   <body>
      <div class="container">
-     	<h1 class="text-center my-4">Products</h1>
+     	<h1 class="text-center my-4">Cervejarias</h1>
      
-     	<a class="btn btn-primary" href="/products/create">Create Product</a>
+     	<a class="btn btn-primary" href="/cervejarias/create">Create Cervejaria</a>
      	
      	<table class="table">
      	 <thead>
      	 	<tr>
      	 		<th>ID</th>
-     	 		<th>Name</th>
-     	 		<th>Brand</th>
-     	 		<th>Category</th>
-     	 		<th>Price</th>
-     	 		<th>Image</th>
-     	 		<th>Created At</th>
+     	 		<th>Cervejaria</th>
+     	 		<th>Pais</th>
      	 		<th>Action</th>
      	 	</tr>
      	 </thead>
      	 <tbody>
-     	  <tr th:each="product : ${products}">
-     	  	<td th:text="${product.id}"></td>
-     	  	<td th:text="${product.name}"></td>
-     	  	<td th:text="${product.brand}"></td>
-     	  	<td th:text="${product.category}"></td>
-     	  	<td th:text="@{${product.price} + '$'}"></td>
-     	  	<td>
-     	  	  <img th:src="@{'/images/' + ${product.imageFileName}}"
-     	  		   alt="..." width="100"> 
-     	  	</td>
-     	  	<td th:text="${product.createdAt.toString().substring(0, 10)}"></td>
+     	  <tr th:each="cervejaria : ${cervejarias}">
+     	  	<td th:text="${cervejaria.id}"></td>
+     	  	<td th:text="${cervejaria.cervejaria}"></td>
+     	  	<td th:text="${cervejaria.pais}"></td>
+ 
      	  	<td style="white-space:nowrap">
      	  		<a class="btn btn-primary btn-sm"
-     	  			th:href="@{/products/edit(id=${product.id})}">Edit</a>
+     	  			th:href="@{/cervejarias/edit(id=${cervejaria.id})}">Edit</a>
      	  		<a class="btn btn-danger btn-sm"
-     	  			th:href="@{/products/delete(id=${product.id})}"
+     	  			th:href="@{/cervejarias/delete(id=${cervejaria.id})}"
      	  			onclick="return confirm('Você tem certeza?')">Delete</a>	
      	  	</td>			  
      	   </tr>
