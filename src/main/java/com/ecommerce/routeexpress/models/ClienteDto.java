@@ -15,24 +15,26 @@ public class ClienteDto {
 	@NotEmpty(message = "The Last Name is required")
 	private String last_name;	
 
-	@NotEmpty(message = "The email is required")
+	@NotEmpty(message = "The Email is required")
 	private String email;
 	
-	@NotEmpty(message = "The phone is required")
+	@NotEmpty(message = "The Phone Number is required")
 	private String telefone;
 	
-	@NotEmpty(message = "The cpf is required")
+	@NotEmpty(message = "The CPF is required")
 	private String cpf;
 	
-	@NotEmpty(message = "The password is required")
+	@NotEmpty(message = "The Password is required")
 	private String senha;
 	
-	@NotEmpty(message = "The sexo is required")
+	@NotEmpty(message = "The Sexo is required")
 	private String sexo;
 	
-	@NotEmpty(message = "The data_nascimento is required")
+	@NotEmpty(message = "The Data de Nascimento is required")
 	private String data_nascimento;
 
+	
+	
 	public String getFirst_name() {
 		return first_name;
 	}

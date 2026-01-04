@@ -1,56 +1,63 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Route Express</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
-  <body>
-     <div class="container">
-     	<h1 class="text-center my-4">Clientes</h1>
-     
-     	<a class="btn btn-primary" href="/clientes/create">Create Clientes</a>
-     	
-     	<table class="table">
-     	 <thead>
-     	 	<tr>
-     	 		<th>ID</th>
-     	 		<th>First Name</th>
-     	 		<th>Last Name</th>
-     	 		<th>Email</th>
-     	 		<th>Telefone</th>
-     	 		<th>CPF</th>
-     	 		<th>Senha</th>
-     	 		<th>Sexo</th>
-     	 		<th>Data de Nascimento</th>
-     	 		<th>Action</th>
-     	 	</tr>
-     	 </thead>
-     	 <tbody>
-     	  <tr th:each="cliente : ${clientes}">
-     	  	<td th:text="${cliente.id}"></td>
-     	  	<td th:text="${cliente.first_name}"></td>
-     	  	<td th:text="${cliente.last_name}"></td>
-     	  	<td th:text="${cliente.email}"></td>
-     	  	<td th:text="${cliente.telefone}"></td>
-     	  	<td th:text="${cliente.cpf}"></td>
-     	  	<td th:text="${cliente.senha}"></td>
-     	  	<td th:text="${cliente.sexo}"></td>
-     	  	<td th:text="${cliente.data_nascimento}"></td>
- 
-     	  	<td style="white-space:nowrap">
-     	  		<a class="btn btn-primary btn-sm"
-     	  			th:href="@{/clientes/edit(id=${cliente.id})}">Edit</a>
-     	  		<a class="btn btn-danger btn-sm"
-     	  			th:href="@{/clientes/delete(id=${cliente.id})}"
-     	  			onclick="return confirm('Você tem certeza?')">Delete</a>	
-     	  	</td>			  
-     	   </tr>
-     	  </tbody>		    	     	
-         </table>
-     </div>	
-     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route Express</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+	crossorigin="anonymous">
+</head>
+<body class="bg-dark text-light">
+	<div class="container">
+		<h1 class="text-center my-4">Clients</h1>
+
+		<a class="btn btn-primary" href="/">Back</a> <a
+			class="btn btn-primary" href="/clientes/create">New Client</a>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Email</th>
+					<th>Phone Number</th>
+					<th>CPF</th>
+					<th>Password</th>
+					<th>Gender</th>
+					<th>Date of Birth</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cliente : ${clientes}">
+					<td th:text="${cliente.id}"></td>
+					<td th:text="${cliente.first_name}"></td>
+					<td th:text="${cliente.last_name}"></td>
+					<td th:text="${cliente.email}"></td>
+					<td th:text="${cliente.telefone}"></td>
+					<td th:text="${cliente.cpf}"></td>
+					<td th:text="${cliente.senha}"></td>
+					<td th:text="${cliente.sexo}"></td>
+					<td th:text="${cliente.data_nascimento}"></td>
+
+					<td style="white-space: nowrap"><a
+						class="btn btn-primary btn-sm"
+						th:href="@{/clientes/edit(id=${cliente.id})}">Edit</a> <a
+						class="btn btn-danger btn-sm"
+						th:href="@{/clientes/delete(id=${cliente.id})}"
+						onclick="return confirm('Are you Sure?')">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+		crossorigin="anonymous"></script>
+</body>
 </html>

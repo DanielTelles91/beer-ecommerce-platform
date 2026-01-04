@@ -1,67 +1,88 @@
 package com.ecommerce.routeexpress.models;
 
+import org.springframework.web.multipart.*;
+
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 /**
-*
-* @author Daniel A. Telles
-*/
+ *
+ * @author Daniel A. Telles
+ */
 
 public class CervejaDto {
 
 	@NotEmpty(message = "The rotulo is required")
 	private String rotulo;
-	
+
 	@NotEmpty(message = "The preco is required")
 	private String preco;
-	
+
 	@NotEmpty(message = "The volume is required")
 	private String volume;
-	
+
 	@NotEmpty(message = "The teor is required")
 	private String teor;
-	
+
 	@NotEmpty(message = "The cor is required")
 	private String cor;
-	
+
 	@NotEmpty(message = "The temperatura is required")
 	private String temperatura;
-	
+
 	@NotEmpty(message = "The familia_e_estilo is required")
 	private String familia_e_estilo;
-	
+
 	@NotEmpty(message = "The descricao is required")
 	private String descricao;
-	
+
 	@NotEmpty(message = "The sabor is required")
 	private String sabor;
-	
-	//@NotEmpty(message = "The imagem_1 is required")
-	//private String imagem_1;
-	
-	//@NotEmpty(message = "The imagem_2 is required")
-	//private String imagem_2;
-	
-	//@NotEmpty(message = "The imagem_3 is required")
-	//private String imagem_3;
-	
-	
-	//***********************************
+
+	private MultipartFile imagem_1;
+
+	private MultipartFile imagem_2;
+
+	private MultipartFile imagem_3;
+
+	// ***********************************
 	private Integer cervejariaId;
-	 
-    public Integer getCervejariaId() {
-	    return cervejariaId;
+
+	public Integer getCervejariaId() {
+		return cervejariaId;
 	}
 
 	public void setCervejariaId(Integer cervejariaId) {
-	    this.cervejariaId = cervejariaId;
+		this.cervejariaId = cervejariaId;
 	}
-	//***********************************
-	
-	
-	
+	// ***********************************
+
 	public String getRotulo() {
 		return rotulo;
+	}
+
+	public MultipartFile getImagem_1() {
+		return imagem_1;
+	}
+
+	public void setImagem_1(MultipartFile imagem_1) {
+		this.imagem_1 = imagem_1;
+	}
+
+	public MultipartFile getImagem_2() {
+		return imagem_2;
+	}
+
+	public void setImagem_2(MultipartFile imagem_2) {
+		this.imagem_2 = imagem_2;
+	}
+
+	public MultipartFile getImagem_3() {
+		return imagem_3;
+	}
+
+	public void setImagem_3(MultipartFile imagem_3) {
+		this.imagem_3 = imagem_3;
 	}
 
 	public void setRotulo(String rotulo) {
@@ -132,8 +153,4 @@ public class CervejaDto {
 		this.sabor = sabor;
 	}
 
-
-	
-	
-	
 }

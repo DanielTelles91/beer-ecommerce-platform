@@ -4,6 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ecommerce.routeexpress.models.Cerveja;
 
+/**
+*
+* @author Daniel A. Telles
+*/
+
 public interface CervejasRepositorio extends JpaRepository<Cerveja, Integer>{
 
 }

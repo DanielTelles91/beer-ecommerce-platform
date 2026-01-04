@@ -3,16 +3,15 @@ package com.ecommerce.routeexpress.models;
 import jakarta.validation.constraints.NotEmpty;
 
 /**
-*
-* @author Daniel A. Telles
-*/
-
+ *
+ * @author Daniel A. Telles
+ */
 
 public class CervejariaDto {
-	
+
 	@NotEmpty(message = "The Cervejaria is required")
 	private String cervejaria;
-	
+
 	@NotEmpty(message = "The pais is required")
 	private String pais;
 
@@ -30,7 +29,6 @@ public class CervejariaDto {
 
 	public void setPais(String pais) {
 		this.pais = pais;
-	}	
+	}
 
-	
 }

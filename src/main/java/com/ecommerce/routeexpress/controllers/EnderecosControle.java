@@ -21,9 +21,9 @@ import com.ecommerce.routeexpress.services.EnderecosRepositorio;
 import jakarta.validation.Valid;
 
 /**
-*
-* @author Daniel A. Telles
-*/
+ *
+ * @author Daniel A. Telles
+ */
 
 @Controller
 @RequestMapping("/enderecos")
@@ -31,54 +31,44 @@ public class EnderecosControle {
 
 	@Autowired
 	private EnderecosRepositorio repo;
-	
-	@GetMapping({"", "/"})
+
+	@GetMapping({ "", "/" })
 	public String showEnderecoList(Model model) {
 		List<Endereco> enderecos = repo.findAll();
 		model.addAttribute("enderecos", enderecos);
-		return "enderecos/index"; // diretório enderecos/index		
+		return "enderecos/index"; // diretório enderecos/index
 	}
-	
+
 	@GetMapping("/create")
 	public String showCreatePage(Model model) {
 		EnderecoDto enderecoDto = new EnderecoDto();
-		model.addAttribute("enderecoDto", enderecoDto);	
-		
-		String value = (String) model.getAttribute("testValue");   // Pega o cont. CPF e seta o valor na variável. 
-		System.out.println("Flash Value = " + value );
+		model.addAttribute("enderecoDto", enderecoDto);
+
+		String value = (String) model.getAttribute("testValue"); // Pega o cont. CPF e seta o valor na variável.
+		System.out.println("Flash Value = " + value);
 		enderecoDto.setCpf(value);
-		
+
 		return "enderecos/CreateEndereco";
 	}
-	
-	
-	
+
 	@Autowired
 	private ClientesRepositorio clienteRepo;
-	
+
 	@PostMapping("/create")
-	public String createEndereco(
-		@Valid @ModelAttribute EnderecoDto enderecoDto,
-		BindingResult result
-		) {
-		
+	public String createEndereco(@Valid @ModelAttribute EnderecoDto enderecoDto, BindingResult result) {
+
 		if (result.hasErrors()) { // Caso algum campo não esteja preenchido, fica na página CreateEndereco
-		return "enderecos/CreateEndereco";	 
+			return "enderecos/CreateEndereco";
 		}
-			
-		
-		 // Busca cliente pelo CPF
+
+		// Busca cliente pelo CPF
 		Cliente cliente = clienteRepo.findByCpf(enderecoDto.getCpf());
 
-	    if (cliente == null) {
-	        // aqui você pode lançar exceção ou redirecionar com erro
-	        throw new RuntimeException("Cliente não encontrado!");
-	    }
-	    
-	    
-	    
-	    
-	    
+		if (cliente == null) {
+			// aqui você pode lançar exceção ou redirecionar com erro
+			throw new RuntimeException("Cliente não encontrado!");
+		}
+
 		Endereco endereco = new Endereco();
 		endereco.setBairro(enderecoDto.getBairro());
 		endereco.setCep(enderecoDto.getCep());
@@ -89,28 +79,21 @@ public class EnderecosControle {
 		endereco.setLogradouro(enderecoDto.getLogradouro());
 		endereco.setLogradouro_numero(enderecoDto.getLogradouro_numero());
 		endereco.setTipo_logradouro(enderecoDto.getTipo_logradouro());
-		
-		
-		
-	    endereco.setCliente(cliente); // <<< MUITO IMPORTANTE
-		 
+
+		endereco.setCliente(cliente); // <<< MUITO IMPORTANTE
+
 		repo.save(endereco); // Salva no BD
-		
-		
-			return "redirect:/enderecos";		
+
+		return "redirect:/enderecos";
 	}
-	
 
 	@GetMapping("/edit")
-	public String showEditPage(
-			Model model,
-			@RequestParam int id
-			) {
-		
+	public String showEditPage(Model model, @RequestParam int id) {
+
 		try {
 			Endereco endereco = repo.findById(id).get();
 			model.addAttribute("endereco", endereco);
-			
+
 			EnderecoDto enderecoDto = new EnderecoDto();
 			enderecoDto.setBairro(endereco.getBairro());
 			enderecoDto.setCep(endereco.getCep());
@@ -121,30 +104,25 @@ public class EnderecosControle {
 			enderecoDto.setLogradouro(endereco.getLogradouro());
 			enderecoDto.setLogradouro_numero(endereco.getLogradouro_numero());
 			enderecoDto.setTipo_logradouro(endereco.getTipo_logradouro());
-			
+
 			model.addAttribute("enderecoDto", enderecoDto);
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Exception: "+ ex.getMessage());
+
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
 			return "redirect:/products";
-		}	
-		
+		}
+
 		return "enderecos/EditEndereco";
 	}
-	
+
 	@PostMapping("/edit")
-	public String updateEndereco(
-			Model model,
-			@RequestParam int id,
-			@Valid @ModelAttribute EnderecoDto enderecoDto,
-			BindingResult result
-			) {
-		
+	public String updateEndereco(Model model, @RequestParam int id, @Valid @ModelAttribute EnderecoDto enderecoDto,
+			BindingResult result) {
+
 		try {
 			Endereco endereco = repo.findById(id).get();
 			model.addAttribute("endereco", endereco);
-			
+
 			if (result.hasErrors()) {
 				return "enderecos/EditEndereco";
 			}
@@ -157,35 +135,30 @@ public class EnderecosControle {
 			endereco.setLogradouro(enderecoDto.getLogradouro());
 			endereco.setLogradouro_numero(enderecoDto.getLogradouro_numero());
 			endereco.setTipo_logradouro(enderecoDto.getTipo_logradouro());
-			
+
 			repo.save(endereco); // Salva no banco de dados
-		}
-		catch(Exception ex) {
-			System.out.println("Exception: "+ ex.getMessage());
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
 			return "redirect:/products";
-		}	
-		
+		}
+
 		return "redirect:/enderecos";
-		
+
 	}
-	
-	
+
 	@GetMapping("/delete")
-	public String deleteEndereco(
-			@RequestParam int id
-			) {
-		
+	public String deleteEndereco(@RequestParam int id) {
+
 		try {
 			Endereco endereco = repo.findById(id).get();
-			
+
 			repo.delete(endereco);
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Exception: "+ ex.getMessage());
+
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
 			return "redirect:/products";
 		}
-		
+
 		return "redirect:/enderecos";
 	}
 }

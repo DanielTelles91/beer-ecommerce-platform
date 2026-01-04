@@ -1,51 +1,62 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Route Express</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
-  <body>
-     <div class="container">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route Express</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+	crossorigin="anonymous">
+</head>
+<body class="bg-dark text-light">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-8 mx-auto rounded border p-4 m-4">
-				<h2 class="text-center mb-5">Nova Cervejaria</h2>
-				
-				<form method="post" enctype="multipart/form-data" th:object="${cervejariaDto}">
-				 <div class="row mb-3">
-				 	<label class="col-sm-4 col-form-label">Cervejaria</label>
-				 	<div class="col-sm-8">
--				 		<input class="form-control" th:field="${cervejariaDto.cervejaria}">
-				 		<p th:if="${#fields.hasErrors('cervejaria')}" th:errorclass="text-danger"
-				 			th:errors="${cervejariaDto.cervejaria}" ></p>				 		
-				 	</div>
-				 </div>	
-				 
-				 <div class="row mb-3">
-				 	<label class="col-sm-4 col-form-label">Pais</label>
-				 	<div class="col-sm-8">
-				 		<input class="form-control" th:field="${cervejariaDto.pais}">
-				 		<p th:if="${#fields.hasErrors('pais')}" th:errorclass="text-danger"
-				 			th:errors="${cervejariaDto.pais}" ></p>				 		
-				 	</div>
-				 </div>	
-				 
-								 
-				 <div class="row">
-				 	<div class="offset-sm-4 col-sm-4 d-grid">
-				 		<button type="submit" class="btn btn-primary">Enviar</button>
-				 	</div>
-				 	<div class="col-sm-4 d-grid">
-				 		<a class="btn btn-outline-primary" href="/cervejarias" role="button">Cancelar</a>
-				 	</div>
-				 </div>
-				 			
-				</form>			
-			</div>			
+				<h2 class="text-center mb-5">New Cervejaria</h2>
+
+				<form method="post" enctype="multipart/form-data"
+					th:object="${cervejariaDto}">
+					<div class="row mb-3">
+						<label class="col-sm-4 col-form-label">Cervejaria</label>
+						<div class="col-sm-8">
+							- <input class="form-control"
+								th:field="${cervejariaDto.cervejaria}">
+							<p th:if="${#fields.hasErrors('cervejaria')}"
+								th:errorclass="text-danger"
+								th:errors="${cervejariaDto.cervejaria}"></p>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label class="col-sm-4 col-form-label">Pais</label>
+						<div class="col-sm-8">
+							<input class="form-control" th:field="${cervejariaDto.pais}">
+							<p th:if="${#fields.hasErrors('pais')}"
+								th:errorclass="text-danger" th:errors="${cervejariaDto.pais}"></p>
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="offset-sm-4 col-sm-4 d-grid">
+							<button type="submit" class="btn btn-primary">Send</button>
+						</div>
+						<div class="col-sm-4 d-grid">
+							<a class="btn btn-outline-primary" href="/cervejarias"
+								role="button">Cancel</a>
+						</div>
+					</div>
+
+				</form>
+			</div>
 		</div>
-     </div>	
-     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+		crossorigin="anonymous"></script>
+</body>
 </html>

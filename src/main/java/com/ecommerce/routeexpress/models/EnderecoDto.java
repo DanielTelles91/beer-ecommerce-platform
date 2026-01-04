@@ -3,31 +3,38 @@ package com.ecommerce.routeexpress.models;
 import jakarta.validation.constraints.*;
 
 /**
-*
-* @author Daniel A. Telles
-*/
-
+ *
+ * @author Daniel A. Telles
+ */
 
 public class EnderecoDto {
 
 	@NotEmpty(message = "The CEP is required")
 	private String cep;
-	
-	@NotEmpty(message = "The logradouro is required")
-	private String logradouro;	
 
-	@NotEmpty(message = "The tipo logradouro is required")
+	@NotEmpty(message = "The Logradouro is required")
+	private String logradouro;
+
+	@NotEmpty(message = "The Tipo Logradouro is required")
 	private String tipo_logradouro;
-	
-	@NotEmpty(message = "The logradouro numero is required")
+
+	@NotEmpty(message = "The Logradouro Numero is required")
 	private String logradouro_numero;
-	
-	@NotEmpty(message = "The logradouro numero is required")
+
 	private String complemento;
-	
-	@NotEmpty(message = "The bairro is required")
+
+	@NotEmpty(message = "The Bairro is required")
 	private String bairro;
-	
+
+	@NotEmpty(message = "The Cidade is required")
+	private String cidade;
+
+	@NotEmpty(message = "The Estado is required")
+	private String estado;
+
+	@NotEmpty(message = "The CPF is required")
+	private String cpf;
+
 	public String getComplemento() {
 		return complemento;
 	}
@@ -35,15 +42,6 @@ public class EnderecoDto {
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
 	}
-
-	@NotEmpty(message = "The cidade is required")
-	private String cidade;
-	
-	@NotEmpty(message = "The estado is required")
-	private String estado;
-	
-	@NotEmpty(message = "The cpf is required")
-	private String cpf;
 
 	public String getCep() {
 		return cep;
@@ -108,6 +106,5 @@ public class EnderecoDto {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	
-	
+
 }

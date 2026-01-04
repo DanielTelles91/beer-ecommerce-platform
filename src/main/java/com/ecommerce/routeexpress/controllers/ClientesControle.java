@@ -19,46 +19,41 @@ import com.ecommerce.routeexpress.services.ClientesRepositorio;
 
 import jakarta.validation.Valid;
 
-
 /**
-*
-* @author Daniel A. Telles
-*/
- 
+ *
+ * @author Daniel A. Telles
+ */
+
 @Controller
 @RequestMapping("/clientes")
 public class ClientesControle {
 
-	
 	@Autowired
 	private ClientesRepositorio repo;
-	
 
-	@GetMapping({"", "/"})
+	@GetMapping({ "", "/" })
 	public String showClienteList(Model model) {
 		List<Cliente> clientes = repo.findAll();
 		model.addAttribute("clientes", clientes);
-		return "clientes/index"; // diretório clientes/index		
+		return "clientes/index"; // diretório clientes/index
 	}
-	
+
 	@GetMapping("/create")
 	public String showCreatePage(Model model) {
 		ClienteDto clienteDto = new ClienteDto();
 		model.addAttribute("clienteDto", clienteDto);
 		return "clientes/CreateCliente";
 	}
-	
+
 	@PostMapping("/create")
-	public String createCliente(
-		@Valid @ModelAttribute ClienteDto clienteDto,
-		BindingResult result, RedirectAttributes redirectAttributes
-		) {
-		
+	public String createCliente(@Valid @ModelAttribute ClienteDto clienteDto, BindingResult result,
+			RedirectAttributes redirectAttributes) {
+
 		if (result.hasErrors()) { // Caso algum campo não esteja preenchido, fica na página Createcliente
 			return "clientes/CreateCliente";
-			 
-		}	
-		
+
+		}
+
 		Cliente cliente = new Cliente();
 		cliente.setCpf(clienteDto.getCpf());
 		cliente.setData_nascimento(clienteDto.getData_nascimento());
@@ -68,25 +63,22 @@ public class ClientesControle {
 		cliente.setSenha(clienteDto.getSenha());
 		cliente.setSexo(clienteDto.getSexo());
 		cliente.setTelefone(clienteDto.getTelefone());
-		
-		repo.save(cliente);  //Salva no BD
-		
-		redirectAttributes.addFlashAttribute("testValue", cliente.getCpf()); 
-        return "redirect:/enderecos/create";  // Após persistir o cliente, faz um redirect usando Flash Attributes para transportar o contexto (CPF) de forma
-			                                  // segura e temporária evitando exposição de identificadores na URL.
+
+		repo.save(cliente); // Salva no BD
+
+		redirectAttributes.addFlashAttribute("testValue", cliente.getCpf());
+		return "redirect:/enderecos/create"; // Após persistir o cliente, faz um redirect usando Flash Attributes para
+												// transportar o contexto (CPF) de forma
+												// segura e temporária evitando exposição de identificadores na URL.
 	}
-	
 
 	@GetMapping("/edit")
-	public String showEditPage(
-			Model model,
-			@RequestParam int id
-			) {
-		
+	public String showEditPage(Model model, @RequestParam int id) {
+
 		try {
 			Cliente cliente = repo.findById(id).get();
 			model.addAttribute("cliente", cliente);
-			
+
 			ClienteDto clienteDto = new ClienteDto();
 			clienteDto.setCpf(cliente.getCpf());
 			clienteDto.setData_nascimento(cliente.getData_nascimento());
@@ -96,30 +88,25 @@ public class ClientesControle {
 			clienteDto.setSenha(cliente.getSenha());
 			clienteDto.setSexo(cliente.getSexo());
 			clienteDto.setTelefone(cliente.getTelefone());
-			
+
 			model.addAttribute("clienteDto", clienteDto);
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Exception: "+ ex.getMessage());
+
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
 			return "redirect:/products";
-		}	
-		
+		}
+
 		return "clientes/EditCliente";
 	}
-	
+
 	@PostMapping("/edit")
-	public String updateCliente(
-			Model model,
-			@RequestParam int id,
-			@Valid @ModelAttribute ClienteDto clienteDto,
-			BindingResult result
-			) {
-		
+	public String updateCliente(Model model, @RequestParam int id, @Valid @ModelAttribute ClienteDto clienteDto,
+			BindingResult result) {
+
 		try {
 			Cliente cliente = repo.findById(id).get();
 			model.addAttribute("cliente", cliente);
-			
+
 			if (result.hasErrors()) {
 				return "clientes/EditCliente";
 			}
@@ -131,36 +118,31 @@ public class ClientesControle {
 			cliente.setSenha(clienteDto.getSenha());
 			cliente.setSexo(clienteDto.getSexo());
 			cliente.setTelefone(clienteDto.getTelefone());
-			
+
 			repo.save(cliente); // Salva no banco de dados
-		}
-		catch(Exception ex) {
-			System.out.println("Exception: "+ ex.getMessage());
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
 			return "redirect:/products";
-		}	
-		
+		}
+
 		return "redirect:/clientes";
-		
+
 	}
-	
-	
+
 	@GetMapping("/delete")
-	public String deleteCliente(
-			@RequestParam int id
-			) {
-		
+	public String deleteCliente(@RequestParam int id) {
+
 		try {
 			Cliente cliente = repo.findById(id).get();
-			
+
 			repo.delete(cliente);
-			
-		}
-		catch(Exception ex) {
-			System.out.println("Exception: "+ ex.getMessage());
+
+		} catch (Exception ex) {
+			System.out.println("Exception: " + ex.getMessage());
 			return "redirect:/products";
 		}
-		
+
 		return "redirect:/clientes";
 	}
-	
+
 }
