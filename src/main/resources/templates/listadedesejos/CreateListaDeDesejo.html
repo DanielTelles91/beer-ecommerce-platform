@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar à Lista de Desejos</title>
+</head>
+<body>
+<h1>Adicionar Cerveja à Lista de Desejos</h1>
+
+<form th:action="@{/lista/adicionar}" method="post">
+    <label for="cliente">Cliente:</label>
+    <select name="clienteId" id="cliente" required>
+        <option value="" disabled selected>Selecione o cliente</option>
+        <option th:each="c : ${clientes}" th:value="${c.id}"
+                th:text="${c.first_name} + ' ' + ${c.last_name}"></option>
+    </select>
+    <br><br>
+
+    <label for="cerveja">Cerveja:</label>
+    <select name="cervejaId" id="cerveja" required>
+        <option value="" disabled selected>Selecione a cerveja</option>
+        <option th:each="b : ${cervejas}" th:value="${b.id}" th:text="${b.rotulo}"></option>
+    </select>
+    <br><br>
+
+    <button type="submit">Adicionar à Lista</button>
+</form>
+
+<br>
+<a th:href="@{/lista}">Voltar à lista de desejos</a>
+
+</body>
+</html>

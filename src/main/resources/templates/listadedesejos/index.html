@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Desejos</title>
+</head>
+<body>
+<h1>Lista de Desejos</h1>
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Cerveja</th>
+            <th>Data de Adição</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item : ${itens}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.cliente.first_name} + ' ' + ${item.cliente.last_name}"></td>
+            <td th:text="${item.cerveja.rotulo}"></td>
+            <td th:text="${#temporals.format(item.dataAdicao, 'dd/MM/yyyy HH:mm')}"></td>
+            <td>
+                <form th:action="@{/lista/remover}" method="post" style="display:inline;">
+                    <input type="hidden" name="clienteId" th:value="${item.cliente.id}" />
+                    <input type="hidden" name="cervejaId" th:value="${item.cerveja.id}" />
+                    <button type="submit">Remover</button>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<a th:href="@{/lista/novo}">Adicionar novo item</a>
+<a th:href="@{/}">Voltar</a>
+
+</body>
+</html>

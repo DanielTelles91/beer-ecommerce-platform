@@ -31,6 +31,8 @@ This project is a modern rewrite of an earlier academic e-commerce system, rebui
 Image management includes automatic cleanup:
 
 - Image uploads are managed with automatic cleanup to prevent orphan files.
+- The system enforces business rules at the service layer, ensuring data consistency when entities are removed (e.g. automatic cleanup of wish lists when a cliente or product is deleted).
+
 
 ## Technical Notes
 

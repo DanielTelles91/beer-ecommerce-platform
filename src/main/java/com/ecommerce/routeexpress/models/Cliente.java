@@ -35,6 +35,9 @@ public class Cliente {
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Endereco> enderecos = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ListaDeDesejos> listaDesejos = new ArrayList<>();
 
 	public int getId() {
 		return id;
