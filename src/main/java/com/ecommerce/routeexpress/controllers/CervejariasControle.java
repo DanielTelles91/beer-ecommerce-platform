@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ecommerce.routeexpress.models.Cervejaria;
 import com.ecommerce.routeexpress.models.CervejariaDto;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
+import com.ecommerce.routeexpress.services.database.CervejariaService;
 import com.ecommerce.routeexpress.services.storage.ImageStorageService;
 
 import jakarta.validation.Valid;
@@ -34,6 +35,9 @@ public class CervejariasControle {
 
 	@Autowired
 	private ImageStorageService imageStorageService;
+
+	@Autowired
+	private CervejariaService cervejariaService;
 
 	@GetMapping({ "", "/" })
 	public String showCervejariaList(Model model) {
@@ -58,37 +62,25 @@ public class CervejariasControle {
 
 		}
 
-		Cervejaria cervejaria = new Cervejaria();
-		cervejaria.setCervejaria(cervejariaDto.getCervejaria());
-		cervejaria.setPais(cervejariaDto.getPais());
+		cervejariaService.criaCervejaria(cervejariaDto); // call the service
 
-		repo.save(cervejaria); // Salva no BD
-
-		// redirectAttributes.addFlashAttribute("testValue",
-		// cervejaria.getCervejaria());
-		// return "redirect:/enderecos/create"; // Após persistir o cliente, faz um
-		// redirect usando Flash Attributes para transportar o contexto (CPF) de forma
-		// segura e temporária evitando exposição de identificadores na URL.
 		return "redirect:/cervejarias";
 	}
 
 	@GetMapping("/edit")
 	public String showEditPage(Model model, @RequestParam int id) {
 
-		try {
-			Cervejaria cervejaria = repo.findById(id).get();
-			model.addAttribute("cervejaria", cervejaria);
+		// chama o service
+		Cervejaria cervejaria = cervejariaService.findById(id);
 
-			CervejariaDto cervejariaDto = new CervejariaDto();
-			cervejariaDto.setCervejaria(cervejaria.getCervejaria());
-			cervejariaDto.setPais(cervejaria.getPais());
+		// adiciona objeto principal
+		model.addAttribute("cervejaria", cervejaria);
 
-			model.addAttribute("cervejariaDto", cervejariaDto);
-
-		} catch (Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-			return "redirect:/cervejarias";
-		}
+		// prepara DTO para o formulário
+		CervejariaDto cervejariaDto = new CervejariaDto();
+		cervejariaDto.setCervejaria(cervejaria.getCervejaria());
+		cervejariaDto.setPais(cervejaria.getPais());
+		model.addAttribute("cervejariaDto", cervejariaDto);
 
 		return "cervejarias/EditCervejaria";
 	}
@@ -97,36 +89,28 @@ public class CervejariasControle {
 	public String updateCervejaria(Model model, @RequestParam int id,
 			@Valid @ModelAttribute CervejariaDto cervejariaDto, BindingResult result) {
 
-		try {
-			Cervejaria cervejaria = repo.findById(id).get();
+		if (result.hasErrors()) {
+			// mantém os campos preenchidos no form
+			Cervejaria cervejaria = cervejariaService.findById(id);
 			model.addAttribute("cervejaria", cervejaria);
-
-			if (result.hasErrors()) {
-				return "cervejarias/EditCervejaria";
-			}
-			cervejaria.setCervejaria(cervejariaDto.getCervejaria());
-			cervejaria.setPais(cervejariaDto.getPais());
-
-			repo.save(cervejaria); // Salva no banco de dados
-		} catch (Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-			return "redirect:/cervejarias";
+			return "cervejarias/EditCervejaria";
 		}
+
+		// chama o service para atualizar
+		cervejariaService.updateCervejaria(id, cervejariaDto);
 
 		return "redirect:/cervejarias";
 
 	}
 
 	@GetMapping("/delete")
-	public String deleteCervejaria(@RequestParam int id)  {
+	public String deleteCervejaria(@RequestParam int id) {
 
-		Cervejaria cervejaria = repo.findById(id).orElseThrow(() -> new RuntimeException("Cervejaria não encontrada"));
+		imageStorageService.apagaPastaImagem(id); // Delete the image folder for this brewery
 
-		imageStorageService.apagaPastaImagem(cervejaria.getId()); // Apaga a pasta da imagem com referência a ID
+		cervejariaService.deleteCervejariaById(id); // Delete the brewery from the database via service
 
-		repo.delete(cervejaria);
-
-		return "redirect:/cervejarias";
+		return "redirect:/cervejarias"; // Redirect to the list page
 	}
 
 }

@@ -4,7 +4,9 @@
 
 This project was originally developed in 2015 as an academic e-commerce system.
 
-In 2026, It was redesigned and modernized using current technologies, preserving the original business logic and requirements.
+
+The application is designed using a layered architecture, separating controllers, services, and persistence logic. The focus is on backend robustness, data integrity, and maintainability.
+This project is a modern rewrite of an earlier academic e-commerce system, rebuilt to apply current backend technologies and cleaner architectural patterns.
 
 ## Original Technologies (2015)
 

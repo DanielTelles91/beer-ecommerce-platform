@@ -13,6 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ecommerce.routeexpress.models.Cerveja;
 
+/**
+*
+* @author Daniel A. Telles
+*/
+
 @Service
 public class ImageStorageService {
 
