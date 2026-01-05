@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Adicionar Estoque</title>
+</head>
+<body>
+	<h1>Adicionar Estoque de Cerveja</h1>
+
+	<form th:action="@{/estoque/adicionar}" method="post">
+		<label for="cerveja">Cerveja:</label> <select name="cervejaId"
+			id="cerveja" required>
+			<option value="" disabled selected>Selecione a cerveja</option>
+			<option th:each="b : ${cervejas}" th:value="${b.id}"
+				th:text="${b.rotulo}"></option>
+		</select> <br>
+		<br> <label>Quantidade:</label> <input type="number"
+			name="quantidade" required /> <br>
+		<br> <label>Porcentagem de Lucro (%):</label> <input
+			type="number" step="0.01" name="porcentagemLucro" required /> <br>
+		<br> <label>Estoque Mínimo:</label> <input type="number"
+			name="estoqueMinimo" required /> <br>
+		<br> <label>Estoque Máximo:</label> <input type="number"
+			name="estoqueMaximo" required /> <br>
+		<br> <label>Preço de Aquisição:</label> <input type="number"
+			step="0.01" name="precoAquisicao" required /> <br>
+		<br> <label>Disponível:</label> <select name="disponibilidade"
+			required>
+			<option value="true">Sim</option>
+			<option value="false">Não</option>
+		</select> <br>
+		<br>
+
+		<button type="submit">Adicionar Estoque</button>
+	</form>
+
+	<br>
+	<a th:href="@{/estoque}">Voltar</a>
+
+</body>
+</html>

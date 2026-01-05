@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Estoque de Cervejas</title>
+</head>
+<body>
+	<h1>Estoque de Cervejas</h1>
+
+	<table border="1">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Cerveja</th>
+				<th>Quantidade</th>
+				<th>Preço de Aquisição</th>
+				<th>Lucro</th>
+				<th>Disponível</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="item : ${itens}">
+				<td th:text="${item.id}"></td>
+				<td th:text="${item.cerveja.rotulo}"></td>
+				<td th:text="${item.quantidade}"></td>
+				<td th:text="${item.precoAquisicao}"></td>
+				<td th:text="${item.lucro}"></td>
+				<td th:text="${item.disponibilidade ? 'Sim' : 'Não'}"></td>
+				<td>
+					<form th:action="@{/estoque/remover}" method="post">
+						<input type="hidden" th:name="id" th:value="${item.id}" />
+						<button type="submit">Remover</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br>
+	<a th:href="@{/estoque/novo}">Adicionar Novo Estoque</a>
+
+</body>
+</html>

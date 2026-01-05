@@ -30,9 +30,18 @@ public class Cerveja {
 	@ManyToOne
 	@JoinColumn(name = "cervejaria_id", nullable = false)
 	private Cervejaria cervejaria;
-	
-	 @OneToMany(mappedBy = "cerveja", cascade = CascadeType.ALL, orphanRemoval = true)
-	 private List<ListaDeDesejos> listaDesejos = new ArrayList<>();
+
+	@OneToMany(mappedBy = "cerveja", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ListaDeDesejos> listaDesejos = new ArrayList<>();
+	// Relação com a lista de desejos: quando uma cerveja é removida,
+	// todos os itens relacionados nesta lista de desejos também são removidos
+	// automaticamente.
+
+	@OneToMany(mappedBy = "cerveja", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Estoque> estoques = new ArrayList<>();
+	// Relação com a estoques: quando uma cerveja é removida,
+	// todos os itens relacionados a este estoque também são removidos
+	// automaticamente.
 
 	public void setCervejaria(Cervejaria cervejaria) {
 		this.cervejaria = cervejaria;
