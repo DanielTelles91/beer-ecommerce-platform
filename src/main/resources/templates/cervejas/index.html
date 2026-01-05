@@ -47,11 +47,11 @@
 					<td th:text="${cerveja.familia_e_estilo}"></td>
 					<td th:text="${cerveja.descricao}"></td>
 					<td th:text="${cerveja.sabor}"></td>
-					<td><img th:src="@{'/uploads/images/' + ${cerveja.imagem_1}}"
+					<td><img th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_1}}"
 						alt="..." width="100"></td>
-					<td><img th:src="@{'/uploads/images/' + ${cerveja.imagem_2}}"
+					<td><img th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_2}}"
 						alt="..." width="100"></td>
-					<td><img th:src="@{'/uploads/images/' + ${cerveja.imagem_3}}"
+					<td><img th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_3}}"
 						alt="..." width="100"></td>
 
 					<td style="white-space: nowrap"><a

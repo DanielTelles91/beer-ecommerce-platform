@@ -10,7 +10,7 @@
 	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
 	crossorigin="anonymous">
 </head>
-<body class="bg-dark text-light">
+<body class="bg-dark text-light"> 
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8 mx-auto rounded border p-4 m-4">
@@ -19,8 +19,9 @@
 				<form method="post" enctype="multipart/form-data"
 					th:object="${cervejaDto}">
 					<div class="row mb-3">
-						<label>Cervejaria</label> <select class="form-select"
-							th:field="*{cervejariaId}">
+						<label>Cervejaria</label> 
+						<select class="form-select"
+							th:field="*{cervejariaId}" required>
 							<option value="">Selecione uma cervejaria</option>
 							<option th:each="c : ${cervejarias}" th:value="${c.id}"
 								th:text="${c.cervejaria}"></option>

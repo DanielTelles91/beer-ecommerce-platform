@@ -24,6 +24,12 @@ In 2026, It was redesigned and modernized using current technologies, preserving
 - Thymeleaf
 - RESTful architecture
 
+## Features
+
+Image management includes automatic cleanup:
+
+- Image uploads are managed with automatic cleanup to prevent orphan files.
+
 ## Technical Notes
 
 1) During development, multipart file uploads required explicit Tomcat configuration due to changes in Spring Boot security defaults. The following property was added:

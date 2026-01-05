@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ecommerce.routeexpress.models.Cervejaria;
 import com.ecommerce.routeexpress.models.CervejariaDto;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
+import com.ecommerce.routeexpress.services.storage.ImageStorageService;
 
 import jakarta.validation.Valid;
 
@@ -30,6 +31,9 @@ public class CervejariasControle {
 
 	@Autowired
 	private CervejariasRepositorio repo;
+
+	@Autowired
+	private ImageStorageService imageStorageService;
 
 	@GetMapping({ "", "/" })
 	public String showCervejariaList(Model model) {
@@ -114,17 +118,13 @@ public class CervejariasControle {
 	}
 
 	@GetMapping("/delete")
-	public String deleteCervejaria(@RequestParam int id) {
+	public String deleteCervejaria(@RequestParam int id)  {
 
-		try {
-			Cervejaria cervejaria = repo.findById(id).get();
+		Cervejaria cervejaria = repo.findById(id).orElseThrow(() -> new RuntimeException("Cervejaria não encontrada"));
 
-			repo.delete(cervejaria);
+		imageStorageService.apagaPastaImagem(cervejaria.getId()); // Apaga a pasta da imagem com referência a ID
 
-		} catch (Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-			return "redirect:/cervejarias";
-		}
+		repo.delete(cervejaria);
 
 		return "redirect:/cervejarias";
 	}

@@ -3,7 +3,7 @@ package com.ecommerce.routeexpress.models;
 import org.springframework.web.multipart.*;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+
 
 /**
  *
