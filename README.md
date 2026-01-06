@@ -34,6 +34,14 @@ Image management includes automatic cleanup:
 - The system enforces business rules at the service layer, ensuring data consistency when entities are removed (e.g. automatic cleanup of wish lists when a client or product is deleted).
 
 
+Security & Authentication
+
+- Admin access protected with Spring Security.
+- Predefined master admin with mandatory password change on first login.
+- Session timeout configured to prevent inactive access.
+- Role-based access control (ADMIN/OPERATOR).
+- Secure Password hashing using BCrypt.
+
 ## Technical Notes
 
 1) During development, multipart file uploads required explicit Tomcat configuration due to changes in Spring Boot security defaults. The following property was added:
