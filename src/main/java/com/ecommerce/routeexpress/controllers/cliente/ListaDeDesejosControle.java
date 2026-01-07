@@ -1,4 +1,4 @@
-package com.ecommerce.routeexpress.controllers;
+package com.ecommerce.routeexpress.controllers.cliente;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

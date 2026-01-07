@@ -1,4 +1,4 @@
-package com.ecommerce.routeexpress.controllers;
+package com.ecommerce.routeexpress.controllers.adm;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ecommerce.routeexpress.dto.EnderecoDto;
 import com.ecommerce.routeexpress.models.Cliente;
 import com.ecommerce.routeexpress.models.Endereco;
-import com.ecommerce.routeexpress.models.EnderecoDto;
 import com.ecommerce.routeexpress.services.ClientesRepositorio;
 import com.ecommerce.routeexpress.services.EnderecosRepositorio;
 

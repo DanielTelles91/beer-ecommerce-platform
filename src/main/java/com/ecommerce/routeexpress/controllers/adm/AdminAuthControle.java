@@ -1,4 +1,4 @@
-package com.ecommerce.routeexpress.controllers;
+package com.ecommerce.routeexpress.controllers.adm;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,37 +16,37 @@ import com.ecommerce.routeexpress.services.UsuarioRepositorio;
 */
 
 @Controller
-public class AuthController {
+public class AdminAuthControle {
 	
 	private final UsuarioRepositorio usuarioRepo;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public AuthController(UsuarioRepositorio usuarioRepo, BCryptPasswordEncoder passwordEncoder) {
+    public AdminAuthControle(UsuarioRepositorio usuarioRepo, BCryptPasswordEncoder passwordEncoder) {
         this.usuarioRepo = usuarioRepo;
         this.passwordEncoder = passwordEncoder;
     }
 
     // Página de troca de senha
-    @GetMapping("/login/mudar-senha")
+    @GetMapping("/adm/mudar-senha")
     public String mostrarTrocaSenha(@AuthenticationPrincipal Usuario usuario) {
         if (usuario.isSenhaPadrao()) {
-            return "login/mudar_senha";
+            return "adm/mudar_senha";
         }
         return "redirect:/home";
     }
 
-    @PostMapping("/login/mudar-senha")
+    @PostMapping("/adm/mudar-senha")
     public String trocarSenha(@AuthenticationPrincipal Usuario usuario,
                               @RequestParam("novaSenha") String novaSenha) {
         usuario.setSenha(passwordEncoder.encode(novaSenha));
         usuario.setSenhaPadrao(false);
         usuarioRepo.save(usuario);
-        return "redirect:/";
+        return "redirect:/adm/telaInicialAdm";
     }
     
  // Página de login
-    @GetMapping("/login/telaLogin")
+    @GetMapping("/adm/telaLogin")
     public String mostrarLogin() {
-        return "login/telaLogin"; // caminho do template
+        return "adm/telaLogin"; // caminho do template
     }
 }

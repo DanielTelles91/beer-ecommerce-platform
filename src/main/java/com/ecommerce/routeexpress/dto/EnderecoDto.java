@@ -1,4 +1,4 @@
-package com.ecommerce.routeexpress.models;
+package com.ecommerce.routeexpress.dto;
 
 import jakarta.validation.constraints.*;
 

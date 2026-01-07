@@ -27,10 +27,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		if (usuario.isSenhaPadrao()) {
 			// Se estiver usando senha padrão, redireciona para trocar senha
-			response.sendRedirect("/login/mudar-senha");
+			response.sendRedirect("/adm/mudar-senha");
 		} else {
 			// Caso contrário, redireciona para home
-			response.sendRedirect("/");
+			response.sendRedirect("/adm/telaInicialAdm");
 		}
 	}
 }

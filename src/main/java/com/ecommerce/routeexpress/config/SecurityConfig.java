@@ -42,20 +42,20 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    http.csrf(csrf -> csrf.disable())
 	        .authorizeHttpRequests(auth -> auth
-	            .requestMatchers("/", "/index.html", "/clientes", "/produtos/**", "/register", "/login/**").permitAll()
-	            .requestMatchers("/admin/**").hasRole("MASTER")
+	            .requestMatchers("/", "/index.html", "/clientes/**", "/produtos/**", "/register", "/login_adm/**").permitAll()
+	            .requestMatchers("/adm/**").hasRole("MASTER")
 	            .requestMatchers("/operator/**").hasAnyRole("MASTER", "OPERATOR")
 	            .anyRequest().authenticated()
 	        )
 	        .formLogin(form -> form
-	            .loginPage("/login/telaLogin")
-	            .loginProcessingUrl("/login")
-	            .successHandler(loginSuccessHandler) // 👈 ESSENCIAL
+	            .loginPage("/adm/telaLogin")
+	            .loginProcessingUrl("/adm")
+	            .successHandler(loginSuccessHandler) //ESSENCIAL !!!
 	            .permitAll()
 	        )
 	        .logout(logout -> logout
 	            .logoutUrl("/logout")
-	            .logoutSuccessUrl("/")
+	            .logoutSuccessUrl("/adm/telaLogin") // Após o logout, direciona para a página inicial de Login
 	            .permitAll()
 	        );
 

@@ -3,8 +3,8 @@ package com.ecommerce.routeexpress.services.database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.routeexpress.dto.CervejariaDto;
 import com.ecommerce.routeexpress.models.Cervejaria;
-import com.ecommerce.routeexpress.models.CervejariaDto;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
 
 /**

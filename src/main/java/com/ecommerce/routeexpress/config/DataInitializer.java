@@ -34,7 +34,7 @@ public class DataInitializer {
 
 				repo.save(admin);
 
-				System.out.println("✔ ADMIN padrão criado: admin@admin.com / admin123");
+				System.out.println("ADMIN Padrão criado: admin@admin.com / admin123");
 			}
 		};
 	}

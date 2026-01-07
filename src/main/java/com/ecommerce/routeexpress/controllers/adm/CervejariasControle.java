@@ -1,4 +1,4 @@
-package com.ecommerce.routeexpress.controllers;
+package com.ecommerce.routeexpress.controllers.adm;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ecommerce.routeexpress.dto.CervejariaDto;
 import com.ecommerce.routeexpress.models.Cervejaria;
-import com.ecommerce.routeexpress.models.CervejariaDto;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
 import com.ecommerce.routeexpress.services.database.CervejariaService;
 import com.ecommerce.routeexpress.services.storage.ImageStorageService;
