@@ -15,7 +15,7 @@ import com.ecommerce.routeexpress.models.Cerveja;
 
 /**
 *
-* @author Daniel A. Telles
+* @author Daniel Arantes Telles
 */
 
 @Service

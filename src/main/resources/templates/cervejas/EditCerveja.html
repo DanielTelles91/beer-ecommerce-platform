@@ -16,62 +16,79 @@
 			<div class="col-md-8 mx-auto rounded border p-4 m-4">
 				<h2 class="text-center mb-5">Edit Cerveja</h2>
 
+				<div th:if="${erro}"
+					class="alert alert-danger alert-dismissible fade show" role="alert">
+					<span th:text="${erro}"></span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+
+				<div th:if="${sucesso}"
+					class="alert alert-success alert-dismissible fade show"
+					role="alert">
+					<span th:text="${sucesso}"></span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+
+
 				<form method="post" enctype="multipart/form-data"
 					th:object="${cervejaDto}">
 
 
+
 					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">Rotulo</label>
+						<label class="col-sm-4 col-form-label">Rótulo</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaDto.rotulo}">
-							<p th:if="${#fields.hasErrors('rotulo')}"
-								th:errorclass="text-danger" th:errors="${cervejaDto.rotulo}"></p>
+							<input class="form-control" th:field="*{rotulo}">
+							<p th:if="${#fields.hasErrors('rotulo')}" class="text-danger"
+								th:errors="*{rotulo}"></p>
 						</div>
 					</div>
+
+				
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Preço</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaDto.preco}">
+							<input class="form-control" th:field="*{preco}">
 							<p th:if="${#fields.hasErrors('preco')}"
-								th:errorclass="text-danger" th:errors="${cervejaDto.preco}"></p>
+								th:errorclass="text-danger" th:errors="*{preco}"></p>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Volume</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaDto.volume}">
+							<input class="form-control" th:field="*{volume}">
 							<p th:if="${#fields.hasErrors('volume')}"
-								th:errorclass="text-danger" th:errors="${cervejaDto.volume}"></p>
+								th:errorclass="text-danger" th:errors="*{volume}"></p>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Teor</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaDto.teor}">
+							<input class="form-control" th:field="*{teor}">
 							<p th:if="${#fields.hasErrors('teor')}"
-								th:errorclass="text-danger" th:errors="${cervejaDto.teor}"></p>
+								th:errorclass="text-danger" th:errors="*{teor}"></p>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Cor</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaDto.cor}">
+							<input class="form-control" th:field="*{cor}">
 							<p th:if="${#fields.hasErrors('cor')}"
-								th:errorclass="text-danger" th:errors="${cervejaDto.cor}"></p>
+								th:errorclass="text-danger" th:errors="*{cor}"></p>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Temperatura</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaDto.temperatura}">
+							<input class="form-control" th:field="*{temperatura}">
 							<p th:if="${#fields.hasErrors('temperatura')}"
 								th:errorclass="text-danger"
-								th:errors="${cervejaDto.temperatura}"></p>
+								th:errors="*{temperatura}"></p>
 						</div>
 					</div>
 
@@ -79,35 +96,36 @@
 						<label class="col-sm-4 col-form-label">Familia e Estilo</label>
 						<div class="col-sm-8">
 							<input class="form-control"
-								th:field="${cervejaDto.familia_e_estilo}">
+								th:field="*{familia_e_estilo}">
 							<p th:if="${#fields.hasErrors('familia_e_estilo')}"
 								th:errorclass="text-danger"
-								th:errors="${cervejaDto.familia_e_estilo}"></p>
+								th:errors="*{familia_e_estilo}"></p>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Sabor</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaDto.sabor}">
+							<input class="form-control" th:field="*{sabor}">
 							<p th:if="${#fields.hasErrors('sabor')}"
-								th:errorclass="text-danger" th:errors="${cervejaDto.sabor}"></p>
+								th:errorclass="text-danger" th:errors="*{sabor}"></p>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Descrição</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaDto.descricao}">
+							<input class="form-control" th:field="*{descricao}">
 							<p th:if="${#fields.hasErrors('descricao')}"
-								th:errorclass="text-danger" th:errors="${cervejaDto.descricao}"></p>
+								th:errorclass="text-danger" th:errors="*{descricao}"></p>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Image 1</label>
 						<div class="offset-sm4 col-sm-8">
-							<img th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_1}}"
+							<img
+								th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_1}}"
 								alt="..." width="150">
 							<div class="col-sm-8">
 								<input class="form-control" type="file"
@@ -121,7 +139,8 @@
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Image 2</label>
 						<div class="offset-sm4 col-sm-8">
-							<img th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_2}}"
+							<img
+								th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_2}}"
 								alt="..." width="150">
 							<div class="col-sm-8">
 								<input class="form-control" type="file"
@@ -135,7 +154,8 @@
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Image 3</label>
 						<div class="offset-sm4 col-sm-8">
-							<img th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_3}}"
+							<img
+								th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_3}}"
 								alt="..." width="150">
 							<div class="col-sm-8">
 								<input class="form-control" type="file"

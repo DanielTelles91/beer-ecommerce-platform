@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edit Estoque</title>
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+	crossorigin="anonymous">
+</head>
+
+<body class="bg-dark text-light">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 mx-auto rounded border p-4 m-4 bg-dark">
+
+				<h2 class="text-center mb-4">Edit Estoque de Cerveja</h2>
+
+								
+					<form method="post" enctype="multipart/form-data"
+					th:object="${estoqueDto}">
+
+
+
+					<div class="mb-3">
+						<label class="form-label">Quantidade</label> <input type="number"
+							th:field="*{quantidade}" class="form-control" required>
+							
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Porcentagem de Lucro (%)</label> <input
+							type="number" step="0.01" th:field="*{porcentagemLucro}"
+							class="form-control" required>
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Estoque Mínimo</label> <input
+							type="number" th:field="*{estoqueMinimo}" class="form-control"
+							required>
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Estoque Máximo</label> <input
+							type="number" th:field="*{estoqueMaximo}" class="form-control"
+							required>
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Preço de Aquisição</label> <input
+							type="number" step="0.01" th:field="*{precoAquisicao}"
+							class="form-control" required>
+					</div>
+
+					<div class="mb-4">
+						<label class="form-label">Disponível</label> <select
+							th:field="*{disponibilidade}" class="form-select" required>
+							<option value="true">Sim</option>
+							<option value="false">Não</option>
+						</select>
+					</div>
+
+					<div class="d-flex justify-content-between">
+						<a th:href="@{/estoque}" class="btn btn-outline-light">Voltar</a>
+						<button type="submit" class="btn btn-success">Salvar
+							Alterações</button>
+					</div>
+
+				</form>
+
+
+			</div>
+		</div>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+		crossorigin="anonymous"></script>
+
+</body>
+</html>
+

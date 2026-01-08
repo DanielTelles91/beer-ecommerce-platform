@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 @Entity
@@ -46,8 +46,10 @@ public class Cerveja {
 	public void setCervejaria(Cervejaria cervejaria) {
 		this.cervejaria = cervejaria;
 	}
-
+	
+	@Column(nullable = false, unique = true)
 	private String rotulo;
+	
 	private String preco;
 	private String volume;
 	private String teor;

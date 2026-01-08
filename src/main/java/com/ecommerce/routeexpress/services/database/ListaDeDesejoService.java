@@ -16,7 +16,7 @@ import jakarta.transaction.Transactional;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 @Service

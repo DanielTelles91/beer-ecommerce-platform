@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ecommerce.routeexpress.dto.CervejaDto;
+import com.ecommerce.routeexpress.exceptions.CervejaJaExisteException;
 import com.ecommerce.routeexpress.models.Cerveja;
 import com.ecommerce.routeexpress.models.Cervejaria;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
@@ -13,7 +14,7 @@ import com.ecommerce.routeexpress.services.storage.ImageStorageService;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 @Service
@@ -28,6 +29,9 @@ public class CervejaService {
 
 	@Autowired
 	private CervejariasRepositorio cervejariaRepo;
+	
+	@Autowired
+	private CervejasRepositorio cervejasRepositorio;
 
 	/**
 	 * Deletes a Cerveja by its ID, including its images.
@@ -48,6 +52,10 @@ public class CervejaService {
 	public Cerveja criaCerveja(CervejaDto cervejaDto) {
 		int cervejariaId = cervejaDto.getCervejariaId();
 
+		 if (cervejasRepositorio.existsByRotuloIgnoreCase(cervejaDto.getRotulo())) {
+		        throw new CervejaJaExisteException("Já existe um Rótulo com esse nome !");
+		    }
+		
 		// Save images via ImageStorageService
 		String[] imagensSalvas = imageStorageService.salvaImagensCerveja(cervejariaId, cervejaDto.getImagem_1(),
 				cervejaDto.getImagem_2(), cervejaDto.getImagem_3());
@@ -113,6 +121,13 @@ public class CervejaService {
 
 		int cervejariaId = cerveja.getCervejaria().getId();
 
+
+		
+		if (cervejasRepositorio.existsByRotuloAndIdNot(dto.getRotulo(), id)) {
+			throw new CervejaJaExisteException("Já existe um Rotulo com esse nome !");
+		}
+		
+		
 		// Atualiza imagens
 		MultipartFile[] novasImagens = { dto.getImagem_1(), dto.getImagem_2(), dto.getImagem_3() };
 		String[] imagensAntigas = { cerveja.getImagem_1(), cerveja.getImagem_2(), cerveja.getImagem_3() };

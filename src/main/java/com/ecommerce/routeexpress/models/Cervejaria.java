@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 @Entity

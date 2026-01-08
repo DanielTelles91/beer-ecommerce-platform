@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 public class CervejaDto {

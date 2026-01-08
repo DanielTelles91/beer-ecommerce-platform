@@ -12,6 +12,11 @@ import com.ecommerce.routeexpress.services.CervejasRepositorio;
 import com.ecommerce.routeexpress.services.ClientesRepositorio;
 import com.ecommerce.routeexpress.services.database.ListaDeDesejoService;
 
+/**
+*
+* @author Daniel Arantes Telles
+*/
+
 @Controller
 @RequestMapping("/lista")
 public class ListaDeDesejosControle {

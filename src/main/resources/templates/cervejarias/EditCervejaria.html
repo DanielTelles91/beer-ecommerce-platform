@@ -16,40 +16,52 @@
 			<div class="col-md-8 mx-auto rounded border p-4 m-4">
 				<h2 class="text-center mb-5">Edit Cervejaria</h2>
 
-				<form method="post" enctype="multipart/form-data"
-					th:object="${cervejariaDto}">
+
+				<div th:if="${erro}"
+					class="alert alert-danger alert-dismissible fade show" role="alert">
+					<span th:text="${erro}"></span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+
+				<div th:if="${sucesso}"
+					class="alert alert-success alert-dismissible fade show"
+					role="alert">
+					<span th:text="${sucesso}"></span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				</div>
+				<form method="post" th:object="${cervejariaDto}">
+
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Cervejaria</label>
 						<div class="col-sm-8">
-							<input class="form-control"
-								th:field="${cervejariaDto.cervejaria}">
-							<p th:if="${#fields.hasErrors('cervejaria')}"
-								th:errorclass="text-danger"
-								th:errors="${cervejariaDto.cervejaria}"></p>
+							<input class="form-control" th:field="*{cervejaria}">
+							<p th:if="${#fields.hasErrors('cervejaria')}" class="text-danger"
+								th:errors="*{cervejaria}"></p>
 						</div>
 					</div>
 
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">Pais</label>
 						<div class="col-sm-8">
-							<input class="form-control" th:field="${cervejaria.pais}">
-							<p th:if="${#fields.hasErrors('pais')}"
-								th:errorclass="text-danger" th:errors="${cervejaria.pais}"></p>
+							<input class="form-control" th:field="*{pais}">
+							<p th:if="${#fields.hasErrors('pais')}" class="text-danger"
+								th:errors="*{pais}"></p>
 						</div>
 					</div>
 
+					<input type="hidden" name="id" th:value="${id}" />
 
 					<div class="row">
 						<div class="offset-sm-4 col-sm-4 d-grid">
 							<button type="submit" class="btn btn-primary">Send</button>
 						</div>
 						<div class="col-sm-4 d-grid">
-							<a class="btn btn-outline-primary" href="/cervejarias"
-								role="button">Cancel</a>
+							<a class="btn btn-outline-primary" href="/cervejarias">Cancel</a>
 						</div>
 					</div>
 
 				</form>
+
 			</div>
 		</div>
 	</div>

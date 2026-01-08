@@ -6,7 +6,7 @@ import com.ecommerce.routeexpress.models.Cliente;
 
 /**
 *
-* @author Daniel A. Telles
+* @author Daniel Arantes Telles
 */
 
 public interface ClientesRepositorio extends JpaRepository<Cliente, Integer> {

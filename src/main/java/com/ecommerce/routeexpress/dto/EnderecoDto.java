@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 public class EnderecoDto {

@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 @Entity

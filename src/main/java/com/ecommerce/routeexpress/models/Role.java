@@ -2,7 +2,7 @@ package com.ecommerce.routeexpress.models;
 
 /**
 *
-* @author Daniel A. Telles
+* @author Daniel Arantes Telles
 */
 
 public enum Role {

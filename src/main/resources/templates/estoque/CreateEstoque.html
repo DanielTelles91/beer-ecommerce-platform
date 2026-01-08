@@ -1,40 +1,81 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Adicionar Estoque</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adicionar Estoque</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
 </head>
-<body>
-	<h1>Adicionar Estoque de Cerveja</h1>
 
-	<form th:action="@{/estoque/adicionar}" method="post">
-		<label for="cerveja">Cerveja:</label> <select name="cervejaId"
-			id="cerveja" required>
-			<option value="" disabled selected>Selecione a cerveja</option>
-			<option th:each="b : ${cervejas}" th:value="${b.id}"
-				th:text="${b.rotulo}"></option>
-		</select> <br>
-		<br> <label>Quantidade:</label> <input type="number"
-			name="quantidade" required /> <br>
-		<br> <label>Porcentagem de Lucro (%):</label> <input
-			type="number" step="0.01" name="porcentagemLucro" required /> <br>
-		<br> <label>Estoque Mínimo:</label> <input type="number"
-			name="estoqueMinimo" required /> <br>
-		<br> <label>Estoque Máximo:</label> <input type="number"
-			name="estoqueMaximo" required /> <br>
-		<br> <label>Preço de Aquisição:</label> <input type="number"
-			step="0.01" name="precoAquisicao" required /> <br>
-		<br> <label>Disponível:</label> <select name="disponibilidade"
-			required>
-			<option value="true">Sim</option>
-			<option value="false">Não</option>
-		</select> <br>
-		<br>
+<body class="bg-dark text-light">
 
-		<button type="submit">Adicionar Estoque</button>
-	</form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto rounded border p-4 m-4 bg-dark">
 
-	<br>
-	<a th:href="@{/estoque}">Voltar</a>
+            <h2 class="text-center mb-4">Adicionar Estoque de Cerveja</h2>
+
+            <form th:action="@{/estoque/adicionar}" method="post">
+
+                <div class="mb-3">
+                    <label for="cerveja" class="form-label">Cerveja</label>
+                    <select name="cervejaId" id="cerveja" class="form-select" required>
+                        <option value="" disabled selected>Selecione a cerveja</option>
+                        <option th:each="b : ${cervejas}" th:value="${b.id}" th:text="${b.rotulo}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Quantidade</label>
+                    <input type="number" name="quantidade" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Porcentagem de Lucro (%)</label>
+                    <input type="number" step="0.01" name="porcentagemLucro" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Estoque Mínimo</label>
+                    <input type="number" name="estoqueMinimo" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Estoque Máximo</label>
+                    <input type="number" name="estoqueMaximo" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Preço de Aquisição</label>
+                    <input type="number" step="0.01" name="precoAquisicao" class="form-control" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Disponível</label>
+                    <select name="disponibilidade" class="form-select" required>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/estoque}" class="btn btn-outline-light">Voltar</a>
+                    <button type="submit" class="btn btn-success">Adicionar Estoque</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 
 </body>
 </html>

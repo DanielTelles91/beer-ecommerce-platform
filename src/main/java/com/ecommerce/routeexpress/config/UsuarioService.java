@@ -9,7 +9,7 @@ import com.ecommerce.routeexpress.services.UsuarioRepositorio;
 
 /**
 *
-* @author Daniel A. Telles
+* @author Daniel Arantes Telles
 */
 
 @Service

@@ -1,49 +1,34 @@
-package com.ecommerce.routeexpress.models;
+package com.ecommerce.routeexpress.dto;
 
-import jakarta.persistence.*;
-
+import jakarta.validation.constraints.NotNull;
 
 /**
  *
  * @author Daniel Arantes Telles
  */
 
-@Entity
-@Table(name = "estoque")
-public class Estoque {
+public class EstoqueDto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-
-	@ManyToOne
-	@JoinColumn(name = "cerveja_id", nullable = false)
-	private Cerveja cerveja;
-
+	@NotNull(message = "The Quantidade is required")
 	private int quantidade;
+
+	@NotNull(message = "The porcentagem de lucro is required")
 	private double porcentagemLucro;
+
+	@NotNull(message = "The Estoque Minimo is required")
 	private int estoqueMinimo;
+
+	@NotNull(message = "The Estoque Máximo is required")
 	private int estoqueMaximo;
+
+	@NotNull(message = "The Preço de Aquisição is required")
 	private double precoAquisicao;
+
+	@NotNull(message = "The Lucro is required")
 	private double lucro;
+
+	@NotNull(message = "The Disponibilidade is required")
 	private boolean disponibilidade;
-
-	// getters e setters
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Cerveja getCerveja() {
-		return cerveja;
-	}
-
-	public void setCerveja(Cerveja cerveja) {
-		this.cerveja = cerveja;
-	}
 
 	public int getQuantidade() {
 		return quantidade;
@@ -99,11 +84,6 @@ public class Estoque {
 
 	public void setDisponibilidade(boolean disponibilidade) {
 		this.disponibilidade = disponibilidade;
-	}
-
-	// opcional: calcular lucro automaticamente
-	public void calcularLucro() {
-		this.lucro = precoAquisicao * (porcentagemLucro / 100);
 	}
 
 }

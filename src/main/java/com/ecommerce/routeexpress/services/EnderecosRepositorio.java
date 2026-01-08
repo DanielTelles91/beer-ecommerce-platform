@@ -6,7 +6,7 @@ import com.ecommerce.routeexpress.models.Endereco;
 
 /**
 *
-* @author Daniel A. Telles
+* @author Daniel Arantes Telles
 */
 
 public interface EnderecosRepositorio extends JpaRepository<Endereco, Integer> {

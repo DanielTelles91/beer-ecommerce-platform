@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ecommerce.routeexpress.dto.CervejaDto;
+import com.ecommerce.routeexpress.exceptions.CervejaJaExisteException;
 import com.ecommerce.routeexpress.models.Cerveja;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
 import com.ecommerce.routeexpress.services.CervejasRepositorio;
@@ -24,7 +25,7 @@ import jakarta.validation.Valid;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 @Controller
@@ -66,8 +67,12 @@ public class CervejasControle {
 			return "cervejas/CreateCerveja";
 		}
 
-		// Delegate everything to the service
-		cervejaService.criaCerveja(cervejaDto);
+		try {
+			cervejaService.criaCerveja(cervejaDto);
+		} catch (CervejaJaExisteException e) {
+			redirectAttributes.addFlashAttribute("erro", e.getMessage());
+			return "redirect:/cervejas/create"; // volta pro formulário
+		}
 
 		return "redirect:/cervejas";
 	}
@@ -89,15 +94,23 @@ public class CervejasControle {
 	}
 
 	@PostMapping("/edit")
-	public String updateCerveja(@RequestParam int id, @Valid @ModelAttribute CervejaDto cervejaDto,
-			BindingResult result) {
+	public String updateCerveja(Model model, @RequestParam int id, @Valid @ModelAttribute CervejaDto cervejaDto,
+			BindingResult result, RedirectAttributes redirectAttributes) {
 
 		if (result.hasErrors()) {
+			Cerveja cerveja = cervejaService.findById(id);
+			model.addAttribute("cerveja", cerveja);
 			return "cervejas/EditCerveja";
 		}
 
 		// Delegando toda a lógica de atualização para o service
-		cervejaService.atualizaCerveja(id, cervejaDto);
+		try {
+			cervejaService.atualizaCerveja(id, cervejaDto);
+		} catch (CervejaJaExisteException e) {
+			redirectAttributes.addFlashAttribute("erro", e.getMessage());
+			return "redirect:/cervejas/edit?id=" + id; // volta pro formulário
+
+		}
 
 		return "redirect:/cervejas";
 	}

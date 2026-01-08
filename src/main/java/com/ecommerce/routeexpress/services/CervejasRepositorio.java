@@ -6,9 +6,12 @@ import com.ecommerce.routeexpress.models.Cerveja;
 
 /**
 *
-* @author Daniel A. Telles
+* @author Daniel Arantes Telles
 */
 
 public interface CervejasRepositorio extends JpaRepository<Cerveja, Integer>{
 
+	 boolean existsByRotuloIgnoreCase(String rotulo);
+	 
+	 boolean existsByRotuloAndIdNot(String Rotulo, int id);
 }

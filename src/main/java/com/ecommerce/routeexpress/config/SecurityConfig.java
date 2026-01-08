@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 /**
 *
-* @author Daniel A. Telles
+* @author Daniel Arantes Telles
 */
 
 @Configuration

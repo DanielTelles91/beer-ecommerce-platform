@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ecommerce.routeexpress.dto.CervejariaDto;
+import com.ecommerce.routeexpress.exceptions.CervejaJaExisteException;
 import com.ecommerce.routeexpress.models.Cervejaria;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
 import com.ecommerce.routeexpress.services.database.CervejariaService;
@@ -23,7 +24,7 @@ import jakarta.validation.Valid;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 @Controller
@@ -62,7 +63,13 @@ public class CervejariasControle {
 
 		}
 
-		cervejariaService.criaCervejaria(cervejariaDto); // call the service
+		try {
+
+			cervejariaService.criaCervejaria(cervejariaDto); // call the service
+		} catch (CervejaJaExisteException e) {
+			redirectAttributes.addFlashAttribute("erro", e.getMessage());
+			return "redirect:/cervejarias/create"; // back to create form
+		}
 
 		return "redirect:/cervejarias";
 	}
@@ -87,7 +94,7 @@ public class CervejariasControle {
 
 	@PostMapping("/edit")
 	public String updateCervejaria(Model model, @RequestParam int id,
-			@Valid @ModelAttribute CervejariaDto cervejariaDto, BindingResult result) {
+			@Valid @ModelAttribute CervejariaDto cervejariaDto, BindingResult result, RedirectAttributes redirect) {
 
 		if (result.hasErrors()) {
 			// mantém os campos preenchidos no form
@@ -96,9 +103,13 @@ public class CervejariasControle {
 			return "cervejarias/EditCervejaria";
 		}
 
-		// chama o service para atualizar
-		cervejariaService.updateCervejaria(id, cervejariaDto);
-
+		try {
+			// chama o service para atualizar
+			cervejariaService.updateCervejaria(id, cervejariaDto);
+		} catch (CervejaJaExisteException e) {
+			redirect.addFlashAttribute("erro", e.getMessage());
+			return "redirect:/cervejarias/edit?id=" + id;
+		}
 		return "redirect:/cervejarias";
 
 	}

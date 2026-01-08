@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 public class CervejariaDto {
@@ -12,7 +12,7 @@ public class CervejariaDto {
 	@NotEmpty(message = "The Cervejaria is required")
 	private String cervejaria;
 
-	@NotEmpty(message = "The pais is required")
+	@NotEmpty(message = "The Pais is required")
 	private String pais;
 
 	public String getCervejaria() {

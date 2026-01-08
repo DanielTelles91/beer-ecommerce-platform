@@ -6,7 +6,7 @@ import com.ecommerce.routeexpress.models.ListaDeDesejos;
 
 /**
  *
- * @author Daniel A. Telles
+ * @author Daniel Arantes Telles
  */
 
 public interface ListaDeDesejosRepositorio extends JpaRepository<ListaDeDesejos, Integer> {
