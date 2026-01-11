@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ecommerce.routeexpress.dto.ClienteDto;
+import com.ecommerce.routeexpress.exceptions.CpfJaExisteException;
+import com.ecommerce.routeexpress.exceptions.emailJaExisteException;
 import com.ecommerce.routeexpress.models.Cliente;
 import com.ecommerce.routeexpress.services.ClientesRepositorio;
+import com.ecommerce.routeexpress.services.database.ClienteService;
 
 import jakarta.validation.Valid;
 
@@ -30,6 +33,9 @@ public class ClientesControle {
 
 	@Autowired
 	private ClientesRepositorio repo;
+
+	@Autowired
+	private ClienteService clienteService;
 
 	@GetMapping({ "", "/" })
 	public String showClienteList(Model model) {
@@ -49,80 +55,63 @@ public class ClientesControle {
 	public String createCliente(@Valid @ModelAttribute ClienteDto clienteDto, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 
-		if (result.hasErrors()) { // Caso algum campo não esteja preenchido, fica na página Createcliente
+		if (result.hasErrors()) { // If any field is not filled in, stay on the CreateClient page
 			return "clientes/CreateCliente";
 
 		}
 
-		Cliente cliente = new Cliente();
-		cliente.setCpf(clienteDto.getCpf());
-		cliente.setData_nascimento(clienteDto.getData_nascimento());
-		cliente.setEmail(clienteDto.getEmail());
-		cliente.setFirst_name(clienteDto.getFirst_name());
-		cliente.setLast_name(clienteDto.getLast_name());
-		cliente.setSenha(clienteDto.getSenha());
-		cliente.setSexo(clienteDto.getSexo());
-		cliente.setTelefone(clienteDto.getTelefone());
+		Cliente cliente;
 
-		repo.save(cliente); // Salva no BD
+		try {
+			// clienteService.criaCliente(clienteDto);
+			cliente = clienteService.criaCliente(clienteDto);
+		} catch (CpfJaExisteException e) {
+			redirectAttributes.addFlashAttribute("erro", "CPF already exists");
+			return "redirect:/clientes/create";
+		} catch (emailJaExisteException e) {
+			redirectAttributes.addFlashAttribute("erro", "Email already exists");
+			return "redirect:/clientes/create";
+		}
+		// return "redirect:/clientes";
+		return "redirect:/enderecos/create?clienteId=" + cliente.getId();
 
-		redirectAttributes.addFlashAttribute("testValue", cliente.getCpf());
-		return "redirect:/enderecos/create"; // Após persistir o cliente, faz um redirect usando Flash Attributes para
-												// transportar o contexto (CPF) de forma
-												// segura e temporária evitando exposição de identificadores na URL.
 	}
 
 	@GetMapping("/edit")
 	public String showEditPage(Model model, @RequestParam int id) {
 
-		try {
-			Cliente cliente = repo.findById(id).get();
-			model.addAttribute("cliente", cliente);
+		// Get Cliente from service
+		Cliente cliente = clienteService.findById(id); // lança exceção se não encontrado
 
-			ClienteDto clienteDto = new ClienteDto();
-			clienteDto.setCpf(cliente.getCpf());
-			clienteDto.setData_nascimento(cliente.getData_nascimento());
-			clienteDto.setEmail(cliente.getEmail());
-			clienteDto.setFirst_name(cliente.getFirst_name());
-			clienteDto.setLast_name(cliente.getLast_name());
-			clienteDto.setSenha(cliente.getSenha());
-			clienteDto.setSexo(cliente.getSexo());
-			clienteDto.setTelefone(cliente.getTelefone());
+		// Add entity to model
+		model.addAttribute("cliente", cliente);
 
-			model.addAttribute("clienteDto", clienteDto);
-
-		} catch (Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-			return "redirect:/products";
-		}
+		// Map entity to DTO
+		ClienteDto clienteDto = clienteService.mapToDto(cliente);
+		model.addAttribute("clienteDto", clienteDto);
 
 		return "clientes/EditCliente";
 	}
 
 	@PostMapping("/edit")
 	public String updateCliente(Model model, @RequestParam int id, @Valid @ModelAttribute ClienteDto clienteDto,
-			BindingResult result) {
+			BindingResult result, RedirectAttributes redirectAttributes) {
+
+		if (result.hasErrors()) {
+			result.getAllErrors().forEach(e -> System.out.println(e.getDefaultMessage()));
+			Cliente cliente = clienteService.findById(id);
+			model.addAttribute("cliente", cliente);
+			return "clientes/EditCliente";
+		}
 
 		try {
-			Cliente cliente = repo.findById(id).get();
-			model.addAttribute("cliente", cliente);
-
-			if (result.hasErrors()) {
-				return "clientes/EditCliente";
-			}
-			cliente.setCpf(clienteDto.getCpf());
-			cliente.setData_nascimento(clienteDto.getData_nascimento());
-			cliente.setEmail(clienteDto.getEmail());
-			cliente.setFirst_name(clienteDto.getFirst_name());
-			cliente.setLast_name(clienteDto.getLast_name());
-			cliente.setSenha(clienteDto.getSenha());
-			cliente.setSexo(clienteDto.getSexo());
-			cliente.setTelefone(clienteDto.getTelefone());
-
-			repo.save(cliente); // Salva no banco de dados
-		} catch (Exception ex) {
-			System.out.println("Exception: " + ex.getMessage());
-			return "redirect:/products";
+			clienteService.updateCliente(id, clienteDto);
+		} catch (CpfJaExisteException e) {
+			redirectAttributes.addFlashAttribute("erro", "CPF already exists");
+			return "redirect:/clientes/edit?id=" + id;
+		} catch (emailJaExisteException e) {
+			redirectAttributes.addFlashAttribute("erro", "Email already exists");
+			return "redirect:/clientes/edit?id=" + id;
 		}
 
 		return "redirect:/clientes";
@@ -133,13 +122,12 @@ public class ClientesControle {
 	public String deleteCliente(@RequestParam int id) {
 
 		try {
-			Cliente cliente = repo.findById(id).get();
 
-			repo.delete(cliente);
+			clienteService.deleteClienteById(id);
 
 		} catch (Exception ex) {
 			System.out.println("Exception: " + ex.getMessage());
-			return "redirect:/products";
+			return "redirect:/clientes";
 		}
 
 		return "redirect:/clientes";

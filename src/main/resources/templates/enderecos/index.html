@@ -14,7 +14,7 @@
 	<div class="container">
 		<h1 class="text-center my-4">Address</h1>
 
-		<a class="btn btn-primary" href="/">Back</a> <a
+		<a class="btn btn-primary" href="/clientes">Back</a> <a
 			class="btn btn-primary" href="/enderecos/create">New Address</a>
 
 		<table class="table">
@@ -29,7 +29,6 @@
 					<th>Cidade</th>
 					<th>Estado</th>
 					<th>Complemento</th>
-					<th>CPF do Cliente</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -44,14 +43,11 @@
 					<td th:text="${endereco.cidade}"></td>
 					<td th:text="${endereco.estado}"></td>
 					<td th:text="${endereco.complemento}"></td>
-					<td th:text="${endereco.cpf}"></td>
+
 
 					<td style="white-space: nowrap"><a
 						class="btn btn-primary btn-sm"
-						th:href="@{/enderecos/edit(id=${endereco.id})}">Edit</a> <a
-						class="btn btn-danger btn-sm"
-						th:href="@{/enderecos/delete(id=${endereco.id})}"
-						onclick="return confirm('Você tem certeza?')">Delete</a></td>
+						th:href="@{/enderecos/edit(id=${endereco.id})}">Edit</a></td>
 				</tr>
 			</tbody>
 		</table>

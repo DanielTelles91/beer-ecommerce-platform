@@ -105,7 +105,7 @@ public class CervejasControle {
 
 		// Delegando toda a lógica de atualização para o service
 		try {
-			cervejaService.atualizaCerveja(id, cervejaDto);
+			cervejaService.updateCerveja(id, cervejaDto);
 		} catch (CervejaJaExisteException e) {
 			redirectAttributes.addFlashAttribute("erro", e.getMessage());
 			return "redirect:/cervejas/edit?id=" + id; // volta pro formulário

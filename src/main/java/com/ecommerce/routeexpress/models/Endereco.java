@@ -38,7 +38,6 @@ public class Endereco {
 	private String cidade;
 	private String estado;
 	private String complemento;
-	private String cpf;
 
 	public int getId() {
 		return id;
@@ -110,14 +109,6 @@ public class Endereco {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
 	}
 
 }

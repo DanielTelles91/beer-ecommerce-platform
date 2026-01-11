@@ -31,9 +31,18 @@ public class EnderecoDto {
 
 	@NotEmpty(message = "The Estado is required")
 	private String estado;
+	
+	private Integer clienteId;
 
-	@NotEmpty(message = "The CPF is required")
-	private String cpf;
+	
+	
+	public Integer getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(Integer clienteId) {
+		this.clienteId = clienteId;
+	}
 
 	public String getComplemento() {
 		return complemento;
@@ -97,14 +106,6 @@ public class EnderecoDto {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
 	}
 
 }

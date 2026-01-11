@@ -32,8 +32,8 @@ public class EstoqueService {
 	}
 
 	@Transactional
-	public void adicionarEstoque(int cervejaId, int quantidade, double porcentagemLucro, int estoqueMinimo,
-			int estoqueMaximo, double precoAquisicao, boolean disponibilidade) {
+	public void criaEstoque(int cervejaId, int quantidade, double porcentagemLucro, int estoqueMinimo,
+			int estoqueMaximo, double precoAquisicao, boolean disponibilidade) { // Creates a new Estoque
 		Cerveja cerveja = cervejaRepo.findById(cervejaId)
 				.orElseThrow(() -> new RuntimeException("Cerveja não encontrada"));
 
@@ -54,10 +54,7 @@ public class EstoqueService {
 		estoqueRepo.save(estoque);
 	}
 
-	/**
-	 * Atualiza um estoque com base no DTO
-	 */
-	public void atualizaEstoque(int id, EstoqueDto dto) {
+	public void updateEstoque(int id, EstoqueDto dto) { // Updates a estoque based on the DTO
 
 		Estoque estoque = estoqueRepo.findById(id).orElseThrow(() -> new RuntimeException("Estoque não encontrada"));
 
@@ -75,17 +72,16 @@ public class EstoqueService {
 		estoqueRepo.save(estoque);
 	}
 
-	/**
-	 * Finds a Cerveja by ID. Throws RuntimeException if not found.
-	 */
-	public Estoque findById(int id) {
+	@Transactional
+	public void deleteEstoqueById(int id) { // Deleta estoque by id
+		estoqueRepo.deleteById(id);
+	}
+
+	public Estoque findById(int id) { // Finds a Cerveja by ID. Throws RuntimeException if not found.
 		return estoqueRepo.findById(id).orElseThrow(() -> new RuntimeException("Estoque not found"));
 	}
 
-	/**
-	 * Maps a Estoque entity to a EstoqueDto.
-	 */
-	public EstoqueDto mapToDto(Estoque estoque) {
+	public EstoqueDto mapToDto(Estoque estoque) { // Maps a Estoque entity to a EstoqueDto.
 		EstoqueDto estoqueDto = new EstoqueDto();
 
 		estoqueDto.setDisponibilidade(estoque.isDisponibilidade());
@@ -97,11 +93,6 @@ public class EstoqueService {
 		estoqueDto.setQuantidade(estoque.getQuantidade());
 
 		return estoqueDto;
-	}
-
-	@Transactional
-	public void removerEstoque(int id) {
-		estoqueRepo.deleteById(id);
 	}
 
 }

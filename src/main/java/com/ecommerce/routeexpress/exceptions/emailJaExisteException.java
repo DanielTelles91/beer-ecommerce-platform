@@ -4,15 +4,15 @@ package com.ecommerce.routeexpress.exceptions;
  *
  * @author Daniel Arantes Telles
  */
-public class CervejariaJaExisteException extends RuntimeException {
+
+public class emailJaExisteException extends RuntimeException {
 	/**
 	 * 
 	 */
 
 	private static final long serialVersionUID = 1L;
 
-	public CervejariaJaExisteException(String msg) {
+	public emailJaExisteException(String msg) {
 		super(msg);
 	}
-
 }

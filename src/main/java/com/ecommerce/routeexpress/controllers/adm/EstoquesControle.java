@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 import com.ecommerce.routeexpress.dto.EstoqueDto;
 import com.ecommerce.routeexpress.models.Cerveja;
 import com.ecommerce.routeexpress.models.Estoque;
@@ -23,9 +22,9 @@ import com.ecommerce.routeexpress.services.database.EstoqueService;
 import jakarta.validation.Valid;
 
 /**
-*
-* @author Daniel Arantes Telles
-*/
+ *
+ * @author Daniel Arantes Telles
+ */
 
 @Controller
 @RequestMapping("/estoque")
@@ -35,10 +34,9 @@ public class EstoquesControle {
 
 	@Autowired
 	private CervejasRepositorio cervejaRepo;
-	
+
 	@Autowired
 	private EstoquesRepositorio estoquesRepositorio;
-	
 
 	public EstoquesControle(EstoqueService service) {
 		this.service = service;
@@ -55,17 +53,15 @@ public class EstoquesControle {
 	@GetMapping("/novo")
 	public String novo(Model model) {
 		// Todas as cervejas
-	    List<Cerveja> todas = cervejaRepo.findAll();
+		List<Cerveja> todas = cervejaRepo.findAll();
 
-	    // IDs das cervejas que já estão no estoque
-	    List<Integer> idsEmEstoque = estoquesRepositorio.findAllCervejaIdsEmEstoque();
+		// IDs das cervejas que já estão no estoque
+		List<Integer> idsEmEstoque = estoquesRepositorio.findAllCervejaIdsEmEstoque();
 
-	    // Filtra: só as que NÃO estão no estoque
-	    List<Cerveja> disponiveis = todas.stream()
-	        .filter(c -> !idsEmEstoque.contains(c.getId()))
-	        .toList();
+		// Filtra: só as que NÃO estão no estoque
+		List<Cerveja> disponiveis = todas.stream().filter(c -> !idsEmEstoque.contains(c.getId())).toList();
 
-	    model.addAttribute("cervejas", disponiveis);
+		model.addAttribute("cervejas", disponiveis);
 		return "estoque/CreateEstoque";
 	}
 
@@ -74,13 +70,11 @@ public class EstoquesControle {
 	public String adicionar(@RequestParam int cervejaId, @RequestParam int quantidade,
 			@RequestParam double porcentagemLucro, @RequestParam int estoqueMinimo, @RequestParam int estoqueMaximo,
 			@RequestParam double precoAquisicao, @RequestParam boolean disponibilidade) {
-		service.adicionarEstoque(cervejaId, quantidade, porcentagemLucro, estoqueMinimo, estoqueMaximo, precoAquisicao,
+		service.criaEstoque(cervejaId, quantidade, porcentagemLucro, estoqueMinimo, estoqueMaximo, precoAquisicao,
 				disponibilidade);
 		return "redirect:/estoque";
 	}
 
-
-	
 	@GetMapping("/edit")
 	public String showEditPage(Model model, @RequestParam int id) {
 
@@ -96,49 +90,24 @@ public class EstoquesControle {
 
 		return "estoque/EditEstoque";
 	}
-	
-	
-	
-	
+
 	@PostMapping("/edit")
 	public String updateEstoque(@RequestParam int id, @Valid @ModelAttribute EstoqueDto estoqueDto,
-			BindingResult result)  {
+			BindingResult result) {
 
 		if (result.hasErrors()) {
 			return "estoque/EditEstoque";
 		}
 
-				
-		service.atualizaEstoque(id, estoqueDto);
-		
+		service.updateEstoque(id, estoqueDto);
 
 		return "redirect:/estoque";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	@GetMapping("/delete")
 	public String deleteEstoque(@RequestParam int id) {
 
-		service.removerEstoque(id);
+		service.deleteEstoqueById(id);
 
 		return "redirect:/estoque";
 	}

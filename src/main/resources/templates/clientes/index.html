@@ -14,7 +14,7 @@
 	<div class="container">
 		<h1 class="text-center my-4">Clients</h1>
 
-		<a class="btn btn-primary" href="/">Back</a> <a
+		<a class="btn btn-primary" href="/adm">Back</a> <a
 			class="btn btn-primary" href="/clientes/create">New Client</a>
 
 		<table class="table">
@@ -49,7 +49,9 @@
 						th:href="@{/clientes/edit(id=${cliente.id})}">Edit</a> <a
 						class="btn btn-danger btn-sm"
 						th:href="@{/clientes/delete(id=${cliente.id})}"
-						onclick="return confirm('Are you Sure?')">Delete</a></td>
+						onclick="return confirm('Are you Sure?')">Delete</a> <a
+						class="btn btn-secondary btn-sm"
+						th:href="@{/enderecos(clienteId=${cliente.id})}">Endereço</a></td>
 				</tr>
 			</tbody>
 		</table>

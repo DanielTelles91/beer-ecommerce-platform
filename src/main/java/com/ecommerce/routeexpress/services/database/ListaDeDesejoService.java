@@ -31,7 +31,6 @@ public class ListaDeDesejoService {
 	@Autowired
 	private ListaDeDesejosRepositorio listaRepo;
 
-	// Construtor (opcional, se usar @Autowired nos campos)
 	public ListaDeDesejoService(ListaDeDesejosRepositorio listaRepo, ClientesRepositorio clienteRepo,
 			CervejasRepositorio cervejaRepo) {
 		this.listaRepo = listaRepo;
