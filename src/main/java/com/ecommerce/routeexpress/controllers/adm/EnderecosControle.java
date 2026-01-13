@@ -91,16 +91,18 @@ public class EnderecosControle {
 	public String updateEndereco(Model model, @RequestParam int id, @Valid @ModelAttribute EnderecoDto enderecoDto,
 			BindingResult result) {
 
+		Endereco endereco = enderecoService.findById(id);
+
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(e -> System.out.println(e.getDefaultMessage()));
-			Endereco endereco = enderecoService.findById(id);
 			model.addAttribute("endereco", endereco);
 			return "enderecos/EditEndereco";
 		}
 
 		enderecoService.updateEndereco(id, enderecoDto);
+		int clienteId = endereco.getCliente().getId();
 
-		return "redirect:/enderecos";
+		return "redirect:/enderecos?clienteId=" + clienteId;
 
 	}
 

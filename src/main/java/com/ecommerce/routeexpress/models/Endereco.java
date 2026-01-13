@@ -26,6 +26,10 @@ public class Endereco {
 	@JoinColumn(name = "cliente_id", nullable = false)
 	private Cliente cliente;
 
+	public Cliente getCliente() {
+		return cliente;
+	}
+
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
