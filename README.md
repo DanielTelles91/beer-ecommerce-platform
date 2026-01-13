@@ -1,4 +1,11 @@
-(Project under development)
+## Author
+
+Developed by Daniel Arantes Telles
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 
 ## Project Background
 
@@ -47,3 +54,5 @@ Security & Authentication
 1) During development, multipart file uploads required explicit Tomcat configuration due to changes in Spring Boot security defaults. The following property was added:
 
 server.tomcat.max-part-count=30
+
+
