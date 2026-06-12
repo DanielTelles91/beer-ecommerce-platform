@@ -36,27 +36,27 @@ This project is a modern rewrite of an earlier academic e-commerce system, rebui
 ## Features
 
 
-Customer Management
+Customer Management:
 
     Customer registration and maintenance.
     Address management linked to customer accounts.
     Wish list management.
     Automatic cleanup of related records when a customer is removed.
 
-Beer Catalog Management
+Beer Catalog Management:
 
     Brewery registration and management.
     Beer registration and maintenance.
     Inventory management.
     Product image upload support (up to three images per product).
 
-Data Integrity
+Data Integrity:
 
     Business rules enforced at the service layer.
     Automatic cleanup of orphan records and uploaded files.
     Relational entity management using JPA/Hibernate.
 
-Security & Authentication
+Security & Authentication:
 
     Admin access protected with Spring Security.
     Predefined master administrator account.
@@ -65,7 +65,7 @@ Security & Authentication
     Password hashing using BCrypt.
     Role-based access control (ADMIN / OPERATOR).
 
-Technical Features
+Technical Features:
 
     Layered architecture (Controller, Service, Repository).
     JPA/Hibernate entity relationships.
