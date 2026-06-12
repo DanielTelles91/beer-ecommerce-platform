@@ -13,6 +13,22 @@ import jakarta.persistence.*;
  * @author Daniel Arantes Telles
  */
 
+/*
+ * Fluxo:
+ *
+ * Usuario criado com senha temporária.
+ * senhaPadrao = true.
+ *
+ * No primeiro login:
+ * LoginSuccessHandler redireciona para /adm/mudar-senha.
+ *
+ * Após alterar a senha:
+ * senhaPadrao = false.
+ *
+ * Próximos logins:
+ * acesso direto à tela administrativa.
+ */
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements UserDetails {
