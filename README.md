@@ -1,4 +1,5 @@
-# Route Express e-commerce (Back Office)
+# Route Express - E-commerce Back Office
+Administrative Back Office for an e-commerce platform built with Spring Boot, Spring Security, JPA/Hibernate and MySQL.
 
 
 ## Project Background
@@ -72,6 +73,29 @@ Technical Features:
     Multipart image upload support.
     REST-oriented backend architecture.
     MySQL persistence layer
+
+
+## Architecture
+```text
+┌─────────────┐
+│ Controllers │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│  Services   │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│Repositories │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│    MySQL    │
+└─────────────┘
+```
 
 
 ## Screenshot
