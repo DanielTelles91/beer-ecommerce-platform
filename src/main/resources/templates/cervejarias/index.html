@@ -9,6 +9,14 @@
          rel="stylesheet"
          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
          crossorigin="anonymous">
+      <style>
+         .table td, .table th {
+         vertical-align: middle;
+         }
+         .tabela-scroll {
+         max-height: 500px;
+         overflow-y: auto;
+      </style>
    </head>
    <body class="bg-dark text-light">
       <div class="container py-4">
@@ -29,24 +37,23 @@
             </div>
          </div>
          <div class="p-3 bg-dark border-bottom">
-   <div class="row">
-      <div class="col-md-6">
-         <input
-            type="text"
-            id="filtro"
-            class="form-control"
-            placeholder="Pesquisar cervejaria ou país...">
-      </div>
-
-      <div class="col-md-3">
-         <select id="ordenacao" class="form-select">
-            <option value="">Ordenar</option>
-            <option value="az">A → Z</option>
-            <option value="za">Z → A</option>
-         </select>
-      </div>
-   </div>
-</div>
+            <div class="row">
+               <div class="col-md-6">
+                  <input
+                     type="text"
+                     id="filtro"
+                     class="form-control"
+                     placeholder="Pesquisar cervejaria ou país...">
+               </div>
+               <div class="col-md-3">
+                  <select id="ordenacao" class="form-select">
+                     <option value="">Ordenar</option>
+                     <option value="az">A → Z</option>
+                     <option value="za">Z → A</option>
+                  </select>
+               </div>
+            </div>
+         </div>
          <div class="card bg-secondary border-0 shadow">
             <div
                class="card-header bg-dark d-flex justify-content-between align-items-center">
@@ -60,44 +67,46 @@
             </div>
             <div class="card-body p-0">
                <div class="table-responsive">
-                  <table id="tabelaCervejarias"
-                     class="table table-dark table-hover table-striped mb-0 align-middle">
-                     <thead class="table-warning">
-                        <tr>
-                           <th>CERVEJARIA:</th>
-                           <th>PAÍS:</th>
-                           <th width="160">AÇÕES</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr th:each="cervejaria : ${cervejarias}">
-                           <td>
-                              <strong
-                                 th:text="${cervejaria.cervejaria}">
-                              </strong>
-                           </td>
-                           <td>
-                              <span class="badge bg-info text-dark"
-                                 th:text="${cervejaria.pais}">
-                              </span>
-                           </td>
-                           <td>
-                              <div class="btn-group">
-                                 <a class="btn btn-warning btn-sm"
-                                    th:href="@{/cervejarias/edit(id=${cervejaria.id})}">
-                                 Edit
-                                 </a>
-<a class="btn btn-danger btn-sm"
-   th:data-nome="${cervejaria.cervejaria}"
-   th:href="@{/cervejarias/delete(id=${cervejaria.id})}"
-   onclick="return confirmarExclusao(this)">
-   Delete
-</a>
-                              </div>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
+                  <div class="table-responsive tabela-scroll">
+                     <table id="tabelaCervejarias"
+                        class="table table-dark table-hover table-striped mb-0 align-middle">
+                        <thead class="table-warning">
+                           <tr>
+                              <th>CERVEJARIA:</th>
+                              <th>PAÍS:</th>
+                              <th width="160">AÇÕES</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr th:each="cervejaria : ${cervejarias}">
+                              <td>
+                                 <strong
+                                    th:text="${cervejaria.cervejaria}">
+                                 </strong>
+                              </td>
+                              <td>
+                                 <span class="badge bg-info text-dark"
+                                    th:text="${cervejaria.pais}">
+                                 </span>
+                              </td>
+                              <td>
+                                 <div class="btn-group">
+                                    <a class="btn btn-warning btn-sm"
+                                       th:href="@{/cervejarias/edit(id=${cervejaria.id})}">
+                                    Edit
+                                    </a>
+                                    <a class="btn btn-danger btn-sm"
+                                       th:data-nome="${cervejaria.cervejaria}"
+                                       th:href="@{/cervejarias/delete(id=${cervejaria.id})}"
+                                       onclick="return confirmarExclusao(this)">
+                                    Delete
+                                    </a>
+                                 </div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
          </div>
@@ -106,6 +115,6 @@
          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
          integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
          crossorigin="anonymous"></script>
-         <script src="/js/cervejarias.js"></script>
+      <script src="/js/cervejarias.js"></script>
    </body>
 </html>

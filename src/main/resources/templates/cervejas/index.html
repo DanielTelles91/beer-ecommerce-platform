@@ -9,88 +9,131 @@
          rel="stylesheet"
          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
          crossorigin="anonymous">
-      <style>
-         .preview-img {
-         width: 80px;
-         height: 80px;
-         object-fit: contain;
-         background: white;
-         border-radius: 8px;
-         padding: 5px;
-         border: 1px solid #dee2e6;
-         }
-         .table td, .table th {
-         vertical-align: middle;
-         }
-      </style>
+      <link rel="stylesheet" th:href="@{/css/cerveja.css}">
    </head>
    <body class="bg-dark text-light">
       <div class="container py-4">
-         <div class="border rounded p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-               <h2 class="mb-0">Cervejas</h2>
-               <div>
-                  <a href="/adm" class="btn btn-outline-light me-2"> ← Voltar </a> <a
-                     href="/cervejas/create" class="btn btn-primary"> + Nova
-                  Cerveja </a>
+         <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+               <h1 class="mb-0">Cervejas</h1>
+               <small class="text-secondary">
+               Gerenciamento de cervejas cadastradas
+               </small>
+            </div>
+            <div>
+               <a class="btn btn-outline-light me-2" href="/adm">
+               ← Voltar
+               </a>
+               <a class="btn btn-success" href="/cervejas/create">
+               + Nova Cerveja
+               </a>
+            </div>
+         </div>
+         <div class="p-3 bg-dark border-bottom">
+            <div class="row">
+               <div class="col-md-6">
+                  <input
+                     type="text"
+                     id="filtro"
+                     class="form-control"
+                     placeholder="Pesquisar cerveja...">
+               </div>
+               <div class="col-md-3">
+                  <select id="ordenacao" class="form-select">
+                     <option value="">Ordenar</option>
+                     <option value="az">A → Z</option>
+                     <option value="za">Z → A</option>
+                  </select>
                </div>
             </div>
-            <div class="table-responsive">
-               <table class="table table-dark table-hover align-middle">
-                  <thead>
-                     <tr>
-                        <th>ID</th>
-                        <th>Rótulo</th>
-                        <th>Preço</th>
-                        <th>Volume</th>
-                        <th>Teor</th>
-                        <th>Cor</th>
-                        <th>Temperatura</th>
-                        <th>Família / Estilo</th>
-                        <th>Descrição</th>
-                        <th>Sabor</th>
-                        <th>Imagem 1</th>
-                        <th>Imagem 2</th>
-                        <th>Imagem 3</th>
-                        <th>Ações</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr th:each="cerveja : ${cervejas}">
-                        <td th:text="${cerveja.id}"></td>
-                        <td><strong th:text="${cerveja.rotulo}"></strong></td>
-                        <td th:text="${cerveja.preco}"></td>
-                        <td th:text="${cerveja.volume}"></td>
-                        <td th:text="${cerveja.teor}"></td>
-                        <td th:text="${cerveja.cor}"></td>
-                        <td th:text="${cerveja.temperatura}"></td>
-                        <td th:text="${cerveja.familia_e_estilo}"></td>
-                        <td th:text="${cerveja.descricao}"></td>
-                        <td th:text="${cerveja.sabor}"></td>
-                        <td><img class="preview-img"
-                           th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_1}}"
-                           alt="Imagem 1"></td>
-                        <td><img class="preview-img"
-                           th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_2}}"
-                           alt="Imagem 2"></td>
-                        <td><img class="preview-img"
-                           th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_3}}"
-                           alt="Imagem 3"></td>
-                        <td style="white-space: nowrap"><a
-                           class="btn btn-primary btn-sm"
-                           th:href="@{/cervejas/edit(id=${cerveja.id})}"> Edit </a> <a
-                           class="btn btn-danger btn-sm"
-                           th:href="@{/cervejas/delete(id=${cerveja.id})}"
-                           onclick="return confirm('Are You Sure?')"> Delete </a></td>
-                     </tr>
-                  </tbody>
-               </table>
+         </div>
+         <div class="card bg-secondary border-0 shadow">
+            <div
+               class="card-header bg-dark d-flex justify-content-between align-items-center">
+               <h5 class="mb-0">
+                  Lista de Cervejas
+               </h5>
+               <span
+                  class="badge bg-primary fs-6"
+                  th:text="${#lists.size(cervejas)} + ' registros'">
+               0 registros
+               </span>
             </div>
+            <div class="card-body p-0">         
+                  <div class="table-responsive tabela-scroll">
+                     <table
+                        id="tabelaCervejas"
+                        class="table table-dark table-hover table-striped mb-0 align-middle">
+                        <thead class="table-warning">
+                           <tr>
+                              <th>Rótulo</th>
+                              <th>Preço</th>
+                              <th>Volume</th>
+                              <th>Teor</th>
+                              <th>Cor</th>
+                              <th>Temperatura</th>
+                              <th>Família / Estilo</th>
+                              <th>Descrição</th>
+                              <th>Sabor</th>
+                              <th>Imagem 1</th>
+                              <th>Imagem 2</th>
+                              <th>Imagem 3</th>
+                              <th width="160">AÇÕES</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr th:each="cerveja : ${cervejas}">
+                              <td>
+                                 <strong th:text="${cerveja.rotulo}"></strong>
+                              </td>
+                              <td th:text="${cerveja.preco}"></td>
+                              <td th:text="${cerveja.volume}"></td>
+                              <td th:text="${cerveja.teor}"></td>
+                              <td th:text="${cerveja.cor}"></td>
+                              <td th:text="${cerveja.temperatura}"></td>
+                              <td th:text="${cerveja.familia_e_estilo}"></td>
+                              <td th:text="${cerveja.descricao}"></td>
+                              <td th:text="${cerveja.sabor}"></td>
+                              <td>
+                                 <img class="preview-img"
+                                    th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_1}}"
+                                    alt="Imagem 1">
+                              </td>
+                              <td>
+                                 <img class="preview-img"
+                                    th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_2}}"
+                                    alt="Imagem 2">
+                              </td>
+                              <td>
+                                 <img class="preview-img"
+                                    th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_3}}"
+                                    alt="Imagem 3">
+                              </td>
+                              <td>
+                                 <div class="btn-group">
+                                    <a class="btn btn-warning btn-sm"
+                                       th:href="@{/cervejas/edit(id=${cerveja.id})}">
+                                    Edit
+                                    </a>
+                                    <a class="btn btn-danger btn-sm"
+                                       th:data-nome="${cerveja.rotulo}"
+                                       th:href="@{/cervejas/delete(id=${cerveja.id})}"
+                                       onclick="return confirmarExclusao(this)">
+                                    Delete
+                                    </a>
+                                 </div>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                           </div>
          </div>
       </div>
       <script
          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
          integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
          crossorigin="anonymous"></script>
+      <script src="/js/cervejas.js"></script>
    </body>
 </html>
