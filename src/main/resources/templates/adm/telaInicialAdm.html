@@ -63,6 +63,36 @@
          <p class="lead text-secondary">Painel administrativo do sistema
             Route Express
          </p>
+         <div class="col-md-6">
+            <div class="card text-center">
+               <div class="card-body">
+                  <h5 class="card-title">Status do Frontend Angular</h5>
+                  <p th:if="${angularOnline}">
+                     <img src="/img/online.png" width="42" alt="Online">
+                     <span class="text-success fw-bold">Site ONLINE</span>
+                  </p>
+                  <p th:unless="${angularOnline}">
+                     <img src="/img/offline.png" width="42" alt="Offline">
+                     <span class="text-danger fw-bold">Site OFFLINE</span>
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-6">
+            <div class="card text-center">
+               <div class="card-body">
+                  <h5 class="card-title">Banco MySQL</h5>
+                  <p th:if="${mysqlOnline}">
+                     <img src="/img/online.png" width="42" alt="Online">
+                     <span class="text-success fw-bold">BD ONLINE</span>
+                  </p>
+                  <p th:unless="${mysqlOnline}">
+                     <img src="/img/offline.png" width="42" alt="Offline">
+                     <span class="text-danger fw-bold">BD OFFLINE</span>
+                  </p>
+               </div>
+            </div>
+         </div>
       </div>
       <script
          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
