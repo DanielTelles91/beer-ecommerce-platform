@@ -45,7 +45,24 @@ public class EstoquesControle {
 	// Listar todos os estoques
 	@GetMapping
 	public String listar(Model model) {
-		model.addAttribute("itens", service.listarTodos());
+
+		List<Estoque> itens = service.listarTodos();
+
+		model.addAttribute("itens", itens);
+
+		model.addAttribute("totalProdutos", itens.size());
+
+		model.addAttribute("baixos", itens.stream().filter(
+				i -> i.getQuantidade() > i.getEstoqueMinimo() && i.getQuantidade() <= (i.getEstoqueMinimo() * 2))
+				.count());
+
+		model.addAttribute("criticos",
+				itens.stream().filter(i -> i.getQuantidade() > 0 && i.getQuantidade() <= i.getEstoqueMinimo()).count());
+
+		model.addAttribute("esgotados", itens.stream().filter(i -> i.getQuantidade() == 0).count());
+
+		model.addAttribute("indisponiveis", itens.stream().filter(i -> !i.isDisponibilidade()).count());
+
 		return "estoque/index";
 	}
 

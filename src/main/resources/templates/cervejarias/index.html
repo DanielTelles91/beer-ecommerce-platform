@@ -9,14 +9,8 @@
          rel="stylesheet"
          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
          crossorigin="anonymous">
-      <style>
-         .table td, .table th {
-         vertical-align: middle;
-         }
-         .tabela-scroll {
-         max-height: 500px;
-         overflow-y: auto;
-      </style>
+ 
+       <link rel="stylesheet" th:href="@{/css/cervejaria.css}">
    </head>
    <body class="bg-dark text-light">
       <div class="container py-4">
@@ -72,9 +66,9 @@
                         class="table table-dark table-hover table-striped mb-0 align-middle">
                         <thead class="table-warning">
                            <tr>
-                              <th>CERVEJARIA:</th>
-                              <th>PAÍS:</th>
-                              <th width="160">AÇÕES</th>
+                              <th>Cervejaria</th>
+                              <th>País</th>
+                              <th width="160">Ações</th>
                            </tr>
                         </thead>
                         <tbody>

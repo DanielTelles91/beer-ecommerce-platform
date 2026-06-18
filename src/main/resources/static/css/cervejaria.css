@@ -1,3 +1,4 @@
+
          .table td, .table th {
          vertical-align: middle;
          }
@@ -5,11 +6,10 @@
          max-height: 500px;
          overflow-y: auto;
          }
-         .tabela-scroll thead th {
-         position: sticky;
-         top: 0;
-         z-index: 10;
-         }
-         .filtro-status {
-    cursor: pointer;
-}
+   
+   
+    .tabela-scroll thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    }

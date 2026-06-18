@@ -1,130 +1,137 @@
 <!doctype html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Route Express - Estoque Cervejas</title>
-      <link
-         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-         rel="stylesheet"
-         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-         crossorigin="anonymous">
-      <link rel="stylesheet" th:href="@{/css/estoque.css}">
-   </head>
-   <body class="bg-dark text-light">
-      <div class="container py-4">
-         <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-               <h1 class="mb-0">Estoque</h1>
-               <small class="text-secondary">
-               Gerenciamento de estoque de cervejas
-               </small>
-            </div>
-            <div>
-               <a class="btn btn-outline-light me-2" href="/adm">
-               ← Voltar
-               </a>
-               <a class="btn btn-success" href="/estoque/novo">
-               + Novo Estoque
-               </a>
-            </div>
-         </div>
-         <div class="p-3 bg-dark border-bottom">
-            <div class="row">
-               <div class="col-md-6">
-                  <input
-                     type="text"
-                     id="filtro"
-                     class="form-control"
-                     placeholder="Pesquisar cerveja...">
-               </div>
-               <div class="col-md-3">
-                  <select id="ordenacao" class="form-select">
-                     <option value="">Ordenar</option>
-                     <option value="critico">Estoque Crítico Primeiro</option>
-                     <option value="az">A → Z</option>
-                     <option value="za">Z → A</option>
-                  </select>
-               </div>
-            </div>
-         </div>
-         <div class="card bg-secondary border-0 shadow">
-            <div
-               class="card-header bg-dark d-flex justify-content-between align-items-center">
-               <h5 class="mb-0">
-                  Lista de Estoque
-               </h5>
-               <span
-                  class="badge bg-primary fs-6"
-                  th:text="${#lists.size(itens)} + ' registros'">
-               0 registros
-               </span>
-            </div>
-            <div class="card-body p-0">
-               <div class="table-responsive tabela-scroll">
-                  <table id="tabelaEstoque"
-                     class="table table-dark table-hover table-striped mb-0 align-middle">
-                     <thead class="table-warning">
-                        <tr>
-                           <th>Cerveja</th>
-                           <th>Status</th>
-                           <th>Quantidade</th>
-                           <th>Estoque Minimo</th>
-                           <th>Estoque Máximo</th>
-                           <th>Preço de Aquisição Unit.</th>
-                           <th>Lucro Unit.</th>
-                           <th>Disponível</th>
-                           <th>Ações</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr th:each="item : ${itens}">
-                           <td th:text="${item.cerveja.rotulo}"></td>
-                           <td>
-                              <span th:if="${item.quantidade == 0}"
-                                 class="badge bg-danger">
-                              Esgotado
-                              </span>
-                              <span th:if="${item.quantidade > 0 and item.quantidade <= item.estoqueMinimo}"
-                                 class="badge bg-danger">
-                              Crítico
-                              </span>
-                              <span th:if="${item.quantidade > item.estoqueMinimo and item.quantidade <= (item.estoqueMinimo * 2)}"
-                                 class="badge bg-warning text-dark">
-                              Baixo
-                              </span>
-                              <span th:if="${item.quantidade > (item.estoqueMinimo * 2)}"
-                                 class="badge bg-success">
-                              OK
-                              </span>
-                           </td>
-                           <td th:text="${item.quantidade}"></td>
-                           <td th:text="${item.estoqueMinimo}"></td>
-                           <td th:text="${item.estoqueMaximo}"></td>
-                           <td th:text="'R$ ' + ${#numbers.formatDecimal(item.precoAquisicao, 1, 2)}"></td>
-                           <td th:text="'R$ ' + ${#numbers.formatDecimal(item.lucro, 1, 2)}"></td>
-                           <td th:text="${item.disponibilidade ? 'Sim' : 'Não'}"></td>
-                           <td>
-                              <div class="btn-group">
-                                 <a class="btn btn-warning btn-sm"
-                                    th:href="@{/estoque/edit(id=${item.id})}">Edit</a>
-                                 <a class="btn btn-danger btn-sm"
-                                    th:href="@{/estoque/delete(id=${item.id})}"
-                                    th:data-nome="${item.cerveja.rotulo}"
-                                    onclick="return confirmarExclusao(this)">Delete</a>
-                              </div>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-               </div>
-            </div>
-         </div>
-      </div>
-      <script
-         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-         crossorigin="anonymous"></script>
-      <script src="/js/estoque.js"></script>
-   </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route Express - Estoque Cervejas</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+	crossorigin="anonymous">
+<link rel="stylesheet" th:href="@{/css/estoque.css}">
+</head>
+<body class="bg-dark text-light">
+	<div class="container py-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<div>
+				<h1 class="mb-0">Estoque</h1>
+				<small class="text-secondary"> Gerenciamento de estoque de
+					cervejas </small>
+			</div>
+			<div>
+				<a class="btn btn-outline-light me-2" href="/adm"> ← Voltar </a> <a
+					class="btn btn-success" href="/estoque/novo"> + Novo Estoque </a>
+			</div>
+		</div>
+
+
+		<div class="p-3 bg-dark border-bottom">
+			<div class="row">
+				<div class="col-md-6">
+					<input type="text" id="filtro" class="form-control"
+						placeholder="Pesquisar cerveja...">
+				</div>
+				<div class="col-md-3">
+					<select id="ordenacao" class="form-select">
+						<option value="">Ordenar</option>
+						<option value="critico">Estoque Crítico Primeiro</option>
+						<option value="indisponivel">Indisponíveis Primeiro</option>
+						<option value="az">A → Z</option>
+						<option value="za">Z → A</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="card bg-secondary border-0 shadow">
+			<div
+				class="card-header bg-dark d-flex justify-content-between align-items-center">
+
+
+				<div>
+
+					<span class="badge bg-primary fs-6 filtro-status"
+						onclick="filtrarStatus('todos')"> <span
+						th:text="${totalProdutos}"></span> Produtos
+					</span> <span class="badge bg-warning text-dark fs-6 filtro-status"
+						onclick="filtrarStatus('baixo')"> <span th:text="${baixos}"></span>
+						Baixos
+					</span> <span class="badge bg-danger fs-6 filtro-status"
+						onclick="filtrarStatus('critico')"> <span
+						th:text="${criticos}"></span> Críticos
+					</span> <span class="badge bg-danger fs-6 filtro-status"
+						onclick="filtrarStatus('esgotado')"> <span
+						th:text="${esgotados}"></span> Esgotados
+					</span> <span class="badge bg-secondary fs-6 filtro-status"
+						onclick="filtrarStatus('indisponivel')"> <span
+						th:text="${indisponiveis}"></span> Indisponíveis
+					</span>
+
+				</div>
+
+
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive tabela-scroll">
+					<table id="tabelaEstoque"
+						class="table table-dark table-hover table-striped mb-0 align-middle">
+						<thead class="table-warning">
+							<tr>
+								<th>Cerveja</th>
+								<th>Status</th>
+								<th>Quantidade</th>
+								<th>Estoque Minimo</th>
+								<th>Estoque Máximo</th>
+								<th>Preço de Aquisição Unit.</th>
+								<th>Lucro Unit.</th>
+								<th>Disponível</th>
+								<th>Ações</th>
+							</tr>
+						</thead>
+						<tbody>
+			<tr th:each="item : ${itens}"
+								th:data-disponivel="${item.disponibilidade}">
+								<td th:text="${item.cerveja.rotulo}"></td>
+								<td><span th:if="${item.quantidade == 0}"
+									class="badge bg-danger"> Esgotado </span> <span
+									th:if="${item.quantidade > 0 and item.quantidade <= item.estoqueMinimo}"
+									class="badge bg-danger"> Crítico </span> <span
+									th:if="${item.quantidade > item.estoqueMinimo and item.quantidade <= (item.estoqueMinimo * 2)}"
+									class="badge bg-warning text-dark"> Baixo </span> <span
+									th:if="${item.quantidade > (item.estoqueMinimo * 2)}"
+									class="badge bg-success"> OK </span></td>
+								<td th:text="${item.quantidade}"></td>
+								<td th:text="${item.estoqueMinimo}"></td>
+								<td th:text="${item.estoqueMaximo}"></td>
+								<td
+									th:text="'R$ ' + ${#numbers.formatDecimal(item.precoAquisicao, 1, 2)}"></td>
+								<td
+									th:text="'R$ ' + ${#numbers.formatDecimal(item.lucro, 1, 2)}"></td>
+								<td><span th:if="${item.disponibilidade}"
+									class="text-success fw-bold"> Disponível </span> <span
+									th:unless="${item.disponibilidade}" class="text-danger fw-bold">
+										Indisponível </span></td>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-warning btn-sm"
+											th:href="@{/estoque/edit(id=${item.id})}">Editar</a> <a
+											class="btn btn-danger btn-sm"
+											th:href="@{/estoque/delete(id=${item.id})}"
+											th:data-nome="${item.cerveja.rotulo}"
+											onclick="return confirmarExclusao(this)">Apagar</a>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+		crossorigin="anonymous"></script>
+	<script src="/js/estoque.js"></script>
+</body>
 </html>

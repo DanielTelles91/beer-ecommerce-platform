@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Edit Estoque</title>
+<title>Route Express - Editar Estoque</title>
 
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -18,8 +18,15 @@
 		<div class="row">
 			<div class="col-md-8 mx-auto rounded border p-4 m-4 bg-dark">
 
-				<h2 class="text-center mb-4">Edit Estoque de Cerveja</h2>
+				<h2 class="text-center mb-4">Editar Estoque de Cerveja</h2>
 
+
+<div class="alert alert-info text-center mb-4">
+    <strong>Cerveja:</strong>
+    <span th:text="${estoque.cerveja.rotulo}">
+        Nome da cerveja
+    </span>
+</div>
 								
 					<form method="post" enctype="multipart/form-data"
 					th:object="${estoqueDto}">
