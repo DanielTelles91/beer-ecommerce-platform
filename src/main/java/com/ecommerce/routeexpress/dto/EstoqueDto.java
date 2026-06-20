@@ -27,6 +27,9 @@ public class EstoqueDto {
 	@NotNull(message = "The Lucro is required")
 	private double lucro;
 
+	@NotNull(message = "The preco is required")
+	private double preco;
+
 	@NotNull(message = "The Disponibilidade is required")
 	private boolean disponibilidade;
 
@@ -76,6 +79,14 @@ public class EstoqueDto {
 
 	public void setLucro(double lucro) {
 		this.lucro = lucro;
+	}
+
+	public double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(double preco) {
+		this.preco = preco;
 	}
 
 	public boolean isDisponibilidade() {

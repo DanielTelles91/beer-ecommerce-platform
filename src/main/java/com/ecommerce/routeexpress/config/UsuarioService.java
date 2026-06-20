@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.routeexpress.services.UsuarioRepositorio;
 
 /**
-*
-* @author Daniel Arantes Telles
-*/
+ *
+ * @author Daniel Arantes Telles
+ */
 
 @Service
 public class UsuarioService implements UserDetailsService {

@@ -1,100 +1,96 @@
 <!doctype html>
 <html lang="pt-BR">
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Route Express - Back Office</title>
-      <link
-         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-         rel="stylesheet">
-   </head>
-   <body class="bg-dark text-light">
-      <!-- Navbar --->
-      <nav
-         class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary">
-         <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="#"> Route Express Back
-            Office </a>
-            <button class="navbar-toggler" type="button"
-               data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-               <!-- Menu --> 
-               <ul class="navbar-nav me-auto">
-                  <li class="nav-item"><a class="nav-link" href="/clientes">Clientes</a>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" href="/enderecos">Endereços</a>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" href="/lista">Lista
-                     de Desejos</a>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" href="/cervejarias">Cervejarias</a>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" href="/cervejas">Cervejas</a>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" href="/estoque">Estoque</a>
-                  </li>
-               </ul>
-               <!-- Usuário -->
-               <div class="dropdown">
-                  <a class="btn btn-outline-light dropdown-toggle" href="#"
-                     role="button" data-bs-toggle="dropdown"> Bem-vindo, <strong
-                     th:text="${usuario.nome}">Admin</strong>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                     <li><a class="dropdown-item" href="/adm/mudar-senha">
-                        Trocar Senha </a>
-                     </li>
-                     <li>
-                        <hr class="dropdown-divider">
-                     </li>
-                     <li><a class="dropdown-item text-danger" href="/logout">
-                        Logout </a>
-                     </li>
-                  </ul>
-               </div>
-            </div>
-         </div>
-      </nav>
-      <!-- Conteúdo Principal -->
-      <div class="container mt-5 text-center">
-         <h1 class="display-5">Tela Inicial ADM</h1>
-         <p class="lead text-secondary">Painel administrativo do sistema
-            Route Express
-         </p>
-         <div class="col-md-6">
-            <div class="card text-center">
-               <div class="card-body">
-                  <h5 class="card-title">Status do Frontend Angular</h5>
-                  <p th:if="${angularOnline}">
-                     <img src="/img/online.png" width="42" alt="Online">
-                     <span class="text-success fw-bold">Site ONLINE</span>
-                  </p>
-                  <p th:unless="${angularOnline}">
-                     <img src="/img/offline.png" width="42" alt="Offline">
-                     <span class="text-danger fw-bold">Site OFFLINE</span>
-                  </p>
-               </div>
-            </div>
-         </div>
-         <div class="col-md-6">
-            <div class="card text-center">
-               <div class="card-body">
-                  <h5 class="card-title">Banco MySQL</h5>
-                  <p th:if="${mysqlOnline}">
-                     <img src="/img/online.png" width="42" alt="Online">
-                     <span class="text-success fw-bold">BD ONLINE</span>
-                  </p>
-                  <p th:unless="${mysqlOnline}">
-                     <img src="/img/offline.png" width="42" alt="Offline">
-                     <span class="text-danger fw-bold">BD OFFLINE</span>
-                  </p>
-               </div>
-            </div>
-         </div>
-      </div>
-      <script
-         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-   </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route Express - Back Office</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+	<!-- Navbar --->
+	<nav
+		class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary">
+		<div class="container-fluid">
+			<a class="navbar-brand fw-bold" href="#"> Route Express Back
+				Office </a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<!-- Menu -->
+				<ul class="navbar-nav me-auto">
+					<li class="nav-item"><a class="nav-link" href="/clientes">Clientes</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/enderecos">Endereços</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/lista">Lista
+							de Desejos</a></li>
+					<li class="nav-item"><a class="nav-link" href="/cervejarias">Cervejarias</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/cervejas">Cervejas</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/estoque">Estoque</a>
+					</li>
+				</ul>
+				<!-- Usuário -->
+				<div class="dropdown">
+					<a class="btn btn-outline-light dropdown-toggle" href="#"
+						role="button" data-bs-toggle="dropdown"> Bem-vindo, <strong
+						th:text="${usuario.nome}">Admin</strong>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li><a class="dropdown-item" href="/adm/mudar-senha">
+								Trocar Senha </a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item text-danger" href="/logout">
+								Logout </a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- Conteúdo Principal -->
+	<div class="container mt-5 text-center">
+		<h1 class="display-5">Tela Inicial ADM</h1>
+		<p class="lead text-secondary">Painel administrativo do sistema
+			Route Express</p>
+		<div class="col-md-6">
+			<div class="card text-center">
+				<div class="card-body">
+					<h5 class="card-title">Status do Frontend Angular</h5>
+					<p th:if="${angularOnline}">
+						<img src="/img/online.png" width="42" alt="Online"> <span
+							class="text-success fw-bold">Site ONLINE</span>
+					</p>
+					<p th:unless="${angularOnline}">
+						<img src="/img/offline.png" width="42" alt="Offline"> <span
+							class="text-danger fw-bold">Site OFFLINE</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="card text-center">
+				<div class="card-body">
+					<h5 class="card-title">Banco MySQL</h5>
+					<p th:if="${mysqlOnline}">
+						<img src="/img/online.png" width="42" alt="Online"> <span
+							class="text-success fw-bold">BD ONLINE</span>
+					</p>
+					<p th:unless="${mysqlOnline}">
+						<img src="/img/offline.png" width="42" alt="Offline"> <span
+							class="text-danger fw-bold">BD OFFLINE</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

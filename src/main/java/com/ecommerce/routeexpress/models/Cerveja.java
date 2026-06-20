@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  *
@@ -46,11 +47,10 @@ public class Cerveja {
 	public void setCervejaria(Cervejaria cervejaria) {
 		this.cervejaria = cervejaria;
 	}
-	
+
 	@Column(nullable = false, unique = true)
 	private String rotulo;
-	
-	private String preco;
+
 	private String volume;
 	private String teor;
 	private String cor;
@@ -78,14 +78,6 @@ public class Cerveja {
 
 	public void setRotulo(String rotulo) {
 		this.rotulo = rotulo;
-	}
-
-	public String getPreco() {
-		return preco;
-	}
-
-	public void setPreco(String preco) {
-		this.preco = preco;
 	}
 
 	public String getVolume() {
@@ -170,6 +162,26 @@ public class Cerveja {
 
 	public Cervejaria getCervejaria() {
 		return cervejaria;
+	}
+
+	@Transient
+	public Double getPreco() {
+
+		if (estoques == null || estoques.isEmpty()) {
+			return null;
+		}
+
+		return estoques.get(0).getPreco();
+	}
+
+	@Transient
+	public Boolean getDisponibilidade() { // envia status via json
+
+		if (estoques == null || estoques.isEmpty()) {
+			return false;
+		}
+
+		return estoques.get(0).isDisponibilidade();
 	}
 
 }

@@ -16,17 +16,13 @@ import jakarta.persistence.*;
 /*
  * Fluxo:
  *
- * Usuario criado com senha temporária.
- * senhaPadrao = true.
+ * Usuário criado com senha temporária. senhaPadrao = true.
  *
- * No primeiro login:
- * LoginSuccessHandler redireciona para /adm/mudar-senha.
+ * No primeiro login: LoginSuccessHandler redireciona para /adm/mudar-senha.
  *
- * Após alterar a senha:
- * senhaPadrao = false.
+ * Após alterar a senha: senhaPadrao = false.
  *
- * Próximos logins:
- * acesso direto à tela administrativa.
+ * Próximos logins: acesso direto à tela administrativa.
  */
 
 @Entity
@@ -34,7 +30,7 @@ import jakarta.persistence.*;
 public class Usuario implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -57,33 +53,41 @@ public class Usuario implements UserDetails {
 
 	@Column(nullable = false)
 	private boolean senhaPadrao = true;
-	
-	 @Override
-	    public Collection<? extends GrantedAuthority> getAuthorities() {
-	        return Collections.singleton(() -> "ROLE_" + this.getRole().name());
-	    }
 
-	    @Override
-	    public String getPassword() {
-	        return this.senha;
-	    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Collections.singleton(() -> "ROLE_" + this.getRole().name());
+	}
 
-	    @Override
-	    public String getUsername() {
-	        return this.email; // login por email
-	    }
+	@Override
+	public String getPassword() {
+		return this.senha;
+	}
 
-	    @Override
-	    public boolean isAccountNonExpired() { return true; }
+	@Override
+	public String getUsername() {
+		return this.email; // login por email
+	}
 
-	    @Override
-	    public boolean isAccountNonLocked() { return true; }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-	    @Override
-	    public boolean isCredentialsNonExpired() { return true; }
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-	    @Override
-	    public boolean isEnabled() { return true; }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 
 	public int getId() {
 		return id;
@@ -148,6 +152,5 @@ public class Usuario implements UserDetails {
 	public void setSenhaPadrao(boolean senhaPadrao) {
 		this.senhaPadrao = senhaPadrao;
 	}
-	
 
 }

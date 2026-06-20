@@ -21,14 +21,12 @@
 				<h2 class="text-center mb-4">Editar Estoque de Cerveja</h2>
 
 
-<div class="alert alert-info text-center mb-4">
-    <strong>Cerveja:</strong>
-    <span th:text="${estoque.cerveja.rotulo}">
-        Nome da cerveja
-    </span>
-</div>
-								
-					<form method="post" enctype="multipart/form-data"
+				<div class="alert alert-info text-center mb-4">
+					<strong>Cerveja:</strong> <span th:text="${estoque.cerveja.rotulo}">
+						Nome da cerveja </span>
+				</div>
+
+				<form method="post" enctype="multipart/form-data"
 					th:object="${estoqueDto}">
 
 
@@ -36,7 +34,7 @@
 					<div class="mb-3">
 						<label class="form-label">Quantidade</label> <input type="number"
 							th:field="*{quantidade}" class="form-control" required>
-							
+
 					</div>
 
 					<div class="mb-3">

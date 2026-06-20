@@ -12,45 +12,39 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class DashboardService {
 
-    private final JdbcTemplate jdbcTemplate;
+	private final JdbcTemplate jdbcTemplate;
 
-    public DashboardService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+	public DashboardService(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
-    public boolean checkAngular() {
+	public boolean checkAngular() {
 
-        try {
+		try {
 
-            RestTemplate rt = new RestTemplate();
+			RestTemplate rt = new RestTemplate();
 
-            rt.getForObject(
-                    "http://127.0.0.1:4200/cervejas",
-                    String.class);
+			rt.getForObject("http://127.0.0.1:4200/cervejas", String.class);
 
-            return true;
+			return true;
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            return false;
-        }
-    }
+			return false;
+		}
+	}
 
-    public boolean checkMysql() {
+	public boolean checkMysql() {
 
-        try {
+		try {
 
-            jdbcTemplate.queryForObject(
-                    "SELECT 1",
-                    Integer.class);
+			jdbcTemplate.queryForObject("SELECT 1", Integer.class);
 
-            return true;
+			return true;
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            return false;
-        }
-    }
+			return false;
+		}
+	}
 }
-
-

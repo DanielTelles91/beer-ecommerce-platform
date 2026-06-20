@@ -31,7 +31,7 @@ public class ListaDeDesejos {
 	@ManyToOne
 	@JoinColumn(name = "cerveja_id", nullable = false)
 	private Cerveja cerveja;
-	
+
 	private LocalDateTime dataAdicao = LocalDateTime.now();
 
 	public int getId() {
@@ -65,6 +65,5 @@ public class ListaDeDesejos {
 	public void setDataAdicao(LocalDateTime dataAdicao) {
 		this.dataAdicao = dataAdicao;
 	}
-	
-	
+
 }

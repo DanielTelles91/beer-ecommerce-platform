@@ -80,12 +80,12 @@ document.getElementById("ordenacao")
             linhas.sort(function(a, b) {
 
                 let dispA =
-                    a.cells[7].innerText
+                    a.cells[8].innerText
                         .trim()
                         .includes("Indisponível");
 
                 let dispB =
-                    b.cells[7].innerText
+                    b.cells[8].innerText
                         .trim()
                         .includes("Indisponível");
 
@@ -125,7 +125,7 @@ function filtrarStatus(tipo) {
                 .toLowerCase();
 
         let disponivel =
-            linha.cells[7].innerText
+            linha.cells[8].innerText
                 .trim()
                 .toLowerCase();
 

@@ -2,7 +2,6 @@ package com.ecommerce.routeexpress.models;
 
 import jakarta.persistence.*;
 
-
 /**
  *
  * @author Daniel Arantes Telles
@@ -26,6 +25,7 @@ public class Estoque {
 	private int estoqueMaximo;
 	private double precoAquisicao;
 	private double lucro;
+	private double preco;
 	private boolean disponibilidade;
 
 	// getters e setters
@@ -93,6 +93,14 @@ public class Estoque {
 		this.lucro = lucro;
 	}
 
+	public double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(double preco) {
+		this.preco = preco;
+	}
+
 	public boolean isDisponibilidade() {
 		return disponibilidade;
 	}
@@ -104,6 +112,10 @@ public class Estoque {
 	// opcional: calcular lucro automaticamente
 	public void calcularLucro() {
 		this.lucro = precoAquisicao * (porcentagemLucro / 100);
+	}
+
+	public void calcularPrecoFinal() {
+		this.preco = lucro + precoAquisicao;
 	}
 
 }

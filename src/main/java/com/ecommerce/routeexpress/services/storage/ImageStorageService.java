@@ -3,7 +3,7 @@ package com.ecommerce.routeexpress.services.storage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path; 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ecommerce.routeexpress.models.Cerveja;
 
 /**
-*
-* @author Daniel Arantes Telles
-*/
+ *
+ * @author Daniel Arantes Telles
+ */
 
 @Service
 public class ImageStorageService {
@@ -100,45 +100,47 @@ public class ImageStorageService {
 		return nomesSalvos;
 	}
 
-	
-	
-	
 	public String[] atualizaImagensCerveja(int cervejariaId, MultipartFile[] novasImagens, String[] imagensAntigas) {
-	    String[] imagensSalvas = new String[novasImagens.length];
+		String[] imagensSalvas = new String[novasImagens.length];
 
-	    String uploadDir = "public/uploads/images/" + cervejariaId + "/";
+		String uploadDir = "public/uploads/images/" + cervejariaId + "/";
 
-	    for (int i = 0; i < novasImagens.length; i++) {
-	        MultipartFile image = novasImagens[i];
+		for (int i = 0; i < novasImagens.length; i++) {
+			MultipartFile image = novasImagens[i];
 
-	        if (image != null && !image.isEmpty()) {
-	            // deleta a antiga
-	            if (imagensAntigas[i] != null) {
-	                Path oldImagePath = Paths.get(uploadDir + imagensAntigas[i]);
-	                try { Files.deleteIfExists(oldImagePath); } catch (Exception e) { e.printStackTrace(); }
-	            }
+			if (image != null && !image.isEmpty()) {
+				// deleta a antiga
+				if (imagensAntigas[i] != null) {
+					Path oldImagePath = Paths.get(uploadDir + imagensAntigas[i]);
+					try {
+						Files.deleteIfExists(oldImagePath);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 
-	            // salva a nova
-	            String storageFileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-	            Path uploadPath = Paths.get(uploadDir);
-	            try {
-	                if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
-	                try (InputStream inputStream = image.getInputStream()) {
-	                    Files.copy(inputStream, uploadPath.resolve(storageFileName), StandardCopyOption.REPLACE_EXISTING);
-	                }
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            }
+				// salva a nova
+				String storageFileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+				Path uploadPath = Paths.get(uploadDir);
+				try {
+					if (!Files.exists(uploadPath))
+						Files.createDirectories(uploadPath);
+					try (InputStream inputStream = image.getInputStream()) {
+						Files.copy(inputStream, uploadPath.resolve(storageFileName),
+								StandardCopyOption.REPLACE_EXISTING);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
-	            imagensSalvas[i] = storageFileName;
-	        } else {
-	            // mantém a antiga caso não tenha enviado nova
-	            imagensSalvas[i] = imagensAntigas[i];
-	        }
-	    }
+				imagensSalvas[i] = storageFileName;
+			} else {
+				// mantém a antiga caso não tenha enviado nova
+				imagensSalvas[i] = imagensAntigas[i];
+			}
+		}
 
-	    return imagensSalvas;
+		return imagensSalvas;
 	}
-	
-	
+
 }

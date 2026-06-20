@@ -1,15 +1,14 @@
+.table td, .table th {
+	vertical-align: middle;
+}
 
-         .table td, .table th {
-         vertical-align: middle;
-         }
-         .tabela-scroll {
-         max-height: 500px;
-         overflow-y: auto;
-         }
-   
-   
-    .tabela-scroll thead th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    }
+.tabela-scroll {
+	max-height: 500px;
+	overflow-y: auto;
+}
+
+.tabela-scroll thead th {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}

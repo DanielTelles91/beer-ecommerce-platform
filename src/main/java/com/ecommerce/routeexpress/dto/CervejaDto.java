@@ -4,7 +4,6 @@ import org.springframework.web.multipart.*;
 
 import jakarta.validation.constraints.NotEmpty;
 
-
 /**
  *
  * @author Daniel Arantes Telles
@@ -14,9 +13,6 @@ public class CervejaDto {
 
 	@NotEmpty(message = "The rotulo is required")
 	private String rotulo;
-
-	@NotEmpty(message = "The preco is required")
-	private String preco;
 
 	@NotEmpty(message = "The volume is required")
 	private String volume;
@@ -87,14 +83,6 @@ public class CervejaDto {
 
 	public void setRotulo(String rotulo) {
 		this.rotulo = rotulo;
-	}
-
-	public String getPreco() {
-		return preco;
-	}
-
-	public void setPreco(String preco) {
-		this.preco = preco;
 	}
 
 	public String getVolume() {

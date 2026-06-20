@@ -10,15 +10,15 @@ import com.ecommerce.routeexpress.models.Usuario;
 import com.ecommerce.routeexpress.services.UsuarioRepositorio;
 
 /**
-*
-* @author Daniel Arantes Telles
-*/
+ *
+ * @author Daniel Arantes Telles
+ */
 
 @Configuration
 public class DataInitializer {
 
 	@Bean
-	CommandLineRunner initAdmin(UsuarioRepositorio repo) {
+	CommandLineRunner initAdmin(UsuarioRepositorio repo) { // Na primeira inicialização é criado conta admin padrão.
 		return args -> {
 			if (repo.count() == 0) {
 				BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

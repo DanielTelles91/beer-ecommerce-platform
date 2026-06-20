@@ -46,10 +46,7 @@
 		<div class="card bg-secondary border-0 shadow">
 			<div
 				class="card-header bg-dark d-flex justify-content-between align-items-center">
-
-
 				<div>
-
 					<span class="badge bg-primary fs-6 filtro-status"
 						onclick="filtrarStatus('todos')"> <span
 						th:text="${totalProdutos}"></span> Produtos
@@ -66,10 +63,7 @@
 						onclick="filtrarStatus('indisponivel')"> <span
 						th:text="${indisponiveis}"></span> Indisponíveis
 					</span>
-
 				</div>
-
-
 			</div>
 			<div class="card-body p-0">
 				<div class="table-responsive tabela-scroll">
@@ -82,14 +76,15 @@
 								<th>Quantidade</th>
 								<th>Estoque Minimo</th>
 								<th>Estoque Máximo</th>
-								<th>Preço de Aquisição Unit.</th>
-								<th>Lucro Unit.</th>
+								<th>Preço de Aquisição</th>
+								<th>Lucro</th>
+								<th>Preço Final</th>
 								<th>Disponível</th>
 								<th>Ações</th>
 							</tr>
 						</thead>
 						<tbody>
-			<tr th:each="item : ${itens}"
+							<tr th:each="item : ${itens}"
 								th:data-disponivel="${item.disponibilidade}">
 								<td th:text="${item.cerveja.rotulo}"></td>
 								<td><span th:if="${item.quantidade == 0}"
@@ -104,9 +99,10 @@
 								<td th:text="${item.estoqueMinimo}"></td>
 								<td th:text="${item.estoqueMaximo}"></td>
 								<td
-									th:text="'R$ ' + ${#numbers.formatDecimal(item.precoAquisicao, 1, 2)}"></td>
-								<td
-									th:text="'R$ ' + ${#numbers.formatDecimal(item.lucro, 1, 2)}"></td>
+									th:text="'R$' + ${#numbers.formatDecimal(item.precoAquisicao, 1, 2)}"></td>
+								<td th:text="'R$' + ${#numbers.formatDecimal(item.lucro, 1, 2)}"></td>
+
+								<td th:text="'R$' + ${#numbers.formatDecimal(item.preco, 1, 2)}"></td>
 								<td><span th:if="${item.disponibilidade}"
 									class="text-success fw-bold"> Disponível </span> <span
 									th:unless="${item.disponibilidade}" class="text-danger fw-bold">

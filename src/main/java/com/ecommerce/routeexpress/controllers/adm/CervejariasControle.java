@@ -65,7 +65,7 @@ public class CervejariasControle {
 
 		try {
 
-			cervejariaService.criaCervejaria(cervejariaDto); // call the service
+			cervejariaService.criaCervejaria(cervejariaDto); // chama o service
 		} catch (CervejaJaExisteException e) {
 			redirectAttributes.addFlashAttribute("erro", e.getMessage());
 			return "redirect:/cervejarias/create"; // back to create form
@@ -117,11 +117,11 @@ public class CervejariasControle {
 	@GetMapping("/delete")
 	public String deleteCervejaria(@RequestParam int id) {
 
-		imageStorageService.apagaPastaImagem(id); // Delete the image folder for this brewery
+		imageStorageService.apagaPastaImagem(id); // Delete a pasta da imagem da cervejaria
 
-		cervejariaService.deleteCervejariaById(id); // Delete the brewery from the database via service
+		cervejariaService.deleteCervejariaById(id); // Delete a cervejaria do BD via service
 
-		return "redirect:/cervejarias"; // Redirect to the list page
+		return "redirect:/cervejarias"; // Redirect para página cervejaria 
 	}
 
 }

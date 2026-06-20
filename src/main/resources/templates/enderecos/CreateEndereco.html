@@ -16,8 +16,9 @@
 			<div class="col-md-8 mx-auto rounded border p-4 m-4">
 				<h2 class="text-center mb-5">New Address</h2>
 
-				<form th:action="@{/enderecos/create}" method="post" th:object="${enderecoDto}">
-    <input type="hidden" name="clienteId" th:value="${clienteId}" />
+				<form th:action="@{/enderecos/create}" method="post"
+					th:object="${enderecoDto}">
+					<input type="hidden" name="clienteId" th:value="${clienteId}" />
 					<div class="row mb-3">
 						<label class="col-sm-4 col-form-label">CEP</label>
 						<div class="col-sm-8">
@@ -97,7 +98,7 @@
 						</div>
 					</div>
 
-		
+
 
 					<div class="row">
 						<div class="offset-sm-4 col-sm-4 d-grid">

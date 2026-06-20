@@ -31,11 +31,9 @@ public class EnderecoDto {
 
 	@NotEmpty(message = "The Estado is required")
 	private String estado;
-	
+
 	private Integer clienteId;
 
-	
-	
 	public Integer getClienteId() {
 		return clienteId;
 	}

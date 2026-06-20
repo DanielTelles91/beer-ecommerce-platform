@@ -13,9 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
-*
-* @author Daniel Arantes Telles
-*/
+ *
+ * @author Daniel Arantes Telles
+ */
 
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {

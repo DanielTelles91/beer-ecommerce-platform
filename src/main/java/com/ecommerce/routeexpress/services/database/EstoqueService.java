@@ -50,6 +50,7 @@ public class EstoqueService {
 		estoque.setPrecoAquisicao(precoAquisicao);
 		estoque.setDisponibilidade(disponibilidade);
 		estoque.calcularLucro();
+		estoque.calcularPrecoFinal();
 
 		estoqueRepo.save(estoque);
 	}
@@ -69,6 +70,7 @@ public class EstoqueService {
 		estoque.setPrecoAquisicao(dto.getPrecoAquisicao());
 		estoque.setDisponibilidade(dto.isDisponibilidade());
 		estoque.calcularLucro();
+		estoque.calcularPrecoFinal();
 		estoqueRepo.save(estoque);
 	}
 

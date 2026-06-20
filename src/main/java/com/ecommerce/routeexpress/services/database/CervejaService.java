@@ -48,7 +48,6 @@ public class CervejaService {
 		cerveja.setCor(cervejaDto.getCor());
 		cerveja.setDescricao(cervejaDto.getDescricao());
 		cerveja.setFamilia_e_estilo(cervejaDto.getFamilia_e_estilo());
-		cerveja.setPreco(cervejaDto.getPreco());
 		cerveja.setRotulo(cervejaDto.getRotulo());
 		cerveja.setSabor(cervejaDto.getSabor());
 		cerveja.setTemperatura(cervejaDto.getTemperatura());
@@ -91,7 +90,6 @@ public class CervejaService {
 		cerveja.setCor(dto.getCor());
 		cerveja.setDescricao(dto.getDescricao());
 		cerveja.setFamilia_e_estilo(dto.getFamilia_e_estilo());
-		cerveja.setPreco(dto.getPreco());
 		cerveja.setRotulo(dto.getRotulo());
 		cerveja.setSabor(dto.getSabor());
 		cerveja.setTemperatura(dto.getTemperatura());
@@ -123,7 +121,6 @@ public class CervejaService {
 		dto.setCor(cerveja.getCor());
 		dto.setDescricao(cerveja.getDescricao());
 		dto.setFamilia_e_estilo(cerveja.getFamilia_e_estilo());
-		dto.setPreco(cerveja.getPreco());
 		dto.setRotulo(cerveja.getRotulo());
 		dto.setSabor(cerveja.getSabor());
 		dto.setTemperatura(cerveja.getTemperatura());

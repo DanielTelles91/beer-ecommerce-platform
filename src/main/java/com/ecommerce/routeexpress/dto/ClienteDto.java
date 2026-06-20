@@ -3,38 +3,36 @@ package com.ecommerce.routeexpress.dto;
 import jakarta.validation.constraints.*;
 
 /**
-*
-* @author Daniel Arantes Telles
-*/
+ *
+ * @author Daniel Arantes Telles
+ */
 
 public class ClienteDto {
-		
+
 	@NotEmpty(message = "The First Name is required")
 	private String first_name;
-	
+
 	@NotEmpty(message = "The Last Name is required")
-	private String last_name;	
+	private String last_name;
 
 	@NotEmpty(message = "The Email is required")
 	private String email;
-	
+
 	@NotEmpty(message = "The Phone Number is required")
 	private String telefone;
-	
+
 	@NotEmpty(message = "The CPF is required")
 	private String cpf;
-	
+
 	@NotEmpty(message = "The Password is required")
 	private String senha;
-	
+
 	@NotEmpty(message = "The Sexo is required")
 	private String sexo;
-	
+
 	@NotEmpty(message = "The Data de Nascimento is required")
 	private String data_nascimento;
 
-	
-	
 	public String getFirst_name() {
 		return first_name;
 	}
@@ -98,7 +96,5 @@ public class ClienteDto {
 	public void setData_nascimento(String data_nascimento) {
 		this.data_nascimento = data_nascimento;
 	}
-	
-
 
 }

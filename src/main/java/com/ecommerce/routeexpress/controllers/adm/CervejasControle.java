@@ -71,7 +71,7 @@ public class CervejasControle {
 			cervejaService.criaCerveja(cervejaDto);
 		} catch (CervejaJaExisteException e) {
 			redirectAttributes.addFlashAttribute("erro", e.getMessage());
-			return "redirect:/cervejas/create"; // volta pro formulário
+			return "redirect:/cervejas/create"; // volta para o formulário
 		}
 
 		return "redirect:/cervejas";
@@ -108,7 +108,7 @@ public class CervejasControle {
 			cervejaService.updateCerveja(id, cervejaDto);
 		} catch (CervejaJaExisteException e) {
 			redirectAttributes.addFlashAttribute("erro", e.getMessage());
-			return "redirect:/cervejas/edit?id=" + id; // volta pro formulário
+			return "redirect:/cervejas/edit?id=" + id; // volta para o formulário
 
 		}
 
@@ -118,7 +118,7 @@ public class CervejasControle {
 	@GetMapping("/delete")
 	public String deleteCerveja(@RequestParam int id) {
 
-		// Call the service to handle deletion
+		// Chama o serviço para lidar com o delete
 		cervejaService.deleteCervejaById(id);
 
 		return "redirect:/cervejas";

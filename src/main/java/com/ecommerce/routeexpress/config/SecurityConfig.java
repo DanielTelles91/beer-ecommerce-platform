@@ -1,6 +1,5 @@
 package com.ecommerce.routeexpress.config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,23 +10,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
-*
-* @author Daniel Arantes Telles
-*/
+ *
+ * @author Daniel Arantes Telles
+ */
 
 @Configuration
 public class SecurityConfig {
 
-	
-	  private final LoginSuccessHandler loginSuccessHandler;
+	private final LoginSuccessHandler loginSuccessHandler;
 
-	    public SecurityConfig(LoginSuccessHandler loginSuccessHandler) {
-	        this.loginSuccessHandler = loginSuccessHandler;
-	    }
-	    
-	    
-	    
-	// Bean para criptografia de senha
+	public SecurityConfig(LoginSuccessHandler loginSuccessHandler) {
+		this.loginSuccessHandler = loginSuccessHandler;
+	}
+
+	// Bean para criptografia da senha
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -40,27 +36,22 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	    http.csrf(csrf -> csrf.disable())
-	        .authorizeHttpRequests(auth -> auth
-	            .requestMatchers("/", "/index.html", "/clientes/**", "/api/cervejas/**","/uploads/**", "/produtos/**", "/register", "/login_adm/**").permitAll()
-	            .requestMatchers("/adm/**").hasRole("MASTER")
-	            .requestMatchers("/operator/**").hasAnyRole("MASTER", "OPERATOR")
-	            .anyRequest().authenticated()
-	        )
-	        .formLogin(form -> form
-	            .loginPage("/adm/telaLogin")
-	            .loginProcessingUrl("/adm")
-	            .successHandler(loginSuccessHandler) //ESSENCIAL !!!
-	            .permitAll()
-	        )
-	        .logout(logout -> logout
-	            .logoutUrl("/logout")
-	            .logoutSuccessUrl("/adm/telaLogin") // Após o logout, direciona para a página inicial de Login
-	            .permitAll()
-	        );
+		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
+				.requestMatchers("/", "/index.html", "/clientes/**", "/api/cervejas/**", "/uploads/**", "/produtos/**",
+						"/register", "/login_adm/**")
+				.permitAll().requestMatchers("/adm/**").hasRole("MASTER").requestMatchers("/operator/**")
+				.hasAnyRole("MASTER", "OPERATOR").anyRequest().authenticated())
+				.formLogin(form -> form.loginPage("/adm/telaLogin").loginProcessingUrl("/adm")
+						.successHandler(loginSuccessHandler)   // ESSENCIAL !!!
+						.permitAll())
+				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/adm/telaLogin") // Após o logout,
+																									// direciona para a
+																									// página inicial de
+																									// login
 
-	    return http.build();
+						.permitAll());
+
+		return http.build();
 	}
-
 
 }
