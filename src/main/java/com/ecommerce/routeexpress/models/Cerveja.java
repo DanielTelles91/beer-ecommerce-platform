@@ -56,13 +56,13 @@ public class Cerveja {
 	private String cor;
 	private String temperatura;
 	private String familia_e_estilo;
-	private String descricao;
 	private String sabor;
-
+	
 	@Column(columnDefinition = "TEXT")
 	private String imagem_1;
 	private String imagem_2;
 	private String imagem_3;
+	private String descricao;
 
 	public int getId() {
 		return id;

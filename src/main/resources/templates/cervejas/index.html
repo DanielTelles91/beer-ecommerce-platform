@@ -76,7 +76,9 @@
 								<td th:text="${cerveja.cor}"></td>
 								<td th:text="${cerveja.temperatura}"></td>
 								<td th:text="${cerveja.familia_e_estilo}"></td>
-								<td th:text="${cerveja.descricao}"></td>
+								<td>
+									<div class="texto-limitado" th:text="${cerveja.descricao}"></div>
+								</td>
 								<td th:text="${cerveja.sabor}"></td>
 								<td><img class="preview-img"
 									th:src="@{'/uploads/images/' + ${cerveja.cervejaria.id} + '/' + ${cerveja.imagem_1}}"
