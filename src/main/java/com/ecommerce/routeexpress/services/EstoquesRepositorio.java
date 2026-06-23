@@ -1,6 +1,7 @@
 package com.ecommerce.routeexpress.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +19,7 @@ public interface EstoquesRepositorio extends JpaRepository<Estoque, Integer> {
 	List<Integer> findAllCervejaIdsEmEstoque();
 
 	boolean existsByCervejaId(int cervejaId);
+	
+	Optional<Estoque> findFirstByCervejaId(int cervejaId); // carrinho
 
 }
