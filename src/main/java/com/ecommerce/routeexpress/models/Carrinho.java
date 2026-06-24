@@ -25,10 +25,22 @@ public class Carrinho {
 	@Column(name = "data_criacao")
 	private LocalDateTime dataCriacao = LocalDateTime.now();
 
+	@Column(name = "data_atualizacao")
+	private LocalDateTime dataAtualizacao = LocalDateTime.now();
+
 	@OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CarrinhoItem> itens = new ArrayList<>();
 
 	// getters e setters
+
+	public LocalDateTime getDataAtualizacao() {
+		return dataAtualizacao;
+	}
+
+	public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+		this.dataAtualizacao = dataAtualizacao;
+	}
+
 	public Long getId() {
 		return id;
 	}

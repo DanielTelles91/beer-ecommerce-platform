@@ -2,6 +2,7 @@ package com.ecommerce.routeexpress;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  *
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
+@EnableScheduling
 public class RouteexpressApplication {
 
 	public static void main(String[] args) {

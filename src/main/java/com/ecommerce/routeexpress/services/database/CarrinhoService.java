@@ -1,5 +1,6 @@
 package com.ecommerce.routeexpress.services.database;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,16 +32,17 @@ public class CarrinhoService {
 	private CarrinhoItemRepositorio itemRepo;
 	@Autowired
 	private CervejasRepositorio cervejaRepo;
-
 	@Autowired
 	private EstoquesRepositorio estoqueRepo;
 
 	private Carrinho buscarOuCriarCarrinho(String sessionId) {
-		return carrinhoRepo.findBySessionId(sessionId).orElseGet(() -> {
+		Carrinho carrinho = carrinhoRepo.findBySessionId(sessionId).orElseGet(() -> {
 			Carrinho novo = new Carrinho();
 			novo.setSessionId(sessionId);
-			return carrinhoRepo.save(novo);
+			return novo;
 		});
+		carrinho.setDataAtualizacao(LocalDateTime.now());
+		return carrinhoRepo.save(carrinho);
 	}
 
 	public CarrinhoDto buscarCarrinho(String sessionId) {

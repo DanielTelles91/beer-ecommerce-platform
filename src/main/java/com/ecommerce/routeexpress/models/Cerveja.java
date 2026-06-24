@@ -50,19 +50,18 @@ public class Cerveja {
 
 	@Column(nullable = false, unique = true)
 	private String rotulo;
-
 	private String volume;
 	private String teor;
 	private String cor;
 	private String temperatura;
 	private String familia_e_estilo;
 	private String sabor;
-	
+
 	@Column(columnDefinition = "TEXT")
+	private String descricao;
 	private String imagem_1;
 	private String imagem_2;
 	private String imagem_3;
-	private String descricao;
 
 	public int getId() {
 		return id;
