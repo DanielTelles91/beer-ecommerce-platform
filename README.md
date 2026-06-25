@@ -65,6 +65,11 @@ Security & Authentication:
     Session timeout protection for inactive users.
     Password hashing using BCrypt.
     Role-based access control (ADMIN / OPERATOR).
+	
+Cart Maintenance:
+
+    Scheduled job to automatically clean up abandoned guest carts after a 
+    configurable period of inactivity (default: 7 days).	
 
 Technical Features:
 
@@ -110,6 +115,11 @@ Technical Features:
 1) During development, multipart file uploads required explicit Tomcat configuration due to changes in Spring Boot security defaults. The following property was added:
 
 server.tomcat.max-part-count=30
+
+
+2) - Abandoned guest carts (identified by session UUID, with no login required) are automatically removed via a scheduled job (`@Scheduled`), based on a `dataAtualizacao` 
+timestamp updated on every cart interaction. This prevents unbounded growth of the `carrinho`/`carrinho_item` tables from one-time visitors who never return. The cleanup 
+interval was temporarily reduced to 10 seconds during development to validate the behavior quickly, then restored to the production schedule (daily, 1 AM).
 
 
 ## Author
