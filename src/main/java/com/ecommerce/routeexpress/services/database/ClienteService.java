@@ -1,6 +1,9 @@
 package com.ecommerce.routeexpress.services.database;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.routeexpress.dto.ClienteDto;
@@ -8,6 +11,7 @@ import com.ecommerce.routeexpress.exceptions.CpfJaExisteException;
 import com.ecommerce.routeexpress.exceptions.emailJaExisteException;
 import com.ecommerce.routeexpress.models.Cliente;
 import com.ecommerce.routeexpress.services.ClientesRepositorio;
+import com.ecommerce.routeexpress.services.email.EmailService;
 
 /**
  *
@@ -21,7 +25,13 @@ public class ClienteService {
 	@Autowired
 	private ClientesRepositorio clientesRepositorio;
 
-	public Cliente criaCliente(ClienteDto clienteDto) { // Creates a new Cliente
+	@Autowired
+	private EmailService emailService;
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
+	public Cliente criaCliente(ClienteDto clienteDto) {
 
 		if (clientesRepositorio.existsByCpfIgnoreCase(clienteDto.getCpf())) {
 			throw new CpfJaExisteException("Já existe esse CPF cadastrado!");
@@ -37,15 +47,75 @@ public class ClienteService {
 		cliente.setEmail(clienteDto.getEmail());
 		cliente.setFirst_name(clienteDto.getFirst_name());
 		cliente.setLast_name(clienteDto.getLast_name());
-		cliente.setSenha(clienteDto.getSenha());
 		cliente.setSexo(clienteDto.getSexo());
 		cliente.setTelefone(clienteDto.getTelefone());
 
-		return clientesRepositorio.save(cliente);
+		// Cadastro feito pelo admin: cliente nasce sem senha definida,
+		// aguardando confirmação de e-mail + definição de senha pelo próprio cliente.
+		cliente.setSenha(null);
+		cliente.setEmailConfirmado(false);
+		cliente.setTokenConfirmacao(UUID.randomUUID().toString());
 
+		Cliente salvo = clientesRepositorio.save(cliente);
+
+		emailService.enviarEmailDefinirSenha(salvo.getEmail(), salvo.getTokenConfirmacao());
+
+		return salvo;
 	}
 
-	public Cliente updateCliente(int id, ClienteDto clienteDto) { // Updates a cliente based on the DTO
+	public Cliente definirSenha(String token, String novaSenha) {
+		Cliente cliente = clientesRepositorio.findByTokenConfirmacao(token)
+				.orElseThrow(() -> new RuntimeException("Token inválido ou expirado"));
+
+		cliente.setSenha(passwordEncoder.encode(novaSenha));
+		cliente.setEmailConfirmado(true);
+		cliente.setTokenConfirmacao(null); // invalida o token, não pode ser reusado
+
+		return clientesRepositorio.save(cliente);
+	}
+
+	public Cliente cadastroPublico(ClienteDto clienteDto) {
+
+		if (clientesRepositorio.existsByCpfIgnoreCase(clienteDto.getCpf())) {
+			throw new CpfJaExisteException("Já existe esse CPF cadastrado!");
+		}
+
+		if (clientesRepositorio.existsByEmailIgnoreCase(clienteDto.getEmail())) {
+			throw new emailJaExisteException("Já existe esse email cadastrado!");
+		}
+
+		Cliente cliente = new Cliente();
+		cliente.setCpf(clienteDto.getCpf());
+		cliente.setData_nascimento(clienteDto.getData_nascimento());
+		cliente.setEmail(clienteDto.getEmail());
+		cliente.setFirst_name(clienteDto.getFirst_name());
+		cliente.setLast_name(clienteDto.getLast_name());
+		cliente.setSexo(clienteDto.getSexo());
+		cliente.setTelefone(clienteDto.getTelefone());
+
+		// Autocadastro: cliente já define a própria senha
+		cliente.setSenha(passwordEncoder.encode(clienteDto.getSenha()));
+		cliente.setEmailConfirmado(false);
+		cliente.setTokenConfirmacao(UUID.randomUUID().toString());
+
+		Cliente salvo = clientesRepositorio.save(cliente);
+
+		emailService.enviarEmailConfirmacaoCadastro(salvo.getEmail(), salvo.getTokenConfirmacao());
+
+		return salvo;
+	}
+
+	public void confirmarEmail(String token) {
+		Cliente cliente = clientesRepositorio.findByTokenConfirmacao(token)
+				.orElseThrow(() -> new RuntimeException("Token inválido ou expirado"));
+
+		cliente.setEmailConfirmado(true);
+		cliente.setTokenConfirmacao(null);
+
+		clientesRepositorio.save(cliente);
+	}
+
+	public Cliente updateCliente(int id, ClienteDto clienteDto) {
 		Cliente cliente = clientesRepositorio.findById(id)
 				.orElseThrow(() -> new RuntimeException("Cliente não encontrada"));
 
@@ -62,9 +132,15 @@ public class ClienteService {
 		cliente.setEmail(clienteDto.getEmail());
 		cliente.setFirst_name(clienteDto.getFirst_name());
 		cliente.setLast_name(clienteDto.getLast_name());
-		cliente.setSenha(clienteDto.getSenha());
 		cliente.setSexo(clienteDto.getSexo());
 		cliente.setTelefone(clienteDto.getTelefone());
+
+		// Só atualiza a senha se uma nova senha foi de fato enviada nesse formulário.
+		// Edição administrativa comum (telefone, endereço, etc) não deve apagar a senha
+		// existente.
+		if (clienteDto.getSenha() != null && !clienteDto.getSenha().isBlank()) {
+			cliente.setSenha(passwordEncoder.encode(clienteDto.getSenha()));
+		}
 
 		return clientesRepositorio.save(cliente);
 	}

@@ -46,4 +46,13 @@ public class EmailService {
 		mensagem.setText(corpo);
 		mailSender.send(mensagem);
 	}
+
+	public void enviarEmailDefinirSenha(String destinatario, String token) {
+		String link = frontendUrl + "/definir-senha?token=" + token;
+		String corpo = "Olá!\n\nSeu cadastro na Route Express foi criado por nossa equipe.\n\n"
+				+ "Para confirmar seu e-mail e definir sua senha de acesso, clique no link abaixo:\n" + link
+				+ "\n\nSe você não esperava este e-mail, ignore esta mensagem.";
+
+		enviar(destinatario, "Defina sua senha - Route Express", corpo);
+	}
 }

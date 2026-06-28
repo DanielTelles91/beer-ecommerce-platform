@@ -32,6 +32,8 @@ public class Cliente {
 	private String senha;
 	private String sexo;
 	private String data_nascimento;
+	private boolean emailConfirmado = false;
+	private String tokenConfirmacao;
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Endereco> enderecos = new ArrayList<>();
@@ -109,6 +111,22 @@ public class Cliente {
 
 	public void setData_nascimento(String data_nascimento) {
 		this.data_nascimento = data_nascimento;
+	}
+
+	public boolean isEmailConfirmado() {
+		return emailConfirmado;
+	}
+
+	public void setEmailConfirmado(boolean emailConfirmado) {
+		this.emailConfirmado = emailConfirmado;
+	}
+
+	public String getTokenConfirmacao() {
+		return tokenConfirmacao;
+	}
+
+	public void setTokenConfirmacao(String tokenConfirmacao) {
+		this.tokenConfirmacao = tokenConfirmacao;
 	}
 
 }

@@ -24,7 +24,6 @@ public class ClienteDto {
 	@NotEmpty(message = "The CPF is required")
 	private String cpf;
 
-	@NotEmpty(message = "The Password is required")
 	private String senha;
 
 	@NotEmpty(message = "The Sexo is required")

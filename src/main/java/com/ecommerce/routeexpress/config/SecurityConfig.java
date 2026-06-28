@@ -37,12 +37,13 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
-				.requestMatchers("/", "/index.html", "/clientes/**", "/teste-email/**", "/api/cervejas/**", "/api/carrinho/**", "/uploads/**", "/produtos/**",
-						"/register", "/login_adm/**")
+				.requestMatchers("/", "/index.html", "/clientes/**", "/api/cervejas/**", "/api/carrinho/**",
+						"/api/clientes/definir-senha", "/api/clientes/cadastro", "/api/clientes/confirmar-email",
+						"/uploads/**", "/produtos/**", "/register", "/login_adm/**")
 				.permitAll().requestMatchers("/adm/**").hasRole("MASTER").requestMatchers("/operator/**")
 				.hasAnyRole("MASTER", "OPERATOR").anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/adm/telaLogin").loginProcessingUrl("/adm")
-						.successHandler(loginSuccessHandler)   // ESSENCIAL !!!
+						.successHandler(loginSuccessHandler) // ESSENCIAL !!!
 						.permitAll())
 				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/adm/telaLogin") // Após o logout,
 																									// direciona para a

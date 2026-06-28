@@ -1,8 +1,8 @@
 package com.ecommerce.routeexpress.services;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.ecommerce.routeexpress.models.Cliente;
+import java.util.Optional;
 
 /**
  *
@@ -19,5 +19,7 @@ public interface ClientesRepositorio extends JpaRepository<Cliente, Integer> {
 	boolean existsByCpfIgnoreCaseAndIdNot(String cpf, int id);
 
 	boolean existsByEmailIgnoreCaseAndIdNot(String email, int id);
+	
+	Optional<Cliente> findByTokenConfirmacao(String token);
 
 }

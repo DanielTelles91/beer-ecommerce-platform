@@ -3,63 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Route Express</title>
+<title>Route Express - Clientes</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
 	rel="stylesheet"
 	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
 	crossorigin="anonymous">
+	<link rel="stylesheet" th:href="@{/css/cliente.css}">
 </head>
 <body class="bg-dark text-light">
-	<div class="container">
-		<h1 class="text-center my-4">Clients</h1>
-
-		<a class="btn btn-primary" href="/adm">Back</a> <a
-			class="btn btn-primary" href="/clientes/create">New Client</a>
-
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Email</th>
-					<th>Phone Number</th>
-					<th>CPF</th>
-					<th>Password</th>
-					<th>Gender</th>
-					<th>Date of Birth</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="cliente : ${clientes}">
-					<td th:text="${cliente.id}"></td>
-					<td th:text="${cliente.first_name}"></td>
-					<td th:text="${cliente.last_name}"></td>
-					<td th:text="${cliente.email}"></td>
-					<td th:text="${cliente.telefone}"></td>
-					<td th:text="${cliente.cpf}"></td>
-					<td th:text="${cliente.senha}"></td>
-					<td th:text="${cliente.sexo}"></td>
-					<td th:text="${cliente.data_nascimento}"></td>
-
-					<td style="white-space: nowrap"><a
-						class="btn btn-primary btn-sm"
-						th:href="@{/clientes/edit(id=${cliente.id})}">Edit</a> <a
-						class="btn btn-danger btn-sm"
-						th:href="@{/clientes/delete(id=${cliente.id})}"
-						onclick="return confirm('Are you Sure?')">Delete</a> <a
-						class="btn btn-secondary btn-sm"
-						th:href="@{/enderecos(clienteId=${cliente.id})}">Endereço</a></td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="container py-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<div>
+				<h1 class="mb-0">Clientes</h1>
+				<small class="text-secondary"> Gerenciamento de clientes
+					cadastrados </small>
+			</div>
+			<div>
+				<a class="btn btn-outline-light me-2" href="/adm"> ← Voltar </a> <a
+					class="btn btn-success" href="/clientes/create"> + Novo Cliente
+				</a>
+			</div>
+		</div>
+		<div class="p-3 bg-dark border-bottom">
+			<div class="row">
+				<div class="col-md-6">
+					<input type="text" id="filtro" class="form-control"
+						placeholder="Pesquisar cliente... CPF - Nome - Sobrenome - Email - Telefone">
+				</div>
+				<div class="col-md-3">
+					<select id="ordenacao" class="form-select">
+						<option value="">Ordenar Nome</option>
+						<option value="az">A → Z</option>
+						<option value="za">Z → A</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="card bg-secondary border-0 shadow">
+			<div
+				class="card-header bg-dark d-flex justify-content-between align-items-center">
+				<h5 class="mb-0 subTitulo">Lista de Clientes</h5>
+				<span class="badge bg-primary fs-6"
+					th:text="${#lists.size(clientes)} + ' registros'"> 0
+					registros </span>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<div class="table-responsive tabela-scroll">
+						<table id="tabelaClientes"
+							class="table table-dark table-hover table-striped mb-0 align-middle">
+							<thead class="table-warning">
+								<tr>
+									<th>Nome</th>
+									<th>Sobrenome</th>
+									<th>Email</th>
+									<th>Número do Telefone</th>
+									<th>CPF</th>
+									<th>Gênero</th>
+									<th>Data de Nascimento</th>
+									<th>Ações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="cliente : ${clientes}">
+									<td th:text="${cliente.first_name}"></td>
+									<td th:text="${cliente.last_name}"></td>
+									<td th:text="${cliente.email}"></td>
+									<td th:text="${cliente.telefone}"></td>
+									<td th:text="${cliente.cpf}"></td>
+									<td th:text="${cliente.sexo}"></td>
+									<td th:text="${cliente.data_nascimento}"></td>
+									<td style="white-space: nowrap"><a
+										class="btn btn-warning btn-sm"
+										th:href="@{/clientes/edit(id=${cliente.id})}">Editar</a> <a
+										class="btn btn-danger btn-sm"
+										th:data-nome="${cliente.first_name}"
+										th:href="@{/clientes/delete(id=${cliente.id})}"
+										onclick="return confirmarExclusao(this)">Excluir</a> <a
+										class="btn btn-secondary btn-sm"
+										th:href="@{/enderecos(clienteId=${cliente.id})}">Endereço</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
 		crossorigin="anonymous"></script>
+	<script src="/js/clientes.js"></script>
 </body>
 </html>
