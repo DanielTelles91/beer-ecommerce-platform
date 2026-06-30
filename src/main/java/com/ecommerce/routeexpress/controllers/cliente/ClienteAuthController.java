@@ -1,10 +1,14 @@
 package com.ecommerce.routeexpress.controllers.cliente;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ecommerce.routeexpress.dto.ClienteDto;
 import com.ecommerce.routeexpress.services.database.ClienteService;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -35,5 +39,22 @@ public class ClienteAuthController {
 	public String confirmarEmail(@RequestParam String token) {
 		service.confirmarEmail(token);
 		return "E-mail confirmado com sucesso!";
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestParam String email, @RequestParam String senha) {
+		return service.login(email, senha);
+
+	}
+
+	@GetMapping("/me")
+	public ResponseEntity<?> me() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if (auth == null || !(auth.getPrincipal() instanceof Integer clienteId)) {
+			return ResponseEntity.status(401).body("Não autenticado");
+		}
+
+		return ResponseEntity.ok(service.buscarClienteLogado(clienteId));
 	}
 }

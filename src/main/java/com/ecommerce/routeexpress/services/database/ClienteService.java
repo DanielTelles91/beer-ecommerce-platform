@@ -1,8 +1,10 @@
 package com.ecommerce.routeexpress.services.database;
 
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.ecommerce.routeexpress.dto.ClienteDto;
 import com.ecommerce.routeexpress.exceptions.CpfJaExisteException;
 import com.ecommerce.routeexpress.exceptions.emailJaExisteException;
 import com.ecommerce.routeexpress.models.Cliente;
+import com.ecommerce.routeexpress.security.JwtUtil;
 import com.ecommerce.routeexpress.services.ClientesRepositorio;
 import com.ecommerce.routeexpress.services.email.EmailService;
 
@@ -168,6 +171,32 @@ public class ClienteService {
 		clientedto.setTelefone(cliente.getTelefone());
 
 		return clientedto;
+	}
+
+	@Autowired
+	private JwtUtil jwtUtil;
+
+	public ResponseEntity<?> login(String email, String senha) {
+		Cliente cliente = clientesRepositorio.findByEmailIgnoreCase(email);
+
+		if (cliente == null || cliente.getSenha() == null || !passwordEncoder.matches(senha, cliente.getSenha())) {
+			return ResponseEntity.status(401).body("E-mail ou senha inválidos");
+		}
+
+		if (!cliente.isEmailConfirmado()) {
+			return ResponseEntity.status(403).body("Confirme seu e-mail antes de fazer login");
+		}
+
+		String token = jwtUtil.gerarToken(cliente.getId(), cliente.getEmail());
+
+		return ResponseEntity.ok(Map.of("token", token, "nome", cliente.getFirst_name(), "email", cliente.getEmail()));
+	}
+
+	public Map<String, Object> buscarClienteLogado(int clienteId) {
+		Cliente cliente = clientesRepositorio.findById(clienteId)
+				.orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+		return Map.of("id", cliente.getId(), "nome", cliente.getFirst_name(), "email", cliente.getEmail());
 	}
 
 }

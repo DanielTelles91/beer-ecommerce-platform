@@ -1,5 +1,6 @@
 package com.ecommerce.routeexpress.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +9,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.ecommerce.routeexpress.security.JwtAuthenticationFilter;
 
 /**
  *
@@ -34,12 +38,15 @@ public class SecurityConfig {
 		return config.getAuthenticationManager();
 	}
 
+	@Autowired
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
 				.requestMatchers("/", "/index.html", "/clientes/**", "/api/cervejas/**", "/api/carrinho/**",
 						"/api/clientes/definir-senha", "/api/clientes/cadastro", "/api/clientes/confirmar-email",
-						"/uploads/**", "/produtos/**", "/register", "/login_adm/**")
+						"/api/clientes/login", "/uploads/**", "/produtos/**", "/register", "/login_adm/**")
 				.permitAll().requestMatchers("/adm/**").hasRole("MASTER").requestMatchers("/operator/**")
 				.hasAnyRole("MASTER", "OPERATOR").anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/adm/telaLogin").loginProcessingUrl("/adm")
@@ -51,8 +58,22 @@ public class SecurityConfig {
 																									// login
 
 						.permitAll());
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+		http.exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
+			String path = request.getRequestURI();
+			if (path.startsWith("/api/")) {
+				response.setStatus(401);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write("{\"erro\": \"Não autenticado. Faça login para continuar.\"}");
+			} else {
+				response.sendRedirect("/adm/telaLogin");
+			}
+		}));
 
 		return http.build();
+
 	}
 
 }

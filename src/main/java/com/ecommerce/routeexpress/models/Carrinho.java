@@ -31,6 +31,9 @@ public class Carrinho {
 	@OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CarrinhoItem> itens = new ArrayList<>();
 
+	@Column(name = "cliente_id")
+	private Integer clienteId; // nullable: carrinho de visitante não tem cliente vinculado
+
 	// getters e setters
 
 	public LocalDateTime getDataAtualizacao() {
@@ -71,5 +74,13 @@ public class Carrinho {
 
 	public void setItens(List<CarrinhoItem> itens) {
 		this.itens = itens;
+	}
+
+	public Integer getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(Integer clienteId) {
+		this.clienteId = clienteId;
 	}
 }

@@ -99,4 +99,56 @@ public class CarrinhoService {
 		}).collect(Collectors.toList());
 		return new CarrinhoDto(itens);
 	}
+
+	public CarrinhoDto mergeCarrinho(String sessionId, int clienteId) {
+		Carrinho carrinhoVisitante = carrinhoRepo.findBySessionId(sessionId).orElse(null);
+		Carrinho carrinhoCliente = carrinhoRepo.findByClienteId(clienteId).orElse(null);
+
+		// Sem carrinho de visitante: só garante que o cliente tem algum carrinho
+		if (carrinhoVisitante == null) {
+			if (carrinhoCliente == null) {
+				carrinhoCliente = new Carrinho();
+				carrinhoCliente.setSessionId(sessionId);
+				carrinhoCliente.setClienteId(clienteId);
+				carrinhoCliente.setDataAtualizacao(LocalDateTime.now());
+				carrinhoRepo.save(carrinhoCliente);
+			}
+			return montarDto(carrinhoCliente);
+		}
+
+		// Cliente ainda não tinha carrinho: adota o carrinho de visitante atual
+		if (carrinhoCliente == null) {
+			carrinhoVisitante.setClienteId(clienteId);
+			carrinhoVisitante.setDataAtualizacao(LocalDateTime.now());
+			carrinhoRepo.save(carrinhoVisitante);
+			return montarDto(carrinhoVisitante);
+		}
+
+		// Já é o mesmo carrinho (login repetido no mesmo dispositivo)
+		if (carrinhoVisitante.getId().equals(carrinhoCliente.getId())) {
+			return montarDto(carrinhoCliente);
+		}
+
+		// Mescla os itens do carrinho de visitante no carrinho já existente do cliente
+		for (CarrinhoItem itemVisitante : carrinhoVisitante.getItens()) {
+			CarrinhoItem itemExistente = carrinhoCliente.getItens().stream()
+					.filter(i -> i.getCerveja().getId() == itemVisitante.getCerveja().getId()).findFirst().orElse(null);
+
+			if (itemExistente != null) {
+				itemExistente.setQuantidade(itemExistente.getQuantidade() + itemVisitante.getQuantidade());
+			} else {
+				CarrinhoItem novoItem = new CarrinhoItem();
+				novoItem.setCarrinho(carrinhoCliente);
+				novoItem.setCerveja(itemVisitante.getCerveja());
+				novoItem.setQuantidade(itemVisitante.getQuantidade());
+				carrinhoCliente.getItens().add(novoItem);
+			}
+		}
+
+		carrinhoCliente.setDataAtualizacao(LocalDateTime.now());
+		carrinhoRepo.save(carrinhoCliente);
+		carrinhoRepo.delete(carrinhoVisitante); // cascade remove os itens dele também
+
+		return montarDto(carrinhoCliente);
+	}
 }

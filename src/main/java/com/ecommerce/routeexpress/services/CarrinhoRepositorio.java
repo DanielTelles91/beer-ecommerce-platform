@@ -15,4 +15,6 @@ public interface CarrinhoRepositorio extends JpaRepository<Carrinho, Long> {
 	Optional<Carrinho> findBySessionId(String sessionId);
 
 	List<Carrinho> findByDataAtualizacaoBefore(LocalDateTime limite);
+
+	Optional<Carrinho> findByClienteId(int clienteId);
 }

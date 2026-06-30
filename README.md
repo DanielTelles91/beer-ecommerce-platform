@@ -9,8 +9,7 @@ This project was originally developed in 2015 as an academic e-commerce system.
 
 The application is designed using a layered architecture, separating controllers, services, and persistence logic. The focus is on backend robustness, data integrity, and maintainability. This project is a modern rewrite of an earlier academic e-commerce system, rebuilt to apply current backend technologies and cleaner architectural patterns.
 
-It now serves two distinct audiences from the same Spring Boot application: an administrative Back Office, rendered server side with Thymeleaf and protected by session based Spring Security, and a public REST API, consumed by a separate Angular storefront, covering catalog browsing, shopping cart and customer account features.
-
+It now serves two distinct audiences from the same Spring Boot application: an administrative Back Office, rendered server-side with Thymeleaf and protected by session-based Spring Security, and a public/authenticated REST API, consumed by a separate Angular storefront, covering catalog browsing, shopping cart, customer accounts and JWT based authentication.
 
 ## Original Technologies (2015)
 
@@ -32,6 +31,7 @@ It now serves two distinct audiences from the same Spring Boot application: an a
 - MySQL
 - Spring Mail (account confirmation / password setup e-mails)
 - Spring Scheduling (@Scheduled background jobs)
+- JWT (io.jsonwebtoken / jjwt) for stateless customer authentication
 - RESTful architecture
 
 
@@ -73,6 +73,7 @@ Shopping Cart API
 - Guest friendly cart, identified by a client generated session UUID (no login required).
 - Add item, update quantity, remove item (/api/carrinho/**); decreasing quantity to zero automatically removes the item.
 - Cart and cart item totals computed server side and returned through dedicated DTOs, never exposing JPA entities directly.
+- Cart merge on login (POST /api/carrinho/merge, authenticated): links the guest session cart to the now authenticated customer. If the customer has no cart yet, the guest cart is adopted as-is; if they already have one (e.g. from a previous login on another device), item quantities are summed into the existing cart and the guest cart record is discarded.
 
 
 Cart Maintenance
@@ -92,6 +93,15 @@ Two registration flows share the same token + e-mail infrastructure:
 - Confirmation tokens are single use: they are cleared from the database immediately after being consumed, so a link can't be replayed.
 
 
+Customer Authentication (JWT)
+
+- POST /api/clientes/login validates e-mail/password (BCrypt) and requires the account to have a confirmed e-mail before issuing a token.
+- Stateless JWT authentication, completely independent from the admin's session-based login: the two coexist in the same SecurityConfig without interfering with each other.
+- A JwtAuthenticationFilter validates the token on each request and populates the Spring Security context with the authenticated customer's id, without touching the database on every call.
+- GET /api/clientes/me is an authenticated-only endpoint used to confirm the filter correctly resolves the logged-in customer from the token.
+Unauthenticated requests to /api/** return a clean JSON 401 response instead of being redirected to the admin's HTML login page (see Technical Notes).
+
+
 
 Data Integrity
 
@@ -99,7 +109,7 @@ Data Integrity
 - Business rules enforced at the service layer.
 - Automatic cleanup of orphan records and uploaded files.
 - Relational entity management using JPA/Hibernate.
-- Response DTOs used throughout the customer facing API (catalog, cart, account) to avoid leaking JPA entities — and, in particular, to avoid ever serializing password fields back to the client.
+- Response DTOs used throughout the customer facing API (catalog, cart, account) to avoid leaking JPA entities and, in particular, to avoid ever serializing password fields back to the client.
 
 
 
@@ -110,7 +120,7 @@ Security & Authentication
 - Predefined master administrator account.
 - Mandatory password change on first login.
 - Session timeout protection for inactive users.
-- Password hashing using BCrypt — applied to admin users, and to customer passwords from the moment a customer sets/confirms their own password.
+- Password hashing using BCrypt applied to admin users, and to customer passwords from the moment a customer sets/confirms their own password.
 - Role based access control (ADMIN / OPERATOR).
 - Public, unauthenticated access explicitly scoped to customer facing routes (catalog, cart, registration/confirmation endpoints), kept separate from the admin's session protected routes.
 
@@ -178,15 +188,27 @@ server.tomcat.max-part-count=30
 6) Credentials kept out of source control. SMTP credentials are injected via environment variables (${MAIL_USERNAME}, ${MAIL_PASSWORD}) rather than hardcoded in application.properties, since this repository is public. An application.properties.example documents the expected configuration shape without exposing real values.
 
 
-7) Admin edits no longer clear customer passwords or confirmation state. An earlier version of ClienteService.updateCliente unconditionally re-encoded whatever was in the password field of the admin's edit form — which has no password input — and also force-reset emailConfirmado/tokenConfirmacao on every save. In practice this meant any routine admin edit (e.g. updating a phone number) silently wiped the customer's password and invalidated a pending confirmation token. The fix only updates the password when a new one is actually present in the request, and leaves confirmation state untouched outside of the dedicated confirmation/password-setup flows.
+7) Admin edits no longer clear customer passwords or confirmation state. An earlier version of ClienteService.updateCliente unconditionally re-encoded whatever was in the password field of the admin's edit form which has no password input and also force reset emailConfirmado/tokenConfirmacao on every save. In practice this meant any routine admin edit (e.g. updating a phone number) silently wiped the customer's password and invalidated a pending confirmation token. The fix only updates the password when a new one is actually present in the request, and leaves confirmation state untouched outside of the dedicated confirmation/password-setup flows.
+
+
+8) Stateless JWT, no session, no database lookup per request. Customer authentication is intentionally stateless: the JWT is signed with a server side secret and carries the customer id and e-mail as claims. JwtAuthenticationFilter verifies the signature and expiration on every request without querying the database, keeping the customer facing API session free and easy to scale horizontally in contrast with the admin area, which still uses traditional session based authentication (HttpSession / cookie), since the two areas have different operational needs.
+
+
+9) Cart merge on login. Since the cart predates any account (identified only by a client-generated session UUID), logging in needs to reconcile that anonymous cart with the customer's own. The merge logic handles three cases: no existing customer cart (the guest cart is simply adopted), an existing customer cart (item quantities are summed and the guest cart is deleted), and an already merged cart (no-op). This was manually verified by adding items to a cart in one browser, then logging into the same account from a different browser and confirming the cart was already populated on login without the second browser ever generating a new guest cart row.
+
+
+10) API friendly 401 responses. By default, Spring Security's formLogin configuration redirects any unauthenticated request including REST API calls to the admin's HTML login page. A custom AuthenticationEntryPoint now inspects the request path: requests to /api/** receive a clean JSON 401 body instead of an HTML redirect, while admin routes keep their original redirect to login behavior.
+
 
 
 ## Known Limitations / Roadmap
 
 
 - Token expiration: confirmation/password setup tokens are single use (cleared on consumption) but do not yet expire on a timer. A dataCriacao + expiry check is a planned improvement.
-- Customer login (JWT): not implemented yet. Planned: stateless JWT authentication for the storefront, kept separate from the admin's session based authentication, plus merging a guest cart into the customer's account on login.
 - Query duplication described above, pending a Criteria API refactor.
+- Multi device guest cart edge case: if a customer is logged in simultaneously on two devices and adds items as a guest on a third before logging in there too, the merge correctly reconciles carts at login time, but a stale sessionId left in a device's localStorage after a merge could create a fresh, empty guest cart if that device keeps browsing without refreshing. Acceptable for the current scope; a future improvement would re-sync the session id after a merge.
+- JWT refresh / revocation: the current token has a fixed expiration (7 days) and no refresh-token or blacklist mechanism.
+
 
 ## Author
 

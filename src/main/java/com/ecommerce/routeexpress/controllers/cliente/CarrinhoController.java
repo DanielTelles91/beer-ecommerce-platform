@@ -6,7 +6,10 @@ package com.ecommerce.routeexpress.controllers.cliente;
 */
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.ecommerce.routeexpress.dto.CarrinhoDto;
 import com.ecommerce.routeexpress.services.database.CarrinhoService;
@@ -40,5 +43,16 @@ public class CarrinhoController {
 	@DeleteMapping("/itens/{itemId}")
 	public CarrinhoDto remover(@RequestParam String sessionId, @PathVariable Long itemId) {
 		return service.removerItem(sessionId, itemId);
+	}
+
+	@PostMapping("/merge")
+	public ResponseEntity<?> merge(@RequestParam String sessionId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if (auth == null || !(auth.getPrincipal() instanceof Integer clienteId)) {
+			return ResponseEntity.status(401).body("Não autenticado");
+		}
+
+		return ResponseEntity.ok(service.mergeCarrinho(sessionId, clienteId));
 	}
 }
