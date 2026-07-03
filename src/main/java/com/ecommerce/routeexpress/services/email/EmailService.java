@@ -6,6 +6,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.routeexpress.dto.ItemPedidoDto;
+import com.ecommerce.routeexpress.dto.PedidoDto;
+
 /**
  *
  * @author Daniel Arantes Telles
@@ -54,5 +57,31 @@ public class EmailService {
 				+ "\n\nSe você não esperava este e-mail, ignore esta mensagem.";
 
 		enviar(destinatario, "Defina sua senha - Route Express", corpo);
+	}
+
+	public void enviarEmailConfirmacaoPedido(String destinatario, PedidoDto pedido) {
+		StringBuilder corpo = new StringBuilder();
+		corpo.append("Olá!\n\n");
+		corpo.append("Seu pedido #").append(pedido.getId()).append(" foi confirmado com sucesso!\n\n");
+		corpo.append("═══════════════════════════════\n");
+		corpo.append("ITENS DO PEDIDO\n");
+		corpo.append("═══════════════════════════════\n\n");
+
+		for (ItemPedidoDto item : pedido.getItens()) {
+			corpo.append("• ").append(item.getRotulo()).append("\n");
+			corpo.append("  ").append(item.getQuantidade()).append("x ");
+			corpo.append("R$ ").append(String.format("%.2f", item.getPrecoUnitario()));
+			corpo.append(" = R$ ").append(String.format("%.2f", item.getSubtotal()));
+			corpo.append("\n\n");
+		}
+
+		corpo.append("═══════════════════════════════\n");
+		corpo.append("TOTAL: R$ ").append(String.format("%.2f", pedido.getTotal())).append("\n");
+		corpo.append("═══════════════════════════════\n\n");
+		corpo.append("Endereço de entrega:\n");
+		corpo.append(pedido.getEnderecoCompleto()).append("\n\n");
+		corpo.append("Obrigado pela sua compra na Route Express!\n");
+
+		enviar(destinatario, "Pedido #" + pedido.getId() + " confirmado - Route Express", corpo.toString());
 	}
 }

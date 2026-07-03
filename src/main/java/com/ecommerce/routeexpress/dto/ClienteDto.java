@@ -9,27 +9,27 @@ import jakarta.validation.constraints.*;
 
 public class ClienteDto {
 
-	@NotEmpty(message = "The First Name is required")
+	@NotEmpty(message = "O campo Nome é obrigatório")
 	private String first_name;
 
-	@NotEmpty(message = "The Last Name is required")
+	@NotEmpty(message = "O campo Sobrenome é obrigatório")
 	private String last_name;
 
-	@NotEmpty(message = "The Email is required")
+	@NotEmpty(message = "O campo Email é obrigatório")
 	private String email;
 
-	@NotEmpty(message = "The Phone Number is required")
+	@NotEmpty(message = "O campo Número de Telefone é obrigatório")
 	private String telefone;
 
-	@NotEmpty(message = "The CPF is required")
+	@NotEmpty(message = "O Campo CPF é obrigatório")
 	private String cpf;
 
 	private String senha;
 
-	@NotEmpty(message = "The Sexo is required")
+	@NotEmpty(message = "O campo Gênero é obrigatório")
 	private String sexo;
 
-	@NotEmpty(message = "The Data de Nascimento is required")
+	@NotEmpty(message = "O campo Data de Nascimento é obrigatório")
 	private String data_nascimento;
 
 	public String getFirst_name() {

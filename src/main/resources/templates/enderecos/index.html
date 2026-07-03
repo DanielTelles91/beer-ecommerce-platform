@@ -3,55 +3,72 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Route Express</title>
+<title>Route Express - Endereços</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
 	rel="stylesheet"
 	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
 	crossorigin="anonymous">
+<link rel="stylesheet" th:href="@{/css/endereco.css}">
 </head>
 <body class="bg-dark text-light">
-	<div class="container">
-		<h1 class="text-center my-4">Address</h1>
-
-		<a class="btn btn-primary" href="/clientes">Back</a>
-
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>CEP</th>
-					<th>Logradouro</th>
-					<th>Tipo de Logradouro</th>
-					<th>Número do Logradouro</th>
-					<th>Bairro</th>
-					<th>Cidade</th>
-					<th>Estado</th>
-					<th>Complemento</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="endereco : ${enderecos}">
-					<td th:text="${endereco.id}"></td>
-					<td th:text="${endereco.cep}"></td>
-					<td th:text="${endereco.logradouro}"></td>
-					<td th:text="${endereco.tipo_logradouro}"></td>
-					<td th:text="${endereco.logradouro_numero}"></td>
-					<td th:text="${endereco.bairro}"></td>
-					<td th:text="${endereco.cidade}"></td>
-					<td th:text="${endereco.estado}"></td>
-					<td th:text="${endereco.complemento}"></td>
-
-
-					<td style="white-space: nowrap"><a
-						class="btn btn-primary btn-sm"
-						th:href="@{/enderecos/edit(id=${endereco.id})}">Edit</a></td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="container py-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<div>
+				<h1 class="mb-0">Endereços</h1>
+				<small class="text-secondary"> Gerenciamento de endereços
+					cadastrados </small>
+			</div>
+			<div>
+				<a class="btn btn-outline-light me-2" href="/clientes"> ← Voltar
+				</a>
+			</div>
+		</div>
+		<div class="p-3 bg-dark border-bottom"></div>
+		<div class="card bg-secondary border-0 shadow">
+			<div
+				class="card-header bg-dark d-flex justify-content-between align-items-center">
+				<h5 class="mb-0 subTitulo">Lista de Endereço</h5>
+			</div>
+			<div class="card-body p-0">
+				<div class="table-responsive">
+					<div class="table-responsive tabela-scroll">
+						<table id="tabelaEnderecos"
+							class="table table-dark table-hover table-striped mb-0 align-middle">
+							<thead class="table-warning">
+								<tr>
+									<th>CEP</th>
+									<th>Logradouro</th>
+									<th>Tipo de Logradouro</th>
+									<th>Número do Logradouro</th>
+									<th>Bairro</th>
+									<th>Cidade</th>
+									<th>Estado</th>
+									<th>Complemento</th>
+									<th>Ação</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="endereco : ${enderecos}">
+									<td th:text="${endereco.cep}"></td>
+									<td th:text="${endereco.logradouro}"></td>
+									<td th:text="${endereco.tipo_logradouro}"></td>
+									<td th:text="${endereco.logradouro_numero}"></td>
+									<td th:text="${endereco.bairro}"></td>
+									<td th:text="${endereco.cidade}"></td>
+									<td th:text="${endereco.estado}"></td>
+									<td th:text="${endereco.complemento}"></td>
+									<td style="white-space: nowrap"><a
+										class="btn btn-warning btn-sm"
+										th:href="@{/enderecos/edit(id=${endereco.id})}">Edit</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"

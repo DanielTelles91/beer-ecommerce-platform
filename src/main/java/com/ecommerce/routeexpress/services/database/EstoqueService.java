@@ -71,6 +71,13 @@ public class EstoqueService {
 		estoque.setDisponibilidade(dto.isDisponibilidade());
 		estoque.calcularLucro();
 		estoque.calcularPrecoFinal();
+		
+		
+		if (dto.getQuantidade() <= 0) {
+		    estoque.setDisponibilidade(false);
+		}
+	
+		
 		estoqueRepo.save(estoque);
 	}
 

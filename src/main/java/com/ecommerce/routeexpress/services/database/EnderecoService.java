@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.routeexpress.dto.EnderecoDto;
+import com.ecommerce.routeexpress.dto.EnderecoResponseDto;
 import com.ecommerce.routeexpress.models.Cliente;
 import com.ecommerce.routeexpress.models.Endereco;
 import com.ecommerce.routeexpress.services.ClientesRepositorio;
@@ -73,6 +74,20 @@ public class EnderecoService {
 		enderecoDto.setTipo_logradouro(endereco.getTipo_logradouro());
 
 		return enderecoDto;
+	}
+
+	public EnderecoResponseDto mapToResponseDto(Endereco endereco) {
+		EnderecoResponseDto dto = new EnderecoResponseDto();
+		dto.setId(endereco.getId());
+		dto.setBairro(endereco.getBairro());
+		dto.setCep(endereco.getCep());
+		dto.setCidade(endereco.getCidade());
+		dto.setComplemento(endereco.getComplemento());
+		dto.setEstado(endereco.getEstado());
+		dto.setLogradouro(endereco.getLogradouro());
+		dto.setLogradouro_numero(endereco.getLogradouro_numero());
+		dto.setTipo_logradouro(endereco.getTipo_logradouro());
+		return dto;
 	}
 
 	public Endereco findById(int id) { // Find endereco by ID or throw RuntimeException if not found

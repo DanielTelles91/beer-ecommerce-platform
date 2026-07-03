@@ -1,53 +1,29 @@
 package com.ecommerce.routeexpress.dto;
 
-import jakarta.validation.constraints.*;
-
 /**
  *
  * @author Daniel Arantes Telles
  */
 
-public class EnderecoDto {
+public class EnderecoResponseDto {
 
-	@NotEmpty(message = "O campo CEP é obrigatório")
+	private int id;
 	private String cep;
-
-	@NotEmpty(message = "O campo Logradouro é obrigatório")
 	private String logradouro;
-
-	@NotEmpty(message = "O campo Tipo de Logradouro é obrigatório")
 	private String tipo_logradouro;
-
-	@NotEmpty(message = "O campo Número do Logradouro é obrigatório")
 	private String logradouro_numero;
-
 	private String complemento;
-
-	@NotEmpty(message = "O campo Bairro é obrigatório")
 	private String bairro;
-
-	@NotEmpty(message = "O campo Cidade é obrigatório")
 	private String cidade;
-
-	@NotEmpty(message = "O campo Estado é obrigatório")
 	private String estado;
 
-	private Integer clienteId;
-
-	public Integer getClienteId() {
-		return clienteId;
+	// getters e setters
+	public int getId() {
+		return id;
 	}
 
-	public void setClienteId(Integer clienteId) {
-		this.clienteId = clienteId;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getCep() {
@@ -82,6 +58,14 @@ public class EnderecoDto {
 		this.logradouro_numero = logradouro_numero;
 	}
 
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
 	public String getBairro() {
 		return bairro;
 	}
@@ -105,5 +89,4 @@ public class EnderecoDto {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-
 }

@@ -1,5 +1,7 @@
 package com.ecommerce.routeexpress.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +48,8 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
 				.requestMatchers("/", "/index.html", "/clientes/**", "/api/cervejas/**", "/api/carrinho/**",
 						"/api/clientes/definir-senha", "/api/clientes/cadastro", "/api/clientes/confirmar-email",
-						"/api/clientes/login", "/uploads/**", "/produtos/**", "/register", "/login_adm/**")
+						"/api/clientes/login", "/api/clientes/verificar-cpf", "/api/clientes/verificar-email",
+						"/uploads/**", "/produtos/**", "/register", "/login_adm/**")
 				.permitAll().requestMatchers("/adm/**").hasRole("MASTER").requestMatchers("/operator/**")
 				.hasAnyRole("MASTER", "OPERATOR").anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/adm/telaLogin").loginProcessingUrl("/adm")
@@ -70,6 +73,15 @@ public class SecurityConfig {
 			} else {
 				response.sendRedirect("/adm/telaLogin");
 			}
+		}));
+
+		http.cors(cors -> cors.configurationSource(request -> {
+			var config = new org.springframework.web.cors.CorsConfiguration();
+			config.setAllowedOrigins(List.of("http://localhost:4200", "http://192.168.1.131:4200"));
+			config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+			config.setAllowedHeaders(List.of("*"));
+			config.setAllowCredentials(false);
+			return config;
 		}));
 
 		return http.build();

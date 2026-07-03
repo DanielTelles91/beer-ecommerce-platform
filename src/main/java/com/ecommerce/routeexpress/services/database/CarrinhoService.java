@@ -93,9 +93,13 @@ public class CarrinhoService {
 
 	private CarrinhoDto montarDto(Carrinho carrinho) {
 		List<CarrinhoItemDto> itens = carrinho.getItens().stream().map(i -> {
-			double preco = estoqueRepo.findFirstByCervejaId(i.getCerveja().getId()).map(Estoque::getPreco).orElse(0.0);
+			Estoque estoque = estoqueRepo.findFirstByCervejaId(i.getCerveja().getId()).orElse(null);
+
+			double preco = estoque != null ? estoque.getPreco() : 0.0;
+			int estoqueDisponivel = estoque != null ? estoque.getQuantidade() : 0;
+
 			return new CarrinhoItemDto(i.getId(), i.getCerveja().getId(), i.getCerveja().getRotulo(), preco,
-					i.getQuantidade());
+					i.getQuantidade(), estoqueDisponivel);
 		}).collect(Collectors.toList());
 		return new CarrinhoDto(itens);
 	}

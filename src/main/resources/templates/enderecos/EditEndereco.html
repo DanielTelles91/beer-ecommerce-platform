@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Route Express</title>
+<title>Route Express - Editar Endereço</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -11,109 +11,96 @@
 	crossorigin="anonymous">
 </head>
 <body class="bg-dark text-light">
-	<div class="container">
+	<div class="container py-4">
 		<div class="row">
-			<div class="col-md-8 mx-auto rounded border p-4 m-4">
-				<h2 class="text-center mb-5">New Address</h2>
-
-				<form method="post" enctype="multipart/form-data"
-					th:object="${enderecoDto}">
-					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">CEP</label>
-						<div class="col-sm-8">
-							<input class="form-control" th:field="${enderecoDto.cep}">
+			<div class="col-lg-10 mx-auto">
+				<div class="border rounded p-4">
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<h2 class="text-center mb-4">Editar Endereço</h2>
+						<a th:href="@{/enderecos(clienteId=${clienteId})}"
+							class="btn btn-outline-light"> ← Voltar </a>
+					</div>
+					<form method="post" enctype="multipart/form-data"
+						th:object="${enderecoDto}">
+						<div class="mb-3">
+							<label class="col-sm-4 col-form-label">CEP</label> <input
+								class="form-control" th:field="${enderecoDto.cep}">
 							<p th:if="${#fields.hasErrors('cep')}"
 								th:errorclass="text-danger" th:errors="${enderecoDto.cep}"></p>
 						</div>
-					</div>
-
-					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">Logradouro</label>
-						<div class="col-sm-8">
-							<input class="form-control" th:field="${enderecoDto.logradouro}">
+						<div class="mb-3">
+							<label class="col-sm-4 col-form-label">Logradouro</label> <input
+								class="form-control" th:field="${enderecoDto.logradouro}">
 							<p th:if="${#fields.hasErrors('logradouro')}"
 								th:errorclass="text-danger"
 								th:errors="${enderecoDto.logradouro}"></p>
 						</div>
-					</div>
+						<div class="mb-3">
+							<label class="col-sm-4 col-form-label">Tipo de Logradouro</label>
+							<select class="form-select"
+								th:field="${enderecoDto.tipo_logradouro}" required>
+								<option value="">Selecione...</option>
+								<option value="Rua">Rua</option>
+								<option value="Avenida">Avenida</option>
+								<option value="Travessa">Travessa</option>
+								<option value="Alameda">Alameda</option>
+								<option value="Praça">Praça</option>
+								<option value="Estrada">Estrada</option>
+								<option value="Rodovia">Rodovia</option>
+							</select>
 
-					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">Tipo de Logradouro</label>
-						<div class="col-sm-8">
-							<input class="form-control"
-								th:field="${enderecoDto.tipo_logradouro}">
+
+
+
+
 							<p th:if="${#fields.hasErrors('tipo_logradouro')}"
 								th:errorclass="text-danger"
 								th:errors="${enderecoDto.tipo_logradouro}"></p>
 						</div>
-					</div>
-
-					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">Número do
-							Logradouro</label>
-						<div class="col-sm-8">
-							<input class="form-control"
+						<div class="mb-3">
+							<label class="col-sm-4 col-form-label">Número do
+								Logradouro</label> <input class="form-control"
 								th:field="${enderecoDto.logradouro_numero}">
 							<p th:if="${#fields.hasErrors('logradouro_numero')}"
 								th:errorclass="text-danger"
 								th:errors="${enderecoDto.logradouro_numero}"></p>
 						</div>
-					</div>
-
-					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">Complemento</label>
-						<div class="col-sm-8">
-							<input class="form-control" th:field="${enderecoDto.complemento}">
+						<div class="mb-3">
+							<label class="col-sm-4 col-form-label">Complemento</label> <input
+								class="form-control" th:field="${enderecoDto.complemento}">
 							<p th:if="${#fields.hasErrors('complemento')}"
 								th:errorclass="text-danger"
 								th:errors="${enderecoDto.complemento}"></p>
 						</div>
-					</div>
-
-					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">Bairro</label>
-						<div class="col-sm-8">
-							<input class="form-control" th:field="${enderecoDto.bairro}">
+						<div class="mb-3">
+							<label class="col-sm-4 col-form-label">Bairro</label> <input
+								class="form-control" th:field="${enderecoDto.bairro}">
 							<p th:if="${#fields.hasErrors('bairro')}"
 								th:errorclass="text-danger" th:errors="${enderecoDto.bairro}"></p>
 						</div>
-					</div>
-
-					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">Cidade</label>
-						<div class="col-sm-8">
-							<input class="form-control" th:field="${enderecoDto.cidade}">
+						<div class="mb-3">
+							<label class="col-sm-4 col-form-label">Cidade</label> <input
+								class="form-control" th:field="${enderecoDto.cidade}">
 							<p th:if="${#fields.hasErrors('cidade')}"
 								th:errorclass="text-danger" th:errors="${enderecoDto.cidade}"></p>
 						</div>
-					</div>
-
-					<div class="row mb-3">
-						<label class="col-sm-4 col-form-label">Estado</label>
-						<div class="col-sm-8">
-							<input class="form-control" th:field="${enderecoDto.estado}">
+						<div class="mb-3">
+							<label class="col-sm-4 col-form-label">Estado</label> <input
+								class="form-control" th:field="${enderecoDto.estado}">
 							<p th:if="${#fields.hasErrors('estado')}"
 								th:errorclass="text-danger" th:errors="${enderecoDto.estado}"></p>
 						</div>
-					</div>
-
-
-
-					<div class="row">
-						<div class="offset-sm-4 col-sm-4 d-grid">
-							<button type="submit" class="btn btn-primary">Send</button>
+						<div class="row mt-5">
+							<div class="col-md-12 d-grid">
+								<button type="submit" class="btn btn-success">Salvar
+									Endereço</button>
+							</div>
 						</div>
-						<div class="col-sm-4 d-grid">
-							<a class="btn btn-outline-primary" href="/enderecos"
-								role="button">Cancel</a>
-						</div>
-					</div>
-
-				</form>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
-
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"

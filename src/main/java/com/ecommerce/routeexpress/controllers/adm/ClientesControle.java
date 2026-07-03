@@ -55,7 +55,7 @@ public class ClientesControle {
 	public String createCliente(@Valid @ModelAttribute ClienteDto clienteDto, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 
-		if (result.hasErrors()) { // If any field is not filled in, stay on the CreateClient page
+		if (result.hasErrors()) { // Se algum campo não estiver preenchido, permaneça na página do CreateClient
 			return "clientes/CreateCliente";
 
 		}
@@ -107,10 +107,10 @@ public class ClientesControle {
 		try {
 			clienteService.updateCliente(id, clienteDto);
 		} catch (CpfJaExisteException e) {
-			redirectAttributes.addFlashAttribute("erro", "CPF already exists");
+			redirectAttributes.addFlashAttribute("erro", "CPF já está em uso");
 			return "redirect:/clientes/edit?id=" + id;
 		} catch (emailJaExisteException e) {
-			redirectAttributes.addFlashAttribute("erro", "Email already exists");
+			redirectAttributes.addFlashAttribute("erro", "Email já está em uso");
 			return "redirect:/clientes/edit?id=" + id;
 		}
 

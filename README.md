@@ -1,18 +1,18 @@
 # Route Express - E-commerce Back Office
+
 Administrative Back Office for an e-commerce platform built with Spring Boot, Spring Security, JPA/Hibernate and MySQL.
 
 
 ## Project Background
 
-
 This project was originally developed in 2015 as an academic e-commerce system.
 
 The application is designed using a layered architecture, separating controllers, services, and persistence logic. The focus is on backend robustness, data integrity, and maintainability. This project is a modern rewrite of an earlier academic e-commerce system, rebuilt to apply current backend technologies and cleaner architectural patterns.
 
-It now serves two distinct audiences from the same Spring Boot application: an administrative Back Office, rendered server-side with Thymeleaf and protected by session-based Spring Security, and a public/authenticated REST API, consumed by a separate Angular storefront, covering catalog browsing, shopping cart, customer accounts and JWT based authentication.
+It now serves two distinct audiences from the same Spring Boot application: an administrative Back Office, rendered server-side with Thymeleaf and protected by session-based Spring Security, and a public/authenticated REST API, consumed by a separate Angular storefront, covering catalog browsing, shopping cart, customer accounts, JWT-based authentication, and order management.
+
 
 ## Original Technologies (2015)
-
 
 - Java
 - JSP / Servlets
@@ -22,7 +22,6 @@ It now serves two distinct audiences from the same Spring Boot application: an a
 
 
 ## Modern Stack (Current Version)
-
 
 - Java 17
 - Spring Boot
@@ -37,10 +36,7 @@ It now serves two distinct audiences from the same Spring Boot application: an a
 
 ## Features
 
-
 Customer Management
-
-
 - Customer registration and maintenance.
 - Address management linked to customer accounts.
 - Wish list management.
@@ -49,8 +45,6 @@ Customer Management
 
 
 Beer Catalog Management
-
-
 - Brewery registration and management.
 - Beer registration and maintenance.
 - Inventory management.
@@ -58,35 +52,28 @@ Beer Catalog Management
 
 
 Customer Facing Catalog API
-
-
 - Paginated, filterable beer listing (GET /api/cervejas), automatically excluding products with no available stock.
 - Country filter (?pais=) and price sorting (?ordenarPreco=asc|desc), resolved through dedicated JPQL queries (see Technical Notes).
 - Full text search by name (GET /api/cervejas/buscar), supporting the same country/price filters.
 - Distinct country listing endpoint (GET /api/cervejas/paises) to populate storefront filters.
 - Product detail lookup by id.
+- Each catalog response includes the current stock quantity, allowing the storefront to enforce quantity limits in the cart UI in real time.
 
 
 Shopping Cart API
-
-
 - Guest friendly cart, identified by a client generated session UUID (no login required).
 - Add item, update quantity, remove item (/api/carrinho/**); decreasing quantity to zero automatically removes the item.
+- Cart response includes estoqueDisponivel per item, so the frontend can cap quantity increases at the real stock level without a separate API call.
 - Cart and cart item totals computed server side and returned through dedicated DTOs, never exposing JPA entities directly.
 - Cart merge on login (POST /api/carrinho/merge, authenticated): links the guest session cart to the now authenticated customer. If the customer has no cart yet, the guest cart is adopted as-is; if they already have one (e.g. from a previous login on another device), item quantities are summed into the existing cart and the guest cart record is discarded.
 
 
 Cart Maintenance
-
-
 - Scheduled job to automatically clean up abandoned guest carts after a configurable period of inactivity (default: 7 days).
 
 
 Account & E-mail Confirmation
-
 Two registration flows share the same token + e-mail infrastructure:
-
-
 - Admincreated customer: the admin registers the customer through the Back Office without a password. The system generates a one time token and e-mails the customer a link to set their password, where they also confirm their e-mail in the same step.
 - Customer self registration: the customer registers directly on the storefront, choosing their own password up front. The system e-mails a confirmation link that activates the account.
 - E-mail delivery is handled by a dedicated EmailService (Spring Mail), configured against a Mailtrap sandbox SMTP server for development/testing, with credentials supplied via environment variables (never committed to source control).
@@ -94,41 +81,42 @@ Two registration flows share the same token + e-mail infrastructure:
 
 
 Customer Authentication (JWT)
-
 - POST /api/clientes/login validates e-mail/password (BCrypt) and requires the account to have a confirmed e-mail before issuing a token.
 - Stateless JWT authentication, completely independent from the admin's session-based login: the two coexist in the same SecurityConfig without interfering with each other.
 - A JwtAuthenticationFilter validates the token on each request and populates the Spring Security context with the authenticated customer's id, without touching the database on every call.
-- GET /api/clientes/me is an authenticated-only endpoint used to confirm the filter correctly resolves the logged-in customer from the token.
-Unauthenticated requests to /api/** return a clean JSON 401 response instead of being redirected to the admin's HTML login page (see Technical Notes).
+- GET /api/clientes/me authenticated endpoint returning the logged-in customer's data.
+- Unauthenticated requests to /api/** return a clean JSON 401 response instead of being redirected to the admin HTML login page.
 
 
+Order Management (Checkout API)
+- POST /api/pedidos (authenticated): validates stock availability for every cart item before creating the order. Returns a clear error message per product if any item exceeds available stock.
+- On successful checkout:
+	- Creates a Pedido with a snapshot of the delivery address at the time of purchase (customer may change address later; the order always reflects what was used).
+	- Creates one ItemPedido per cart item with a snapshot of the product data at the time of purchase: name, brewery, unit price, image filename, and brewery id (for image URL resolution). This ensures order history remains accurate even if a product is later modified or removed from the catalog.
+	- Debits stock quantity for each item; automatically marks a product as unavailable if stock reaches zero.
+	- Sends an order confirmation e-mail to the customer, listing each item with quantity, unit price, subtotal, and the order total.
+	- Clears the cart.
+- GET /api/pedidos/meus-pedidos (authenticated): returns the customer's full order history, newest first, with all item snapshots and delivery address.
+	
 
 Data Integrity
-
-
 - Business rules enforced at the service layer.
 - Automatic cleanup of orphan records and uploaded files.
 - Relational entity management using JPA/Hibernate.
 - Response DTOs used throughout the customer facing API (catalog, cart, account) to avoid leaking JPA entities and, in particular, to avoid ever serializing password fields back to the client.
 
 
-
 Security & Authentication
-
-
 - Admin access protected with Spring Security.
 - Predefined master administrator account.
 - Mandatory password change on first login.
 - Session timeout protection for inactive users.
 - Password hashing using BCrypt applied to admin users, and to customer passwords from the moment a customer sets/confirms their own password.
 - Role based access control (ADMIN / OPERATOR).
-- Public, unauthenticated access explicitly scoped to customer facing routes (catalog, cart, registration/confirmation endpoints), kept separate from the admin's session protected routes.
-
+- Public endpoints explicitly scoped (catalog, cart, registration/confirmation/login), admin routes session-protected, customer account/order routes JWT-protected.
 
 
 Technical Features
-
-
 - Layered architecture (Controller, Service, Repository).
 - JPA/Hibernate entity relationships.
 - Multipart image upload support.
@@ -138,24 +126,40 @@ Technical Features
 
 ## Architecture
 ```text
-┌─────────────┐
-│ Controllers │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│  Services   │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│Repositories │
-└──────┬──────┘
-       │
-       ▼
-┌─────────────┐
-│    MySQL    │
-└─────────────┘
+                    ┌─────────────────────────────────────────┐
+                    │            Angular Storefront           │
+                    │         (http://localhost:4200)         │
+                    └───────────────────┬─────────────────────┘
+                                        │ REST (JSON)
+                                        │ JWT via Authorization header
+                    ┌───────────────────|─────────────────────┐
+                    │           Admin Back Office             │
+                    │         (Thymeleaf, session auth)       │
+                    └───────────────────┬─────────────────────┘
+                                        │
+                    ┌───────────────────|─────────────────────┐
+                    │              Controllers                │
+                    │  ┌──────────────┐  ┌──────────────────┐ │
+                    │  │  Adm (MVC)   │  │  Cliente (REST)  │ │
+                    │  └──────────────┘  └──────────────────┘ │
+                    └───────────────────┬─────────────────────┘
+                                        │
+                    ┌───────────────────|─────────────────────┐
+                    │                Services                 │
+                    │  Business rules, DTOs, token logic,     │
+                    │  checkout, stock management             │
+                    └───────┬───────────────────┬─────────────┘
+                            │                   │
+             ┌──────────────|──────┐   ┌────────|──────────────┐
+             │    Repositories     │   │   External Services   │
+             │   (Spring Data JPA) │   │  ┌──────────────────┐ │
+             └──────────┬──────────┘   │  │  Spring Mail     │ │
+                        │              │  │  (Mailtrap SMTP) │ │
+             ┌──────────|──────────┐   │  └──────────────────┘ │
+             │        MySQL        │   │  ┌──────────────────┐ │
+             └─────────────────────┘   │  │  JWT (jjwt)      │ │
+                                       │  └──────────────────┘ │
+                                       └───────────────────────┘
 ```
 
 
@@ -166,7 +170,6 @@ Technical Features
 
 
 ## Technical Notes
-
 
 1) During development, multipart file uploads required explicit Tomcat configuration due to changes in Spring Boot security defaults. The following property was added:
 
@@ -199,25 +202,25 @@ server.tomcat.max-part-count=30
 
 10) API friendly 401 responses. By default, Spring Security's formLogin configuration redirects any unauthenticated request including REST API calls to the admin's HTML login page. A custom AuthenticationEntryPoint now inspects the request path: requests to /api/** receive a clean JSON 401 body instead of an HTML redirect, while admin routes keep their original redirect to login behavior.
 
+11) Order data snapshots. ItemPedido stores a snapshot of the product name, brewery name, unit price, image filename, and brewery id at the time of purchase. This ensures order history remains accurate years later, even if a product is renamed, repriced, or removed from the catalog.
+
+12) Automatic stock management on checkout. After a successful order, the checkout service debits the purchased quantity from each product's stock record and automatically sets disponibilidade = false if the quantity reaches zero. Admin can also toggle availability manually at any time (e.g. to temporarily hide a product).
 
 
 ## Known Limitations / Roadmap
 
-
 - Token expiration: confirmation/password setup tokens are single use (cleared on consumption) but do not yet expire on a timer. A dataCriacao + expiry check is a planned improvement.
-- Query duplication described above, pending a Criteria API refactor.
-- Multi device guest cart edge case: if a customer is logged in simultaneously on two devices and adds items as a guest on a third before logging in there too, the merge correctly reconciles carts at login time, but a stale sessionId left in a device's localStorage after a merge could create a fresh, empty guest cart if that device keeps browsing without refreshing. Acceptable for the current scope; a future improvement would re-sync the session id after a merge.
+- Stock reservation (race condition): stock is only validated at checkout time, not when items are added to the cart. Two customers could theoretically add the last unit simultaneously. The second to check out would receive a stock error. 
+- Payment: checkout currently marks orders as CONFIRMADO immediately (simulated payment). Integration with a payment provider is planned.
 - JWT refresh / revocation: the current token has a fixed expiration (7 days) and no refresh-token or blacklist mechanism.
 
 
 ## Author
 
-
 Developed by Daniel Arantes Telles
 
 
 ## License
-
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 

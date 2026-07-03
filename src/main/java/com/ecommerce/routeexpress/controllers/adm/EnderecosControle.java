@@ -84,6 +84,8 @@ public class EnderecosControle {
 		EnderecoDto enderecoDto = enderecoService.mapToDto(endereco);
 		model.addAttribute("enderecoDto", enderecoDto);
 
+		model.addAttribute("clienteId", endereco.getCliente().getId());
+
 		return "enderecos/EditEndereco";
 	}
 

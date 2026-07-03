@@ -12,14 +12,17 @@ public class CarrinhoItemDto {
 	private double preco;
 	private int quantidade;
 	private double subtotal;
+	private int estoqueDisponivel;
 
-	public CarrinhoItemDto(Long itemId, int cervejaId, String rotulo, double preco, int quantidade) {
+	public CarrinhoItemDto(Long itemId, int cervejaId, String rotulo, double preco, int quantidade,
+			int estoqueDisponivel) {
 		this.itemId = itemId;
 		this.cervejaId = cervejaId;
 		this.rotulo = rotulo;
 		this.preco = preco;
 		this.quantidade = quantidade;
 		this.subtotal = preco * quantidade;
+		this.estoqueDisponivel = estoqueDisponivel;
 	}
 
 	// getters
@@ -45,5 +48,9 @@ public class CarrinhoItemDto {
 
 	public double getSubtotal() {
 		return subtotal;
+	}
+
+	public int getEstoqueDisponivel() {
+		return estoqueDisponivel;
 	}
 }

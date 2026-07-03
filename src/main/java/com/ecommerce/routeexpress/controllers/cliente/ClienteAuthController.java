@@ -1,10 +1,13 @@
 package com.ecommerce.routeexpress.controllers.cliente;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ecommerce.routeexpress.dto.ClienteDto;
+import com.ecommerce.routeexpress.services.ClientesRepositorio;
 import com.ecommerce.routeexpress.services.database.ClienteService;
 
 import org.springframework.security.core.Authentication;
@@ -22,6 +25,9 @@ public class ClienteAuthController {
 
 	@Autowired
 	private ClienteService service;
+
+	@Autowired
+	private ClientesRepositorio clientesRepositorio;
 
 	@PostMapping("/definir-senha")
 	public String definirSenha(@RequestParam String token, @RequestParam String novaSenha) {
@@ -56,5 +62,17 @@ public class ClienteAuthController {
 		}
 
 		return ResponseEntity.ok(service.buscarClienteLogado(clienteId));
+	}
+
+	@GetMapping("/verificar-cpf")
+	public Map<String, Boolean> verificarCpf(@RequestParam String cpf) {
+		boolean existe = clientesRepositorio.existsByCpfIgnoreCase(cpf);
+		return Map.of("disponivel", !existe);
+	}
+
+	@GetMapping("/verificar-email")
+	public Map<String, Boolean> verificarEmail(@RequestParam String email) {
+		boolean existe = clientesRepositorio.existsByEmailIgnoreCase(email);
+		return Map.of("disponivel", !existe);
 	}
 }
