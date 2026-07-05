@@ -1,6 +1,7 @@
 package com.ecommerce.routeexpress.dto;
 
 import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
@@ -24,6 +25,7 @@ public class ClienteDto {
 	@NotEmpty(message = "O Campo CPF é obrigatório")
 	private String cpf;
 
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String senha;
 
 	@NotEmpty(message = "O campo Gênero é obrigatório")

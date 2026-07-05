@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ecommerce.routeexpress.dto.ClienteDto;
+import com.ecommerce.routeexpress.exceptions.emailJaExisteException;
 import com.ecommerce.routeexpress.services.ClientesRepositorio;
 import com.ecommerce.routeexpress.services.database.ClienteService;
 
@@ -53,17 +54,6 @@ public class ClienteAuthController {
 
 	}
 
-	@GetMapping("/me")
-	public ResponseEntity<?> me() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-		if (auth == null || !(auth.getPrincipal() instanceof Integer clienteId)) {
-			return ResponseEntity.status(401).body("Não autenticado");
-		}
-
-		return ResponseEntity.ok(service.buscarClienteLogado(clienteId));
-	}
-
 	@GetMapping("/verificar-cpf")
 	public Map<String, Boolean> verificarCpf(@RequestParam String cpf) {
 		boolean existe = clientesRepositorio.existsByCpfIgnoreCase(cpf);
@@ -74,5 +64,27 @@ public class ClienteAuthController {
 	public Map<String, Boolean> verificarEmail(@RequestParam String email) {
 		boolean existe = clientesRepositorio.existsByEmailIgnoreCase(email);
 		return Map.of("disponivel", !existe);
+	}
+
+	@GetMapping("/me")
+	public ResponseEntity<?> me() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || !(auth.getPrincipal() instanceof Integer clienteId)) {
+			return ResponseEntity.status(401).body("Não autenticado");
+		}
+		return ResponseEntity.ok(service.buscarPerfil(clienteId));
+	}
+
+	@PutMapping("/me")
+	public ResponseEntity<?> editarPerfil(@RequestBody ClienteDto dto) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || !(auth.getPrincipal() instanceof Integer clienteId)) {
+			return ResponseEntity.status(401).body("Não autenticado");
+		}
+		try {
+			return ResponseEntity.ok(service.editarPerfil(clienteId, dto));
+		} catch (emailJaExisteException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 }

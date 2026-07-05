@@ -42,6 +42,12 @@ Customer Management
 - Wish list management.
 - Automatic cleanup of related records when a customer is removed.
 - Admin created customers receive an e-mail with a one time link to set their initial password and confirm their account (see Account & E-mail Confirmation below).
+- Customer profile endpoint (GET /api/clientes/me) returning all personal 
+  data except password.
+- Customer self service profile editing (PUT /api/clientes/me): name, 
+  e-mail, phone, date of birth and gender. E-mail uniqueness is validated 
+  before saving. Password field marked as write-only on the DTO 
+  (@JsonProperty WRITE_ONLY) so it is never serialized in any API response.
 
 
 Beer Catalog Management
@@ -58,6 +64,10 @@ Customer Facing Catalog API
 - Distinct country listing endpoint (GET /api/cervejas/paises) to populate storefront filters.
 - Product detail lookup by id.
 - Each catalog response includes the current stock quantity, allowing the storefront to enforce quantity limits in the cart UI in real time.
+- Wishlist API (/api/lista-desejos/**), authenticated: list items, 
+  add/remove by beer id, check if a specific beer is already in the list. 
+  Each item includes availability status so the storefront can disable 
+  "Add to Cart" for out-of-stock wishlist entries.
 
 
 Shopping Cart API
@@ -205,6 +215,8 @@ server.tomcat.max-part-count=30
 11) Order data snapshots. ItemPedido stores a snapshot of the product name, brewery name, unit price, image filename, and brewery id at the time of purchase. This ensures order history remains accurate years later, even if a product is renamed, repriced, or removed from the catalog.
 
 12) Automatic stock management on checkout. After a successful order, the checkout service debits the purchased quantity from each product's stock record and automatically sets disponibilidade = false if the quantity reaches zero. Admin can also toggle availability manually at any time (e.g. to temporarily hide a product).
+
+13) Password field write only on ClienteDto. The shared DTO used for customer input (registration, admin edits) also serves as the profile response shape. To prevent the BCrypt hash from leaking in any API response, the senha field is annotated with @JsonProperty(access = WRITE_ONLY) accepted on input, never serialized on output, regardless of which endpoint uses the DTO.
 
 
 ## Known Limitations / Roadmap

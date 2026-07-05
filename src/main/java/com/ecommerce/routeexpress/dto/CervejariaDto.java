@@ -9,10 +9,10 @@ import jakarta.validation.constraints.NotEmpty;
 
 public class CervejariaDto {
 
-	@NotEmpty(message = "The Cervejaria is required")
+	@NotEmpty(message = "O campo Cervejaria é obrigatório")
 	private String cervejaria;
 
-	@NotEmpty(message = "The Pais is required")
+	@NotEmpty(message = "O campo Pais é obrigatório")
 	private String pais;
 
 	public String getCervejaria() {

@@ -11,28 +11,28 @@ import jakarta.validation.constraints.NotEmpty;
 
 public class CervejaDto {
 
-	@NotEmpty(message = "The rotulo is required")
+	@NotEmpty(message = "O campo Rótulo é obrigatório")
 	private String rotulo;
 
-	@NotEmpty(message = "The volume is required")
+	@NotEmpty(message = "O campo Volume é obrigatório")
 	private String volume;
 
-	@NotEmpty(message = "The teor is required")
+	@NotEmpty(message = "O campo Teor é obrigatório")
 	private String teor;
 
-	@NotEmpty(message = "The cor is required")
+	@NotEmpty(message = "O campo Cor é obrigatório")
 	private String cor;
 
-	@NotEmpty(message = "The temperatura is required")
+	@NotEmpty(message = "O campo Temperatura é obrigatório")
 	private String temperatura;
 
-	@NotEmpty(message = "The familia_e_estilo is required")
+	@NotEmpty(message = "O campo Família e Estilo é obrigatório")
 	private String familia_e_estilo;
 
-	@NotEmpty(message = "The descricao is required")
+	@NotEmpty(message = "O campo Descrição é obrigatório")
 	private String descricao;
 
-	@NotEmpty(message = "The sabor is required")
+	@NotEmpty(message = "O campo Sabor é obrigatório")
 	private String sabor;
 
 	private MultipartFile imagem_1;

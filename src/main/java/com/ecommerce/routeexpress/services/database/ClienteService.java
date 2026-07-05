@@ -166,7 +166,6 @@ public class ClienteService {
 		clientedto.setEmail(cliente.getEmail());
 		clientedto.setFirst_name(cliente.getFirst_name());
 		clientedto.setLast_name(cliente.getLast_name());
-		clientedto.setSenha(cliente.getSenha());
 		clientedto.setSexo(cliente.getSexo());
 		clientedto.setTelefone(cliente.getTelefone());
 
@@ -197,6 +196,35 @@ public class ClienteService {
 				.orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
 		return Map.of("id", cliente.getId(), "nome", cliente.getFirst_name(), "email", cliente.getEmail());
+	}
+
+	public ClienteDto buscarPerfil(int clienteId) {
+		Cliente cliente = clientesRepositorio.findById(clienteId)
+				.orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+		return mapToDto(cliente); // já existe no seu service!
+	}
+
+	public ClienteDto editarPerfil(int clienteId, ClienteDto dto) {
+		Cliente cliente = clientesRepositorio.findById(clienteId)
+				.orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+		// valida e-mail se foi alterado
+		if (!cliente.getEmail().equalsIgnoreCase(dto.getEmail())) {
+			if (clientesRepositorio.existsByEmailIgnoreCaseAndIdNot(dto.getEmail(), clienteId)) {
+				throw new emailJaExisteException("Este e-mail já está em uso.");
+			}
+		}
+
+		cliente.setFirst_name(dto.getFirst_name());
+		cliente.setLast_name(dto.getLast_name());
+		cliente.setEmail(dto.getEmail());
+		cliente.setTelefone(dto.getTelefone());
+		cliente.setSexo(dto.getSexo());
+		cliente.setData_nascimento(dto.getData_nascimento());
+		// CPF e senha não são atualizados aqui
+
+		clientesRepositorio.save(cliente);
+		return mapToDto(cliente);
 	}
 
 }
