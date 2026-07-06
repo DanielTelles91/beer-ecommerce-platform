@@ -18,7 +18,7 @@ import com.ecommerce.routeexpress.models.Cerveja;
  */
 
 @Service
-@Profile("prod") // ativa só em produção
+@Profile("prod")
 public class CloudinaryImageStorageService implements IImageStorageService {
 
 	@Autowired

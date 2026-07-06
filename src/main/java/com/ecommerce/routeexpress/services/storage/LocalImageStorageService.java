@@ -20,7 +20,7 @@ import com.ecommerce.routeexpress.models.Cerveja;
  */
 
 @Service
-@Profile("!prod") 
+@Profile("dev") 
 public class LocalImageStorageService implements IImageStorageService {
 
 	public void apagaPastaImagem(int id) {
