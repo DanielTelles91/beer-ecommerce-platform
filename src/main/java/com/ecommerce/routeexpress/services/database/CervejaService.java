@@ -11,7 +11,6 @@ import com.ecommerce.routeexpress.models.Cervejaria;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
 import com.ecommerce.routeexpress.services.CervejasRepositorio;
 import com.ecommerce.routeexpress.services.storage.IImageStorageService;
-import com.ecommerce.routeexpress.services.storage.LocalImageStorageService;
 
 /**
  *

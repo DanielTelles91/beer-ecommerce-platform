@@ -48,14 +48,24 @@ public class CloudinaryImageStorageService implements IImageStorageService {
 		apagarArquivo(cervejariaId, cerveja.getImagem_3());
 	}
 
-	private void apagarArquivo(int cervejariaId, String publicId) {
-		if (publicId == null || publicId.isBlank())
+	private void apagarArquivo(int cervejariaId, String nomeArquivo) {
+
+		if (nomeArquivo == null || nomeArquivo.isBlank())
 			return;
+
 		try {
-			cloudinary.uploader().destroy(pasta(cervejariaId) + "/" + publicId, ObjectUtils.emptyMap());
+
+			String semExtensao = nomeArquivo.contains(".") ? nomeArquivo.substring(0, nomeArquivo.lastIndexOf('.'))
+					: nomeArquivo;
+
+			cloudinary.uploader().destroy(pasta(cervejariaId) + "/" + semExtensao, ObjectUtils.emptyMap());
+
 		} catch (Exception e) {
-			System.out.println("Erro ao apagar arquivo Cloudinary: " + publicId);
+
+			System.out.println("Erro ao apagar arquivo Cloudinary: " + nomeArquivo);
+
 		}
+
 	}
 
 	@Override
@@ -89,16 +99,31 @@ public class CloudinaryImageStorageService implements IImageStorageService {
 		return imagensSalvas;
 	}
 
-	private String uploadImagem(MultipartFile img, int cervejariaId) {
+	private String uploadImagem(MultipartFile img, int cervejariaId) { //
+
 		try {
-			Map<?, ?> resultado = cloudinary.uploader().upload(img.getBytes(), ObjectUtils.asMap("folder",
-					pasta(cervejariaId), "public_id",
-					System.currentTimeMillis() + "_" + img.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_")));
-			String publicId = (String) resultado.get("public_id");
-			return publicId.replace(pasta(cervejariaId) + "/", "");
+
+			String nomeOriginal = img.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_");
+
+			String semExtensao = nomeOriginal.contains(".") ? nomeOriginal.substring(0, nomeOriginal.lastIndexOf('.'))
+					: nomeOriginal;
+
+			String publicId = System.currentTimeMillis() + "_" + semExtensao;
+
+			Map<?, ?> resultado = cloudinary.uploader().upload(img.getBytes(),
+					ObjectUtils.asMap("folder", pasta(cervejariaId), "public_id", publicId));
+
+			// pega somente o nome da imagem
+			String idCompleto = (String) resultado.get("public_id");
+
+			return idCompleto.replace(pasta(cervejariaId) + "/", "") + "." + resultado.get("format");
+
 		} catch (Exception e) {
+
 			System.out.println("Erro ao fazer upload Cloudinary: " + e.getMessage());
 			return null;
+
 		}
+
 	}
 }
