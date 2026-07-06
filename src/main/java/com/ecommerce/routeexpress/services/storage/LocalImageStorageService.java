@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +20,8 @@ import com.ecommerce.routeexpress.models.Cerveja;
  */
 
 @Service
-public class ImageStorageService {
+@Profile("!prod") 
+public class LocalImageStorageService implements IImageStorageService {
 
 	public void apagaPastaImagem(int id) {
 

@@ -10,7 +10,7 @@ import com.ecommerce.routeexpress.models.Cerveja;
 import com.ecommerce.routeexpress.models.Cervejaria;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
 import com.ecommerce.routeexpress.services.CervejasRepositorio;
-import com.ecommerce.routeexpress.services.storage.ImageStorageService;
+import com.ecommerce.routeexpress.services.storage.LocalImageStorageService;
 
 /**
  *
@@ -22,7 +22,7 @@ import com.ecommerce.routeexpress.services.storage.ImageStorageService;
 public class CervejaService {
 
 	@Autowired
-	private ImageStorageService imageStorageService;
+	private LocalImageStorageService imageStorageService;
 
 	@Autowired
 	private CervejariasRepositorio cervejariaRepo;

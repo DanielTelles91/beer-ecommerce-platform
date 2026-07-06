@@ -18,7 +18,8 @@ import com.ecommerce.routeexpress.exceptions.CervejaJaExisteException;
 import com.ecommerce.routeexpress.models.Cervejaria;
 import com.ecommerce.routeexpress.services.CervejariasRepositorio;
 import com.ecommerce.routeexpress.services.database.CervejariaService;
-import com.ecommerce.routeexpress.services.storage.ImageStorageService;
+import com.ecommerce.routeexpress.services.storage.IImageStorageService;
+
 
 import jakarta.validation.Valid;
 
@@ -35,7 +36,7 @@ public class CervejariasControle {
 	private CervejariasRepositorio repo;
 
 	@Autowired
-	private ImageStorageService imageStorageService;
+	private IImageStorageService imageStorageService;
 
 	@Autowired
 	private CervejariaService cervejariaService;
