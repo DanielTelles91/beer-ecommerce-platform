@@ -55,7 +55,7 @@ public class SecurityConfig {
 				.requestMatchers("/", "/index.html", "/clientes/**", "/api/cervejas/**", "/api/carrinho/**",
 						"/api/clientes/definir-senha", "/api/clientes/cadastro", "/api/clientes/confirmar-email",
 						"/api/clientes/login", "/api/clientes/verificar-cpf", "/api/clientes/verificar-email",
-						"/uploads/**", "/produtos/**", "/register", "/login_adm/**")
+						"/uploads/**", "/produtos/**", "/register", "/login_adm/**", "/css/**")
 				.permitAll().requestMatchers("/adm/**").hasRole("MASTER").requestMatchers("/operator/**")
 				.hasAnyRole("MASTER", "OPERATOR").anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/adm/telaLogin").loginProcessingUrl("/adm")

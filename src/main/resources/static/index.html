@@ -1,22 +1,146 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Route Express</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Route Express Beer</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-	crossorigin="anonymous">
+	rel="stylesheet">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/index.css" th:href="@{/css/index.css}">
 </head>
-<body class="bg-dark text-light">
-	<div class="container">
-		<h1 class="text-center my-4"></h1>
+<body>
+	<div class="wrap">
+
+
+		<div class="eyebrow">Bem-vindo ao</div>
+		<h1>
+			ROUTE <span class="accent">EXPRESS</span> BEER
+		</h1>
+		<p class="subtitle">Plataforma completa de e-commerce de cervejas</p>
+		<p class="description">Projeto Full Stack desenvolvido para
+			demonstrar habilidades em Java, Spring Boot, Angular, MySQL, JWT e
+			deploy em nuvem.</p>
+
+		<div class="cards">
+			<div class="card admin">
+				<div class="icon-circle">
+					<i class="bi bi-speedometer2"></i>
+				</div>
+				<h2>BACKOFFICE ADMINISTRATIVO</h2>
+				<p class="card-sub">Painel completo para gestão da plataforma</p>
+				<ul class="feature-list">
+					<li>Login de administradores</li>
+					<li>Gestão de produtos</li>
+					<li>Gestão de pedidos</li>
+					<li>Dashboard e relatórios</li>
+					<li>Controle de estoque</li>
+					<li>Gerenciamento de clientes</li>
+				</ul>
+				<a class="btn btn-admin" th:href="@{/adm/telaLogin}"
+					href="/adm/telaLogin"> ACESSAR BACKOFFICE <small>/adm/telaLogin</small>
+				</a>
+			</div>
+
+			<div class="card store">
+				<div class="icon-circle">
+					<i class="bi bi-cart-fill"></i>
+				</div>
+				<h2>LOJA DO CONSUMIDOR</h2>
+				<p class="card-sub">Experiência completa de compra</p>
+				<ul class="feature-list">
+					<li>Cadastro de clientes</li>
+					<li>Login seguro</li>
+					<li>Lista de desejos</li>
+					<li>Carrinho de compras</li>
+					<li>Checkout seguro</li>
+					<li>Histórico de pedidos</li>
+				</ul>
+				<a class="btn btn-store" href=" "> ACESSAR LOJA (Em construção)
+					<small>Loja do consumidor (Angular)</small>
+				</a>
+			</div>
+		</div>
+
+		<div class="tech-section">
+			<div class="tech-title">Tecnologias utilizadas</div>
+			<div class="tech-grid">
+				<div class="tech-item">
+					<i class="bi bi-cup-hot-fill glyph"></i> Java
+				</div>
+
+				<div class="tech-item">
+					<i class="bi bi-flower1 glyph"></i> Spring Boot
+				</div>
+
+				<div class="tech-item">
+					<i class="bi bi-shield-lock-fill glyph"></i> Spring Security
+				</div>
+
+				<div class="tech-item">
+					<i class="bi bi-key-fill glyph"></i> JWT
+				</div>
+
+				<div class="tech-item">
+					<i class="bi bi-triangle-fill glyph"></i> Angular
+				</div>
+
+				<div class="tech-item">
+					<i class="bi bi-database-fill glyph"></i> MySQL
+				</div>
+
+
+				<div class="tech-item">
+					<i class="bi bi-cloud-fill glyph"></i> Render
+				</div>
+
+				<div class="tech-item">
+					<i class="bi bi-database-fill-gear glyph"></i> Aiven
+
+				</div>
+			</div>
+		</div>
+
+		<div class="footer-grid">
+			<div class="footer-box">
+				<h3>
+					<i class="bi bi-beer-mug-fill me-2"></i> SOBRE O PROJETO
+				</h3>
+				<p>O Route Express Beer é uma plataforma completa de e-commerce
+					de cervejas. O projeto foi desenvolvido com foco em boas práticas,
+					segurança, performance e experiência do usuário.</p>
+			</div>
+			<div class="footer-box">
+				<h3>
+					<i class="bi bi-code-slash me-2"></i> CÓDIGO-FONTE
+				</h3>
+				<p>Confira o repositório do projeto no GitHub e acompanhe as
+					atualizações.</p>
+				<a class="gh-btn" href="https://github.com/DanielTelles91"
+					target="_blank" rel="noopener"> <i class="bi bi-github me-2"></i>
+					VER NO GITHUB
+				</a>
+			</div>
+			<div class="footer-box">
+				<h3>
+					<i class="bi bi-person-circle me-2"></i> DESENVOLVEDOR
+				</h3>
+				<p>
+					Desenvolvido por <strong>Daniel Arantes Telles</strong><br>Apaixonado
+					por tecnologia e por criar soluções que fazem a diferença.
+				</p>
+
+			</div>
+		</div>
+
+		<div class="site-footer">© 2026 Route Express Beer ·
+			Todos os direitos reservados · Feito por Daniel Arantes
+			Telles</div>
+
 	</div>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-		crossorigin="anonymous"></script>
 </body>
 </html>
