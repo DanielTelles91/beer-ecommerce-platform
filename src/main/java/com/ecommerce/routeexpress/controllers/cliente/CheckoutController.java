@@ -18,7 +18,7 @@ import com.ecommerce.routeexpress.services.database.CheckoutService;
 
 @RestController
 @RequestMapping("/api/pedidos")
-@CrossOrigin(origins = { "http://localhost:4200", "http://192.168.1.131:4200" })
+//@CrossOrigin(origins = { "http://localhost:4200", "http://192.168.1.131:4200" })
 public class CheckoutController {
 
 	@Autowired

@@ -1,92 +1,198 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Route Express - Back Office</title>
+
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+	rel="stylesheet">
+
+<link rel="stylesheet" th:href="@{/css/telaInicialAdm.css}">
 </head>
-<body class="bg-dark text-light">
-	<!-- Navbar --->
+
+<body class="text-light">
+
+	<!-- NAVBAR -->
 	<nav
-		class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary">
-		<div class="container-fluid">
-			<a class="navbar-brand fw-bold" href="#"> Route Express Back
-				Office </a>
+		class="navbar navbar-expand-lg navbar-dark glass border-bottom border-secondary">
+		<div class="container-fluid px-4">
+
+			<a class="navbar-brand fw-bold" href="/adm/telaInicialAdm"> Route
+				Express <span class="text-success">Back Office</span>
+			</a>
+
 			<button class="navbar-toggler" type="button"
-				data-bs-toggle="collapse" data-bs-target="#navbarNav">
+				data-bs-toggle="collapse" data-bs-target="#nav">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<!-- Menu -->
-				<ul class="navbar-nav me-auto">
-					<li class="nav-item"><a class="nav-link" href="/clientes">Clientes</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="/cervejarias">Cervejarias</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="/cervejas">Cervejas</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="/estoque">Estoque</a>
-					</li>
+
+			<div class="collapse navbar-collapse" id="nav">
+
+				<ul class="navbar-nav me-auto gap-2">
+					<li><a class="nav-link" href="/clientes">Clientes</a></li>
+					<li><a class="nav-link" href="/cervejarias">Cervejarias</a></li>
+					<li><a class="nav-link" href="/cervejas">Cervejas</a></li>
+					<li><a class="nav-link" href="/estoque">Estoque</a></li>
+					<li><a class="nav-link" href="/pedidos">Pedidos</a></li>
 				</ul>
-				<!-- Usuário -->
+
 				<div class="dropdown">
-					<a class="btn btn-outline-light dropdown-toggle" href="#"
-						role="button" data-bs-toggle="dropdown"> Bem-vindo, <strong
-						th:text="${usuario.nome}">Admin</strong>
+					<a class="btn btn-outline-light btn-sm dropdown-toggle"
+						data-bs-toggle="dropdown"> <i class="bi bi-person-circle me-1"></i>
+						<span th:text="${usuario.nome}">Admin</span>
 					</a>
+
 					<ul class="dropdown-menu dropdown-menu-end">
-						<li><a class="dropdown-item" href="/adm/mudar-senha">
-								Trocar Senha </a></li>
-						<li>
-							<hr class="dropdown-divider">
-						</li>
-						<li><a class="dropdown-item text-danger" href="/logout">
-								Logout </a></li>
+						<li><a class="dropdown-item" href="/adm/mudar-senha">Trocar
+								senha</a></li>
+						<li><hr class="dropdown-divider"></li>
+						<li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
 					</ul>
 				</div>
+
 			</div>
 		</div>
 	</nav>
-	<!-- Conteúdo Principal -->
-	<div class="container mt-5 text-center">
-		<h1 class="display-5">Tela Inicial ADM</h1>
-		<p class="lead text-secondary">Painel administrativo do sistema
-			Route Express</p>
-		<div class="col-md-6">
-			<div class="card text-center">
-				<div class="card-body">
-					<h5 class="card-title">Status do Frontend Angular</h5>
-					<p th:if="${angularOnline}">
-						<img src="/img/online.png" width="42" alt="Online"> <span
-							class="text-success fw-bold">Site ONLINE</span>
-					</p>
-					<p th:unless="${angularOnline}">
-						<img src="/img/offline.png" width="42" alt="Offline"> <span
-							class="text-danger fw-bold">Site OFFLINE</span>
-					</p>
+
+	<!-- CONTAINER -->
+	<div class="container-fluid px-4 py-4">
+
+		<!-- HEADER -->
+		<div class="d-flex justify-content-between align-items-center mb-4">
+
+			<div>
+				<h4 class="mb-0 fw-bold">Dashboard</h4>
+				<small class="text-muted">Visão geral do sistema</small>
+			</div>
+
+			<form method="get" action="/adm/telaInicialAdm"
+				class="d-flex align-items-center gap-2">
+				<span class="text-muted small">Ano:</span> <select name="ano"
+					class="form-select form-select-sm bg-dark text-light border-secondary"
+					onchange="this.form.submit()">
+
+					<option th:each="a : ${anos}" th:value="${a}" th:text="${a}"
+						th:selected="${a == anoSelecionado}"></option>
+
+				</select>
+			</form>
+
+		</div>
+
+		<!-- RESUMO -->
+		<div class="mb-2 section-title text-muted">RESUMO DO SISTEMA</div>
+
+		<div class="row g-3 mb-4">
+
+			<!-- STATUS -->
+			<div class="col-12 col-md-3">
+				<div class="card glass p-3 text-center h-100">
+					<h6 class="text-muted small">Frontend Angular</h6>
+
+					<div th:if="${angularOnline}" class="text-success fw-bold">
+						🟢 Online</div>
+					<div th:unless="${angularOnline}" class="text-danger fw-bold">
+						🔴 Offline</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="card text-center">
-				<div class="card-body">
-					<h5 class="card-title">Banco MySQL</h5>
-					<p th:if="${mysqlOnline}">
-						<img src="/img/online.png" width="42" alt="Online"> <span
-							class="text-success fw-bold">BD ONLINE</span>
-					</p>
-					<p th:unless="${mysqlOnline}">
-						<img src="/img/offline.png" width="42" alt="Offline"> <span
-							class="text-danger fw-bold">BD OFFLINE</span>
-					</p>
+
+			<div class="col-12 col-md-3">
+				<div class="card glass p-3 text-center h-100">
+					<h6 class="text-muted small">MySQL</h6>
+
+					<div th:if="${mysqlOnline}" class="text-success fw-bold">🟢
+						Online</div>
+					<div th:unless="${mysqlOnline}" class="text-danger fw-bold">
+						🔴 Offline</div>
 				</div>
 			</div>
+
+			<!-- MÉTRICAS -->
+			<div class="col-12 col-md-3">
+				<div class="card glass p-3 h-100">
+					<h6 class="text-muted small text-center">Vendas no ano</h6>
+
+					<div class="text-center metric-value text-success"
+						th:text="${'R$ ' + #numbers.formatDecimal(dashboard.totalVendasAno, 1, 'POINT', 2, 'COMMA')}">
+					</div>
+
+					<div class="text-center text-muted small"
+						th:text="${dashboard.totalPedidosAno + ' pedidos'}"></div>
+				</div>
+			</div>
+
+			<div class="col-12 col-md-3">
+				<div class="card glass p-3 h-100">
+					<h6 class="text-muted small text-center">Ticket médio</h6>
+
+					<div class="text-center metric-value text-info"
+						th:text="${'R$ ' + #numbers.formatDecimal(dashboard.ticketMedio, 1, 'POINT', 2, 'COMMA')}">
+					</div>
+
+					<div class="text-center text-muted small"
+						th:text="${dashboard.totalClientes + ' clientes'}"></div>
+				</div>
+			</div>
+
 		</div>
+
+		<!-- CHARTS -->
+		<div class="mb-2 section-title text-muted">
+			ANÁLISE DE VENDAS — <span th:text="${anoSelecionado}"></span>
+		</div>
+
+		<div class="row g-3">
+
+			<div class="col-lg-6">
+				<div class="card glass p-3 h-100">
+					<h6 class="text-muted small">Vendas por mês</h6>
+					<canvas id="graficoVendas"></canvas>
+				</div>
+			</div>
+
+			<div class="col-lg-3">
+				<div class="card glass p-3 h-100">
+					<h6 class="text-muted small">Top cervejas</h6>
+					<canvas id="graficoTop5"></canvas>
+				</div>
+			</div>
+
+			<div class="col-lg-3">
+				<div class="card glass p-3 h-100">
+					<h6 class="text-muted small">Status pedidos</h6>
+					<canvas id="graficoStatus"></canvas>
+
+					<div class="text-center mt-2">
+						<a href="/pedidos" class="btn btn-sm btn-outline-light">
+							Ver pedidos → </a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
 	</div>
+
+	<!-- SCRIPTS -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Chart.js -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+	<script src="/js/telaInicialAdm.js"></script>
+	<script th:inline="javascript">
+		window.dashboardData = {
+			vendasPorMes : /*[[${dashboard.vendasPorMes}]]*/[],
+			topCervejas : /*[[${dashboard.topCervejas}]]*/[],
+			porStatus : /*[[${dashboard.porStatus}]]*/{}
+		};
+	</script>
 </body>
 </html>

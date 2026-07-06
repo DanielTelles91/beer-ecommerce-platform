@@ -16,7 +16,7 @@ import com.ecommerce.routeexpress.services.database.CarrinhoService;
 
 @RestController
 @RequestMapping("/api/carrinho")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 
 public class CarrinhoController {
 

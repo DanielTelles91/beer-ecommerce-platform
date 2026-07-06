@@ -12,6 +12,24 @@
 <link rel="stylesheet" th:href="@{/css/estoque.css}">
 </head>
 <body class="bg-dark text-light">
+	<!-- Navbar  -->
+	<nav
+		class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary">
+		<div class="container-fluid">
+			<a class="navbar-brand fw-bold" href="/adm/telaInicialAdm">Route
+				Express Back Office</a>
+			<div class="collapse navbar-collapse">
+				<ul class="navbar-nav me-auto">
+					<li class="nav-item"><a class="nav-link" href="/clientes">Clientes</a></li>
+					<li class="nav-item"><a class="nav-link" href="/cervejarias">Cervejarias</a></li>
+					<li class="nav-item"><a class="nav-link" href="/cervejas">Cervejas</a></li>
+					<li class="nav-item"><a class="nav-link active"
+						href="/estoque">Estoque</a></li>
+					<li class="nav-item"><a class="nav-link" href="/pedidos">Pedidos</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 	<div class="container py-4">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<div>

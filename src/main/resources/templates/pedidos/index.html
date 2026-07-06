@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route Express - Pedidos</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+
+	<!-- Navbar  -->
+	<nav
+		class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary">
+		<div class="container-fluid">
+			<a class="navbar-brand fw-bold" href="/adm/telaInicialAdm">Route
+				Express Back Office</a>
+			<div class="collapse navbar-collapse">
+				<ul class="navbar-nav me-auto">
+					<li class="nav-item"><a class="nav-link" href="/clientes">Clientes</a></li>
+					<li class="nav-item"><a class="nav-link" href="/cervejarias">Cervejarias</a></li>
+					<li class="nav-item"><a class="nav-link" href="/cervejas">Cervejas</a></li>
+					<li class="nav-item"><a class="nav-link" href="/estoque">Estoque</a></li>
+					<li class="nav-item"><a class="nav-link active"
+						href="/pedidos">Pedidos</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container mt-4">
+		<h3 class="mb-3">Pedidos</h3>
+
+		<!-- Filtro por status -->
+		<form method="get" action="/pedidos" class="d-flex gap-2 mb-4">
+			<select name="status" class="form-select w-auto">
+				<option value="">Todos os status</option>
+				<option th:each="s : ${statusOpcoes}" th:value="${s}" th:text="${s}"
+					th:selected="${s == statusFiltro}"></option>
+			</select>
+			<button class="btn btn-outline-light" type="submit">Filtrar</button>
+			<a href="/adm/pedidos" class="btn btn-outline-secondary">Limpar</a>
+		</form>
+
+		<!-- Tabela de pedidos -->
+		<table class="table table-dark table-striped table-hover">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Cliente</th>
+					<th>Data</th>
+					<th>Status</th>
+					<th>Total</th>
+					<th>Ações</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${pedidos}">
+					<td th:text="${p.id}"></td>
+					<td th:text="${p.nomeCliente}"></td>
+					<td
+						th:text="${#temporals.format(p.dataPedido, 'dd/MM/yyyy HH:mm')}"></td>
+					<td><span class="badge"
+						th:classappend="${p.status == 'ENTREGUE'} ? 'bg-success' :
+                                  (${p.status == 'CANCELADO'} ? 'bg-danger' :
+                                  (${p.status == 'ENVIADO'} ? 'bg-primary' : 'bg-warning text-dark'))"
+						th:text="${p.status}"> </span></td>
+					<td
+						th:text="${'R$ ' + #numbers.formatDecimal(p.total, 1, 'POINT', 2, 'COMMA')}"></td>
+					<td><a th:href="@{/pedidos/{id}(id=${p.id})}"
+						class="btn btn-sm btn-outline-light">Ver</a></td>
+				</tr>
+				<tr th:if="${#lists.isEmpty(pedidos)}">
+					<td colspan="6" class="text-center text-muted">Nenhum pedido
+						encontrado.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

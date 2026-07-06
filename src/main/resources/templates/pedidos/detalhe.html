@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Route Express - Detalhe do Pedido</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+
+	<div class="container mt-4" style="max-width: 800px;">
+
+		<a href="/pedidos" class="btn btn-outline-secondary btn-sm mb-3">←
+			Voltar</a>
+
+		<h3 class="mb-1">
+			Pedido #<span th:text="${dados.pedido.id}"></span>
+		</h3>
+		<p class="text-muted">
+			<span
+				th:text="${#temporals.format(dados.pedido.dataPedido, 'dd/MM/yyyy HH:mm')}"></span>
+			— Cliente: <strong th:text="${dados.nomeCliente}"></strong> (<span
+				th:text="${dados.emailCliente}"></span>)
+		</p>
+
+		<!-- Status atual + mudar -->
+		<div class="card bg-secondary mb-3">
+			<div class="card-body">
+				<h5>
+					Status atual: <span class="badge bg-warning text-dark ms-2"
+						th:text="${dados.pedido.status}"></span>
+				</h5>
+				<form th:action="@{/pedidos/{id}/status(id=${dados.pedido.id})}"
+					method="post" class="d-flex gap-2 mt-2">
+					<select name="novoStatus" class="form-select w-auto">
+						<option th:each="s : ${dados.statusValidos}" th:value="${s}"
+							th:text="${s}" th:selected="${s == dados.pedido.status}">
+						</option>
+					</select>
+					<button class="btn btn-warning text-dark" type="submit">Atualizar
+						Status</button>
+				</form>
+				<small class="text-light mt-1 d-block">* O cliente receberá
+					um e-mail automaticamente ao atualizar o status.</small>
+			</div>
+		</div>
+
+		<!-- Endereço de entrega -->
+		<div class="card bg-secondary mb-3">
+			<div class="card-body">
+				<h6>Endereço de entrega (snapshot)</h6>
+				<p class="mb-0"
+					th:text="${dados.pedido.enderecoTipoLogradouro + ' ' +
+            dados.pedido.enderecoLogradouro + ', ' +
+            dados.pedido.enderecoNumero}"></p>
+				<p class="mb-0 text-light"
+					th:text="${dados.pedido.enderecoBairro + ', ' +
+            dados.pedido.enderecoCidade + ' - ' +
+            dados.pedido.enderecoEstado}"></p>
+				<p class="mb-0 text-light"
+					th:text="${'CEP: ' + dados.pedido.enderecoCep}"></p>
+			</div>
+		</div>
+
+		<!-- Itens do pedido -->
+		<div class="card bg-secondary mb-3">
+			<div class="card-body">
+				<h6 class="mb-3">Itens do pedido</h6>
+				<table class="table table-dark table-sm">
+					<thead>
+						<tr>
+							<th>Produto</th>
+							<th>Cervejaria</th>
+							<th>Qtd</th>
+							<th>Preço Unit.</th>
+							<th>Subtotal</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${dados.pedido.itens}">
+							<td th:text="${item.rotulo}"></td>
+							<td th:text="${item.nomeCervejaria}"></td>
+							<td th:text="${item.quantidade}"></td>
+							<td
+								th:text="${'R$ ' + #numbers.formatDecimal(item.precoUnitario, 1, 'POINT', 2, 'COMMA')}"></td>
+							<td
+								th:text="${'R$ ' + #numbers.formatDecimal(item.subtotal, 1, 'POINT', 2, 'COMMA')}"></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4" class="text-end fw-bold">Total:</td>
+							<td class="fw-bold text-warning"
+								th:text="${'R$ ' + #numbers.formatDecimal(dados.pedido.total, 1, 'POINT', 2, 'COMMA')}"></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

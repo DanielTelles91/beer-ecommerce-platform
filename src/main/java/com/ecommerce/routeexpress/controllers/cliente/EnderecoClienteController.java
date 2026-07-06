@@ -21,7 +21,7 @@ import com.ecommerce.routeexpress.services.database.EnderecoService;
 
 @RestController
 @RequestMapping("/api/enderecos")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class EnderecoClienteController {
 
 	@Autowired

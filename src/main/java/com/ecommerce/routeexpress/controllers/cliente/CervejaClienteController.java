@@ -23,7 +23,7 @@ import com.ecommerce.routeexpress.services.CervejasRepositorio;
 
 @RestController
 @RequestMapping("/api/cervejas")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class CervejaClienteController {
 
 	@Autowired

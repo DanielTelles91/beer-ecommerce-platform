@@ -21,7 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController
 @RequestMapping("/api/clientes")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class ClienteAuthController {
 
 	@Autowired

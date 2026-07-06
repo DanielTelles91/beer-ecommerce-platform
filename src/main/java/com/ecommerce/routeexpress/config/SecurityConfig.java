@@ -13,6 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.beans.factory.annotation.Value;
+import java.util.Arrays;
+
 import com.ecommerce.routeexpress.security.JwtAuthenticationFilter;
 
 /**
@@ -23,6 +26,9 @@ import com.ecommerce.routeexpress.security.JwtAuthenticationFilter;
 @Configuration
 public class SecurityConfig {
 
+	@Value("${app.cors.origins}")
+	private String corsOrigins;
+	
 	private final LoginSuccessHandler loginSuccessHandler;
 
 	public SecurityConfig(LoginSuccessHandler loginSuccessHandler) {
@@ -77,7 +83,7 @@ public class SecurityConfig {
 
 		http.cors(cors -> cors.configurationSource(request -> {
 			var config = new org.springframework.web.cors.CorsConfiguration();
-			config.setAllowedOrigins(List.of("http://localhost:4200", "http://192.168.1.131:4200"));
+			config.setAllowedOrigins(Arrays.asList(corsOrigins.split(",")));
 			config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 			config.setAllowedHeaders(List.of("*"));
 			config.setAllowCredentials(false);

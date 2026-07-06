@@ -18,7 +18,7 @@ import com.ecommerce.routeexpress.services.database.ListaDeDesejoService;
 
 @RestController
 @RequestMapping("/api/lista-desejos")
-@CrossOrigin(origins = { "http://localhost:4200", "http://192.168.1.131:4200" })
+//@CrossOrigin(origins = { "http://localhost:4200", "http://192.168.1.131:4200" })
 public class ListaDeDesejosApiController {
 
 	@Autowired

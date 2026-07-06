@@ -84,4 +84,19 @@ public class EmailService {
 
 		enviar(destinatario, "Pedido #" + pedido.getId() + " confirmado - Route Express", corpo.toString());
 	}
+
+	public void enviarEmailStatusPedido(String destinatario, Long pedidoId, String novoStatus) {
+		String statusFormatado = switch (novoStatus) {
+		case "SEPARANDO_PRODUTOS" -> "Separando produtos";
+		case "ENVIADO" -> "Enviado para transportadora";
+		case "ENTREGUE" -> "Entregue com sucesso";
+		case "CANCELADO" -> "Cancelado";
+		default -> novoStatus;
+		};
+
+		String corpo = "Olá!\n\n" + "O status do seu pedido #" + pedidoId + " foi atualizado:\n\n" + " "
+				+ statusFormatado + "\n\n" + "Acesse sua conta para mais detalhes.\n\n" + "Route Express";
+
+		enviar(destinatario, "Atualização do pedido #" + pedidoId + " - Route Express", corpo);
+	}
 }

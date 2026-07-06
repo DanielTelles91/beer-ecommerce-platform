@@ -1,0 +1,56 @@
+body {
+	background: #0f1115;
+}
+
+.card {
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 14px;
+}
+
+.glass {
+	background: rgba(255, 255, 255, 0.03);
+	backdrop-filter: blur(8px);
+}
+
+.section-title {
+	font-size: .75rem;
+	letter-spacing: .12em;
+}
+
+canvas {
+	max-height: 260px;
+}
+
+.metric-value {
+	font-size: 1.6rem;
+	font-weight: 700;
+}
+
+body {
+    background: #0f1115;
+    color: #e6e6e6;
+}
+
+
+.text-muted {
+    color: rgba(230, 230, 230, 0.65) !important;
+}
+
+
+.card {
+    color: #e6e6e6;
+}
+
+
+a {
+    color: #9ecbff;
+}
+
+a:hover {
+    color: #cfe6ff;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+}
