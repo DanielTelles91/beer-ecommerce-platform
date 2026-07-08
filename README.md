@@ -98,7 +98,7 @@ Customer Authentication (JWT)
 - Unauthenticated requests to /api/** return a clean JSON 401 response instead of being redirected to the admin HTML login page.
 
 
-Order Management (Checkout API)
+Order Management
 - POST /api/pedidos (authenticated): validates stock availability for every cart item before creating the order. Returns a clear error message per product if any item exceeds available stock.
 - On successful checkout:
 	- Creates a Pedido with a snapshot of the delivery address at the time of purchase (customer may change address later; the order always reflects what was used).
@@ -107,7 +107,25 @@ Order Management (Checkout API)
 	- Sends an order confirmation e-mail to the customer, listing each item with quantity, unit price, subtotal, and the order total.
 	- Clears the cart.
 - GET /api/pedidos/meus-pedidos (authenticated): returns the customer's full order history, newest first, with all item snapshots and delivery address.
-	
+- Full order status history tracked in a dedicated pedido_status_historico table (status + timestamp per transition).
+- Order status update endpoint for admin, with automatic customer e-mail notification on every transition.	
+- Admin orders page: lists all orders with status filter, and a detail view showing items, delivery address, current status, and a form to update it.
+
+Dashboard
+- Summary cards: annual sales (R$), number of orders, average ticket and total registered customers all filtered by year via a selector.
+- Bar chart: monthly sales for the selected year (Chart.js).
+- Horizontal bar chart: top 5 best selling beers by units sold.
+- Bar chart: order count by status.
+- All three charts update simultaneously when the year is changed.
+
+Image Storage
+- Two implementations of IImageStorageService selected via Spring profiles: LocalImageStorageService (profile: dev, saves to disk) and CloudinaryImageStorageService (profile: prod, uploads to Cloudinary).
+- In production, an ImageRedirectController transparently redirects /uploads/images/{cervejariaId}/{filename} requests to the correct Cloudinary URL using the SDK, so the Angular frontend requires no changes between environments.
+- Cloudinary credentials injected via environment variables.
+
+Password Recovery
+- POST /api/clientes/recuperar-senha: generates a single-use recovery token and sends a reset link by e-mail. Always returns success to avoid revealing whether an e-mail is registered.
+- POST /api/clientes/nova-senha: validates the token, encodes the new password with BCrypt, and clears the token.
 
 Data Integrity
 - Business rules enforced at the service layer.
