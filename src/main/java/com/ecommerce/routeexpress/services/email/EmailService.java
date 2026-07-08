@@ -42,7 +42,7 @@ public class EmailService {
 
 	private void enviar(String destinatario, String assunto, String corpo) {
 		SimpleMailMessage mensagem = new SimpleMailMessage();
-		mensagem.setFrom("hello@demomailtrap.co");
+		mensagem.setFrom("onboarding@resend.dev");
 		mensagem.setTo(destinatario);
 		mensagem.setSubject(assunto);
 		mensagem.setText(corpo);
