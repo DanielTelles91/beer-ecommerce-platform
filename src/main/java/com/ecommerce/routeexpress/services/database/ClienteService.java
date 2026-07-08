@@ -227,4 +227,25 @@ public class ClienteService {
 		return mapToDto(cliente);
 	}
 
+	public void solicitarRecuperacaoSenha(String email) {
+		Cliente cliente = clientesRepositorio.findByEmailIgnoreCase(email);
+		if (cliente == null)
+			return; // não revela se e-mail existe ou não, por questão de segurança
+
+		String token = UUID.randomUUID().toString();
+		cliente.setTokenRecuperacaoSenha(token);
+		clientesRepositorio.save(cliente);
+
+		emailService.enviarEmailRecuperacaoSenha(cliente.getEmail(), token);
+	}
+
+	public void redefinirSenha(String token, String novaSenha) {
+		Cliente cliente = clientesRepositorio.findByTokenRecuperacaoSenha(token)
+				.orElseThrow(() -> new RuntimeException("Token inválido ou expirado"));
+
+		cliente.setSenha(passwordEncoder.encode(novaSenha));
+		cliente.setTokenRecuperacaoSenha(null); // invalida o token !
+		clientesRepositorio.save(cliente);
+	}
+
 }

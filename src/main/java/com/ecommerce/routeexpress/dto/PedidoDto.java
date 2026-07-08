@@ -15,6 +15,7 @@ public class PedidoDto {
 	private double total;
 	private String enderecoCompleto;
 	private List<ItemPedidoDto> itens;
+	private List<HistoricoStatusDto> historico;
 
 	// getters e setters
 	public Long getId() {
@@ -63,5 +64,13 @@ public class PedidoDto {
 
 	public void setItens(List<ItemPedidoDto> itens) {
 		this.itens = itens;
+	}
+
+	public List<HistoricoStatusDto> getHistorico() {
+		return historico;
+	}
+
+	public void setHistorico(List<HistoricoStatusDto> historico) {
+		this.historico = historico;
 	}
 }

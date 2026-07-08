@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ecommerce.routeexpress.dto.HistoricoStatusDto;
 import com.ecommerce.routeexpress.dto.ItemPedidoDto;
 import com.ecommerce.routeexpress.dto.PedidoDto;
 import com.ecommerce.routeexpress.models.*;
@@ -34,6 +35,8 @@ public class CheckoutService {
 	private EmailService emailService;
 	@Autowired
 	private ClientesRepositorio clientesRepositorio;
+	@Autowired
+	private PedidoStatusHistoricoRepositorio historicoRepo;
 
 	@Transactional
 	public PedidoDto finalizarPedido(int clienteId) {
@@ -112,6 +115,9 @@ public class CheckoutService {
 
 		Pedido salvo = pedidoRepo.save(pedido);
 
+		PedidoStatusHistorico primeiroStatus = new PedidoStatusHistorico(salvo, "CONFIRMADO");
+		historicoRepo.save(primeiroStatus);
+
 		// 5. Debita o estoque e atualiza disponibilidade se necessário
 		for (ItemPedido item : itensPedido) {
 			Estoque estoque = estoqueRepo.findFirstByCervejaId(item.getCervejaId()).get();
@@ -170,6 +176,8 @@ public class CheckoutService {
 			return itemDto;
 		}).collect(Collectors.toList()));
 
+		dto.setHistorico(pedido.getHistorico().stream()
+				.map(h -> new HistoricoStatusDto(h.getStatus(), h.getDataMudanca())).collect(Collectors.toList()));
 		return dto;
 	}
 }

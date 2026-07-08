@@ -28,7 +28,7 @@ public class SecurityConfig {
 
 	@Value("${app.cors.origins}")
 	private String corsOrigins;
-	
+
 	private final LoginSuccessHandler loginSuccessHandler;
 
 	public SecurityConfig(LoginSuccessHandler loginSuccessHandler) {
@@ -51,13 +51,15 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth
-				.requestMatchers("/", "/index.html", "/clientes/**", "/api/cervejas/**", "/api/carrinho/**",
-						"/api/clientes/definir-senha", "/api/clientes/cadastro", "/api/clientes/confirmar-email",
-						"/api/clientes/login", "/api/clientes/verificar-cpf", "/api/clientes/verificar-email",
-						"/uploads/**", "/produtos/**", "/register", "/login_adm/**", "/css/**")
-				.permitAll().requestMatchers("/adm/**").hasRole("MASTER").requestMatchers("/operator/**")
-				.hasAnyRole("MASTER", "OPERATOR").anyRequest().authenticated())
+		http.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/", "/index.html", "/api/cervejas/**", "/api/carrinho/**",
+								"/api/clientes/definir-senha", "/api/clientes/cadastro",
+								"/api/clientes/confirmar-email", "/api/clientes/login", "/api/clientes/verificar-cpf",
+								"/api/clientes/verificar-email", "/uploads/**", "/produtos/**", "/register",
+								"/login_adm/**", "/css/**", "/api/clientes/recuperar-senha", "/api/clientes/nova-senha")
+						.permitAll().requestMatchers("/adm/**").hasRole("MASTER").requestMatchers("/operator/**")
+						.hasAnyRole("MASTER", "OPERATOR").anyRequest().authenticated())
 				.formLogin(form -> form.loginPage("/adm/telaLogin").loginProcessingUrl("/adm")
 						.successHandler(loginSuccessHandler) // ESSENCIAL !!!
 						.permitAll())

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.ecommerce.routeexpress.models.Cliente;
 import com.ecommerce.routeexpress.models.Pedido;
+import com.ecommerce.routeexpress.models.PedidoStatusHistorico;
 import com.ecommerce.routeexpress.services.ClientesRepositorio;
 import com.ecommerce.routeexpress.services.PedidoRepositorio;
+import com.ecommerce.routeexpress.services.PedidoStatusHistoricoRepositorio;
 import com.ecommerce.routeexpress.services.email.EmailService;
 
 /**
@@ -26,6 +28,8 @@ public class PedidoAdminService {
 	private ClientesRepositorio clienteRepo;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private PedidoStatusHistoricoRepositorio historicoRepo;
 
 	private static final List<String> STATUS_VALIDOS = List.of("CONFIRMADO", "SEPARANDO_PRODUTOS", "ENVIADO",
 			"ENTREGUE", "CANCELADO");
@@ -69,6 +73,8 @@ public class PedidoAdminService {
 		pedido.setStatus(novoStatus);
 		pedidoRepo.save(pedido);
 
+		historicoRepo.save(new PedidoStatusHistorico(pedido, novoStatus));
+
 		// envia e-mail se status mudou
 		if (!statusAnterior.equals(novoStatus)) {
 			String emailCliente = buscarEmailCliente(pedido.getClienteId());
@@ -78,11 +84,11 @@ public class PedidoAdminService {
 		}
 	}
 
-	// dados pro dashboard
+	// dados para dashboard
 	public Map<String, Object> dadosDashboard(int ano) {
 		Map<String, Object> dados = new LinkedHashMap<>();
 
-		// vendas por mês (array de 12 posições, índice 0 = janeiro)
+		
 		double[] vendasMes = new double[12];
 		List<Object[]> resultado = pedidoRepo.vendasPorMes(ano);
 		for (Object[] row : resultado) {
@@ -111,7 +117,7 @@ public class PedidoAdminService {
 
 		// top 5 cervejas
 		List<Map<String, Object>> topCervejas = new ArrayList<>();
-		for (Object[] row : pedidoRepo.topCervejas(ano)) { 
+		for (Object[] row : pedidoRepo.topCervejas(ano)) {
 			Map<String, Object> item = new LinkedHashMap<>();
 			item.put("rotulo", row[0]);
 			item.put("totalVendido", ((Number) row[1]).intValue());
@@ -121,7 +127,7 @@ public class PedidoAdminService {
 
 		// contagem por status
 		Map<String, Long> porStatus = new LinkedHashMap<>();
-		for (Object[] row : pedidoRepo.contagemPorStatus(ano)) { 
+		for (Object[] row : pedidoRepo.contagemPorStatus(ano)) {
 			porStatus.put((String) row[0], ((Number) row[1]).longValue());
 		}
 		dados.put("porStatus", porStatus);

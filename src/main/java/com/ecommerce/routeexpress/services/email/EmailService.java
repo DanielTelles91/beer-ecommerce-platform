@@ -34,10 +34,9 @@ public class EmailService {
 
 	public void enviarEmailRecuperacaoSenha(String destinatario, String token) {
 		String link = frontendUrl + "/nova-senha?token=" + token;
-		String corpo = "Olá!\n\nRecebemos uma solicitação para redefinir sua senha.\n\n"
-				+ "Clique no link abaixo para criar uma nova senha:\n" + link
-				+ "\n\nSe você não solicitou isso, ignore este e-mail.";
-
+		String corpo = "Olá!\n\n" + "Recebemos uma solicitação para redefinir sua senha.\n\n"
+				+ "Clique no link abaixo para criar uma nova senha:\n" + link + "\n\nEste link expira em 1 hora.\n\n"
+				+ "Se você não solicitou isso, ignore este e-mail.\n\n" + "Route Express";
 		enviar(destinatario, "Recuperação de senha - Route Express", corpo);
 	}
 
@@ -99,4 +98,5 @@ public class EmailService {
 
 		enviar(destinatario, "Atualização do pedido #" + pedidoId + " - Route Express", corpo);
 	}
+
 }

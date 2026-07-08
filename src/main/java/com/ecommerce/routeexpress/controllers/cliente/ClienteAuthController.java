@@ -87,4 +87,17 @@ public class ClienteAuthController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
+	@PostMapping("/recuperar-senha")
+	public String recuperarSenha(@RequestParam String email) {
+		service.solicitarRecuperacaoSenha(email);
+		// sempre retorna sucesso — não revela se e-mail existe (por questão de segurança)
+		return "Se este e-mail estiver cadastrado, você receberá as instruções em breve.";
+	}
+
+	@PostMapping("/nova-senha")
+	public String novaSenha(@RequestParam String token, @RequestParam String novaSenha) {
+		service.redefinirSenha(token, novaSenha);
+		return "Senha redefinida com sucesso!";
+	}
 }

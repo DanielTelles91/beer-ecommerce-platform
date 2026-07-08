@@ -22,6 +22,10 @@ public class Pedido {
 	@Column(name = "cliente_id", nullable = false)
 	private int clienteId;
 
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("dataMudanca ASC")
+	private List<PedidoStatusHistorico> historico = new ArrayList<>();
+
 	private LocalDateTime dataPedido = LocalDateTime.now();
 
 	private String status = "CONFIRMADO";
@@ -152,5 +156,13 @@ public class Pedido {
 
 	public void setEnderecoCep(String enderecoCep) {
 		this.enderecoCep = enderecoCep;
+	}
+
+	public List<PedidoStatusHistorico> getHistorico() {
+		return historico;
+	}
+
+	public void setHistorico(List<PedidoStatusHistorico> historico) {
+		this.historico = historico;
 	}
 }

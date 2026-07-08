@@ -21,6 +21,8 @@ public interface ClientesRepositorio extends JpaRepository<Cliente, Integer> {
 	boolean existsByEmailIgnoreCaseAndIdNot(String email, int id);
 
 	Optional<Cliente> findByTokenConfirmacao(String token);
+	
+	Optional<Cliente> findByTokenRecuperacaoSenha(String token);
 
 	Cliente findByEmailIgnoreCase(String email);
 

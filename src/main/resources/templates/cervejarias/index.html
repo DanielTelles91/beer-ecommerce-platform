@@ -1,36 +1,49 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Route Express - Cervejarias</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-	crossorigin="anonymous">
+	rel="stylesheet">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+	rel="stylesheet">
 
 <link rel="stylesheet" th:href="@{/css/cervejaria.css}">
 </head>
 <body class="bg-dark text-light">
-	<!-- Navbar  -->
+	<!-- NAVBAR -->
 	<nav
 		class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary">
-		<div class="container-fluid">
-			<a class="navbar-brand fw-bold" href="/adm/telaInicialAdm">Route
-				Express Back Office</a>
-			<div class="collapse navbar-collapse">
-				<ul class="navbar-nav me-auto">
-					<li class="nav-item"><a class="nav-link" href="/clientes">Clientes</a></li>
-					<li class="nav-item"><a class="nav-link active"
-						href="/cervejarias">Cervejarias</a></li>
-					<li class="nav-item"><a class="nav-link" href="/cervejas">Cervejas</a></li>
-					<li class="nav-item"><a class="nav-link" href="/estoque">Estoque</a></li>
-					<li class="nav-item"><a class="nav-link" href="/pedidos">Pedidos</a></li>
+		<div class="container-fluid px-4">
+
+			<a class="navbar-brand fw-bold" href="/adm/telaInicialAdm"> Route
+				Express <span class="text-success">Back Office</span>
+			</a>
+
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#nav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="nav">
+
+				<ul class="navbar-nav me-auto gap-2">
+					<li><a class="nav-link" href="/clientes">Clientes</a></li>
+					<li><a class="nav-link active" href="/cervejarias">Cervejarias</a></li>
+					<li><a class="nav-link" href="/cervejas">Cervejas</a></li>
+					<li><a class="nav-link" href="/estoque">Estoque</a></li>
+					<li><a class="nav-link" href="/pedidos">Pedidos</a></li>
 				</ul>
+
+
 			</div>
 		</div>
 	</nav>
+
 	<div class="container py-4">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<div>

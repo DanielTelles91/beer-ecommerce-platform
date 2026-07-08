@@ -7,30 +7,50 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+	rel="stylesheet">
 </head>
 <body class="bg-dark text-light">
 
-	<!-- Navbar  -->
+	<!-- NAVBAR -->
 	<nav
 		class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary">
-		<div class="container-fluid">
-			<a class="navbar-brand fw-bold" href="/adm/telaInicialAdm">Route
-				Express Back Office</a>
-			<div class="collapse navbar-collapse">
-				<ul class="navbar-nav me-auto">
-					<li class="nav-item"><a class="nav-link" href="/clientes">Clientes</a></li>
-					<li class="nav-item"><a class="nav-link" href="/cervejarias">Cervejarias</a></li>
-					<li class="nav-item"><a class="nav-link" href="/cervejas">Cervejas</a></li>
-					<li class="nav-item"><a class="nav-link" href="/estoque">Estoque</a></li>
-					<li class="nav-item"><a class="nav-link active"
-						href="/pedidos">Pedidos</a></li>
+		<div class="container-fluid px-4">
+
+			<a class="navbar-brand fw-bold" href="/adm/telaInicialAdm"> Route
+				Express <span class="text-success">Back Office</span>
+			</a>
+
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#nav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="nav">
+
+				<ul class="navbar-nav me-auto gap-2">
+					<li><a class="nav-link" href="/clientes">Clientes</a></li>
+					<li><a class="nav-link" href="/cervejarias">Cervejarias</a></li>
+					<li><a class="nav-link" href="/cervejas">Cervejas</a></li>
+					<li><a class="nav-link" href="/estoque">Estoque</a></li>
+					<li><a class="nav-link active" href="/pedidos">Pedidos</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<div class="container mt-4">
-		<h3 class="mb-3">Pedidos</h3>
+	<div class="container py-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<div>
+				<h1 class="mb-0">Pedidos</h1>
+				<small class="text-secondary"> Gerenciamento de pedidos </small>
+			</div>
+			<div>
+				<a class="btn btn-outline-light me-2" href="/adm"> ← Voltar </a> 
+			</div>
+		</div>
 
 		<!-- Filtro por status -->
 		<form method="get" action="/pedidos" class="d-flex gap-2 mb-4">
@@ -45,9 +65,9 @@
 
 		<!-- Tabela de pedidos -->
 		<table class="table table-dark table-striped table-hover">
-			<thead>
+			<thead class="table-warning">
 				<tr>
-					<th>#</th>
+					<th>Nº do Pedido</th>
 					<th>Cliente</th>
 					<th>Data</th>
 					<th>Status</th>
