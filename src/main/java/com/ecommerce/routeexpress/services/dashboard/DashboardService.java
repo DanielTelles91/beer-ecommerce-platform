@@ -24,7 +24,7 @@ public class DashboardService {
 
 			RestTemplate rt = new RestTemplate();
 
-			rt.getForObject("http://127.0.0.1:4200/cervejas", String.class);
+			rt.getForObject("https://beer-ecommerce-frontend.vercel.app/cervejas", String.class);
 
 			return true;
 
