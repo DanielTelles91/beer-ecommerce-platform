@@ -99,7 +99,8 @@ public class CarrinhoService {
 			int estoqueDisponivel = estoque != null ? estoque.getQuantidade() : 0;
 
 			return new CarrinhoItemDto(i.getId(), i.getCerveja().getId(), i.getCerveja().getRotulo(), preco,
-					i.getQuantidade(), estoqueDisponivel);
+					i.getQuantidade(), estoqueDisponivel, i.getCerveja().getImagem_1(),
+					i.getCerveja().getCervejaria().getId());
 		}).collect(Collectors.toList());
 		return new CarrinhoDto(itens);
 	}

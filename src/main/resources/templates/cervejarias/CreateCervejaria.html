@@ -37,7 +37,7 @@
 						<div class="mb-3">
 							<label class="col-sm-4 col-form-label">Cervejaria</label>
 							<div class="col-sm-8">
-								<input class="form-control"
+								<input class="form-control" maxlength="25"
 									th:field="${cervejariaDto.cervejaria}">
 								<p th:if="${#fields.hasErrors('cervejaria')}"
 									th:errorclass="text-danger"
@@ -47,7 +47,8 @@
 						<div class="mb-3">
 							<label class="col-sm-4 col-form-label">Pais</label>
 							<div class="col-sm-8">
-								<input class="form-control" th:field="${cervejariaDto.pais}">
+								<input class="form-control" maxlength="25"
+									th:field="${cervejariaDto.pais}">
 								<p th:if="${#fields.hasErrors('pais')}"
 									th:errorclass="text-danger" th:errors="${cervejariaDto.pais}"></p>
 							</div>
