@@ -23,10 +23,10 @@ Note: This application is hosted on Render. If it has been idle, the first reque
 <p align="center">
   <img src="screenshots/1_TelaInicial.png" width="32%">
   <img src="screenshots/2_TelaCliente.png" width="32%">
-  <img src="screenshots/3_TelaCervejas" width="32%">
-  <img src="screenshots/4_TelaEstoque" width="32%">
-  <img src="screenshots/5_TelaPedidos" width="32%">
-  <img src="screenshots/6_TelaPedidos" width="32%">
+  <img src="screenshots/3_TelaCervejas.png" width="32%">
+  <img src="screenshots/4_TelaEstoque.png" width="32%">
+  <img src="screenshots/5_TelaPedidos.png" width="32%">
+  <img src="screenshots/6_TelaPedidos.png" width="32%">
 </p>
 
 ## Demo Video
