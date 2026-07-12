@@ -49,9 +49,9 @@
 		<!-- Endereço de entrega -->
 		<div class="card bg-secondary mb-3">
 			<div class="card-body">
-				<h6>Endereço de entrega (snapshot)</h6>
-				<p class="mb-0"
-					th:text="${dados.pedido.enderecoTipoLogradouro + ' ' +
+				<h6>Endereço de entrega</h6>
+				<p class="mb-0 text-light"
+					th:text="${
             dados.pedido.enderecoLogradouro + ', ' +
             dados.pedido.enderecoNumero}"></p>
 				<p class="mb-0 text-light"
@@ -95,6 +95,37 @@
 								th:text="${'R$ ' + #numbers.formatDecimal(dados.pedido.total, 1, 'POINT', 2, 'COMMA')}"></td>
 						</tr>
 					</tfoot>
+				</table>
+			</div>
+		</div>
+
+		<div class="card bg-secondary mb-3">
+			<div class="card-body">
+				<h6 class="mb-3">Histórico de Status</h6>
+				<table class="table table-dark table-sm mb-0">
+					<thead>
+						<tr>
+							<th>Status</th>
+							<th>Data / Hora</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="h : ${historico}">
+							<td><span class="badge"
+								th:classappend="${h.status == 'ENTREGUE'} ? 'bg-success' :
+                                              (${h.status == 'CANCELADO'} ? 'bg-danger' :
+                                              (${h.status == 'ENVIADO'} ? 'bg-primary' :
+                                              (${h.status == 'SEPARANDO_PRODUTOS'} ? 'bg-info text-dark' :
+                                               'bg-warning text-dark')))"
+								th:text="${h.status}"> </span></td>
+							<td
+								th:text="${#temporals.format(h.dataMudanca, 'dd/MM/yyyy HH:mm')}">
+							</td>
+						</tr>
+						<tr th:if="${#lists.isEmpty(historico)}">
+							<td colspan="2" class="text-muted">Sem histórico registrado.</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 		</div>

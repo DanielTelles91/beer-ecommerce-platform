@@ -34,10 +34,12 @@ public class PedidoAdminService {
 	private static final List<String> STATUS_VALIDOS = List.of("CONFIRMADO", "SEPARANDO_PRODUTOS", "ENVIADO",
 			"ENTREGUE", "CANCELADO");
 
-	public List<Map<String, Object>> listarTodos(String filtroStatus) {
-		List<Pedido> pedidos = (filtroStatus == null || filtroStatus.isBlank())
-				? pedidoRepo.findAllByOrderByDataPedidoDesc()
-				: pedidoRepo.findByStatusOrderByDataPedidoDesc(filtroStatus);
+	public List<Map<String, Object>> listarTodos(String filtroStatus, String busca, String dataInicio, String dataFim) {
+		List<Pedido> pedidos = pedidoRepo.buscarComFiltros(
+				(filtroStatus == null || filtroStatus.isBlank()) ? null : filtroStatus,
+				(dataInicio == null || dataInicio.isBlank()) ? null : dataInicio + " 00:00:00",
+				(dataFim == null || dataFim.isBlank()) ? null : dataFim + " 23:59:59",
+				(busca == null || busca.isBlank()) ? null : busca);
 
 		return pedidos.stream().map(p -> {
 			Map<String, Object> map = new LinkedHashMap<>();
@@ -49,6 +51,17 @@ public class PedidoAdminService {
 			map.put("total", p.getTotal());
 			return map;
 		}).collect(Collectors.toList());
+	}
+
+	public Map<String, Long> contadoresPorStatus() {
+		Map<String, Long> contadores = new LinkedHashMap<>();
+		List.of("CONFIRMADO", "SEPARANDO_PRODUTOS", "ENVIADO", "ENTREGUE", "CANCELADO")
+				.forEach(s -> contadores.put(s, 0L));
+
+		for (Object[] row : pedidoRepo.contagemPorStatusGeral()) { // preenche com os valores reais
+			contadores.put((String) row[0], ((Number) row[1]).longValue());
+		}
+		return contadores;
 	}
 
 	public Map<String, Object> buscarDetalhe(Long pedidoId) {
@@ -88,7 +101,6 @@ public class PedidoAdminService {
 	public Map<String, Object> dadosDashboard(int ano) {
 		Map<String, Object> dados = new LinkedHashMap<>();
 
-		
 		double[] vendasMes = new double[12];
 		List<Object[]> resultado = pedidoRepo.vendasPorMes(ano);
 		for (Object[] row : resultado) {

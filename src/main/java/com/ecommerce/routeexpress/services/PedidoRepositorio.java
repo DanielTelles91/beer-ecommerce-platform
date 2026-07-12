@@ -74,4 +74,23 @@ public interface PedidoRepositorio extends JpaRepository<Pedido, Long> {
 			AND status != 'CANCELADO'
 			""", nativeQuery = true)
 	Long totalPedidosAno(@Param("ano") int ano);
+
+	// busca por nome do cliente ou número do pedido, com filtro de status e data
+	@Query(value = """
+			SELECT p.* FROM pedido p
+			JOIN clientes c ON p.cliente_id = c.id
+			WHERE (:status IS NULL OR p.status = :status)
+			AND (:dataInicio IS NULL OR p.data_pedido >= :dataInicio)
+			AND (:dataFim IS NULL OR p.data_pedido <= :dataFim)
+			AND (:busca IS NULL OR
+			     LOWER(CONCAT(c.first_name, ' ', c.last_name)) LIKE LOWER(CONCAT('%', :busca, '%'))
+			     OR CAST(p.id AS CHAR) = :busca)
+			ORDER BY p.data_pedido DESC
+			""", nativeQuery = true)
+	List<Pedido> buscarComFiltros(@Param("status") String status, @Param("dataInicio") String dataInicio,
+			@Param("dataFim") String dataFim, @Param("busca") String busca);
+
+	// contagem por status
+	@Query("SELECT p.status, COUNT(p) FROM Pedido p GROUP BY p.status")
+	List<Object[]> contagemPorStatusGeral();
 }
