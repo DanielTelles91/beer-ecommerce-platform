@@ -1,13 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Trocar Senha</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route Express - Trocar Senha</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/telaInicialAdm.css}">
 </head>
-<body>
-	<h2>Trocar Senha</h2>
-	<form th:action="@{/adm/mudar-senha}" method="post">
-		<label>Nova Senha:</label> <input type="password" name="novaSenha" /><br>
-		<button type="submit">Salvar</button>
-	</form>
+<body
+	class="bg-dark text-light d-flex align-items-center justify-content-center"
+	style="min-height: 100vh;">
+
+	<div class="card glass p-4" style="width: 100%; max-width: 420px;">
+
+		<h4 class="mb-4 fw-bold">Trocar Senha</h4>
+
+		<div *ngIf="false"></div>
+
+		<!-- erro -->
+		<div th:if="${param.erro}" class="alert alert-danger py-2 mb-3">
+			Senha atual incorreta. Tente novamente.</div>
+
+		<form th:action="@{/adm/mudar-senha}" method="post">
+
+			<div class="mb-3">
+				<label class="form-label small text-muted">Senha atual</label> <input
+					type="password" name="senhaAtual"
+					class="form-control bg-dark text-light border-secondary"
+					placeholder="Digite sua senha atual" required />
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label small text-muted">Nova senha</label> <input
+					type="password" name="novaSenha" id="novaSenha"
+					class="form-control bg-dark text-light border-secondary"
+					placeholder="Digite a nova senha" required minlength="6" />
+			</div>
+
+			<div class="mb-4">
+				<label class="form-label small text-muted">Confirmar nova
+					senha</label> <input type="password" name="confirmarSenha"
+					id="confirmarSenha"
+					class="form-control bg-dark text-light border-secondary"
+					placeholder="Confirme a nova senha" required />
+				<div id="senhaErro" class="text-danger small mt-1"
+					style="display: none;">As senhas não coincidem.</div>
+			</div>
+
+			<div class="d-flex gap-2">
+				<button type="submit" class="btn btn-success flex-fill"
+					id="btnSalvar">Salvar nova senha</button>
+				<a href="/adm/telaInicialAdm" class="btn btn-outline-secondary">
+					Cancelar </a>
+			</div>
+
+		</form>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/js/mudar_senha.js"></script>
 </body>
 </html>

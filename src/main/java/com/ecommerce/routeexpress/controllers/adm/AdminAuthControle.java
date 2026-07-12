@@ -28,19 +28,23 @@ public class AdminAuthControle {
 
 	// Página de troca de senha
 	@GetMapping("/adm/mudar-senha")
-	public String mostrarTrocaSenha(@AuthenticationPrincipal Usuario usuario) {
-		if (usuario.isSenhaPadrao()) {
-			return "adm/mudar_senha";
-		}
-		return "redirect:/home";
+	public String mostrarTrocaSenha() {
+		return "adm/mudar_senha";
 	}
 
 	@PostMapping("/adm/mudar-senha")
-	public String trocarSenha(@AuthenticationPrincipal Usuario usuario, @RequestParam("novaSenha") String novaSenha) {
+	public String trocarSenha(@AuthenticationPrincipal Usuario usuario, @RequestParam String novaSenha,
+			@RequestParam String senhaAtual) {
+
+		// valida senha atual antes de trocar
+		if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
+			return "redirect:/adm/mudar-senha?erro=true";
+		}
+
 		usuario.setSenha(passwordEncoder.encode(novaSenha));
 		usuario.setSenhaPadrao(false);
 		usuarioRepo.save(usuario);
-		return "redirect:/adm/telaInicialAdm";
+		return "redirect:/adm/telaInicialAdm?senhaTrocada=true";
 	}
 
 	// Página de login
