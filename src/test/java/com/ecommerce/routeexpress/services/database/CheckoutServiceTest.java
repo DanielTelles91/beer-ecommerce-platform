@@ -520,7 +520,7 @@ class CheckoutServiceTest {
 		assertThat(erroCliente1).as("cliente 1 não deveria ter recebido erro (bug: os dois passam)").isNull();
 		assertThat(erroCliente2).as("cliente 2 não deveria ter recebido erro (bug: os dois passam)").isNull();
 
-		// O estoque final pode ficar em 2 ou -1 dependendo de como
+		// O estoque final pode ficar em 2 ou -1 dependendo de como 
 		// as threads foram executadas pelo sistema.
 		//
 		// Os dois valores mostram que existe um problema no controle
