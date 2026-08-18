@@ -1,7 +1,9 @@
 package com.ecommerce.routeexpress.services.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +61,18 @@ public class CheckoutService {
 		// 3. Verifica estoque e monta os itens do pedido
 		List<ItemPedido> itensPedido = new ArrayList<>();
 		List<String> errosEstoque = new ArrayList<>();
+		// Guarda a instância de Estoque (JÁ TRAVADA, lock pessimista) de
+		// cada cerveja, pra reaproveitar no passo 5 sem precisar buscar
+		// de novo. 
+		Map<Integer, Estoque> estoquesTravados = new HashMap<>();
 
 		for (CarrinhoItem item : carrinho.getItens()) {
 			Cerveja cerveja = item.getCerveja();
-			Estoque estoque = estoqueRepo.findFirstByCervejaId(cerveja.getId()).orElse(null);
+			// findFirstByCervejaIdForUpdate trava a linha do estoque no
+			// banco. Se outra transação estiver finalizando pedido pra
+			// essa mesma cerveja ao mesmo tempo, ela vai (ESPERAR) aqui até
+			// a transação terminar. 
+			Estoque estoque = estoqueRepo.findFirstByCervejaIdForUpdate(cerveja.getId()).orElse(null);
 
 			if (estoque == null || !estoque.isDisponibilidade()) {
 				errosEstoque.add(cerveja.getRotulo() + ": produto indisponível");
@@ -74,6 +84,8 @@ public class CheckoutService {
 						+ " unidade(s), mas só temos " + estoque.getQuantidade() + " disponível(is)");
 				continue;
 			}
+
+			estoquesTravados.put(cerveja.getId(), estoque);
 
 			// Snapshot dos dados da cerveja
 			ItemPedido itemPedido = new ItemPedido();
@@ -118,9 +130,10 @@ public class CheckoutService {
 		PedidoStatusHistorico primeiroStatus = new PedidoStatusHistorico(salvo, "CONFIRMADO");
 		historicoRepo.save(primeiroStatus);
 
-		// 5. Debita o estoque e atualiza disponibilidade se necessário
+		// 5. Debita o estoque e atualiza disponibilidade se necessário.
+		// Reaproveita a mesma instância travada no passo 3.
 		for (ItemPedido item : itensPedido) {
-			Estoque estoque = estoqueRepo.findFirstByCervejaId(item.getCervejaId()).get();
+			Estoque estoque = estoquesTravados.get(item.getCervejaId());
 			estoque.setQuantidade(estoque.getQuantidade() - item.getQuantidade());
 			if (estoque.getQuantidade() <= 0) {
 				estoque.setDisponibilidade(false);
